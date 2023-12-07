@@ -6,6 +6,10 @@ import Checkout from "../pages/Checkout";
 import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import AdminPage from "../pages/AdminPage/AdminPage";
+import ProfilePage from "../pages/Profile/ProfilePage";
+import SignUpPage from "../pages/SignUpPage/SignUpPage";
+import StorePage from "../pages/StorePage/StorePage";
 
 export const routes = [
   {
@@ -53,12 +57,28 @@ export const routes = [
     page: Contact,
     isShowHeader: true,
   },
-  // {
-  //   path: "/system/admin",
-  //   page: AdminPage,
-  //   isShowHeader: false,
-  //   isPrivated: true,
-  // },
+  {
+    path: "/profile-user",
+    page: ProfilePage,
+    isShowHeader: true,
+  },
+  {
+    path: "/signup-store",
+    page: SignUpPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/system/admin",
+    page: AdminPage,
+    isShowHeader: false,
+    isPrivated: true,
+  },
+  {
+    path: "/store/admin",
+    page: StorePage,
+    isShowHeader: false,
+    isPrivated: true,
+  },
   // {
   //   path: "*",
   //   page: NotFoundPage,

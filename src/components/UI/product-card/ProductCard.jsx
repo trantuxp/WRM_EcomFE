@@ -21,7 +21,6 @@ const ProductCard = (props) => {
       })
     );
   };
-  console.log("dataimagepro", image01);
 
   return (
     <div className="product__item">

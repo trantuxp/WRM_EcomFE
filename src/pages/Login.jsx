@@ -1,8 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import * as UserService from "../services/UserService";
+import { useMutationHooks } from "../hooks/useMutationHook";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../store/shopping-cart/userSlide";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const loginNameRef = useRef();
@@ -10,14 +15,50 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const location = useLocation();
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const submitHandler = () => {
-    if (email === "tu@gmail.com" && password === "123") {
-      navigate("/");
-    } else {
-      alert("Email or Password is incorrect", email, password);
+  const mutation = useMutationHooks((data) => UserService.loginUser(data));
+  const { data, isPending, isSuccess } = mutation;
+  console.log("mutation", mutation);
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (location?.state) {
+        navigate(location?.state);
+      } else {
+        if (data?.status !== "ERR") navigate("/");
+      }
+      localStorage.setItem("access_token", JSON.stringify(data?.access_token));
+      localStorage.setItem(
+        "refresh_token",
+        JSON.stringify(data?.refresh_token)
+      );
+      if (data?.access_token) {
+        const decoded = jwtDecode(data?.access_token);
+        if (decoded?.id) {
+          handleGetDetailsUser(decoded?.id, data?.access_token);
+        }
+      }
     }
+  }, [isSuccess]);
+
+  const handleGetDetailsUser = async (id, token) => {
+    const storage = localStorage.getItem("refresh_token");
+    const refreshToken = JSON.parse(storage);
+
+    const res = await UserService.getDetailsUser(id, token);
+    // console.log("res", res);
+    dispatch(updateUser({ ...res.data, access_token: token }));
+  };
+
+  const submitHandler = () => {
+    mutation.mutate({
+      email,
+      password,
+    });
   };
 
   return (
@@ -47,6 +88,11 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                </div>
+                <div>
+                  {data?.status === "ERR" && (
+                    <span style={{ color: "red" }}>{data?.message}</span>
+                  )}
                 </div>
                 <button
                   type="submit"
