@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Divider, Radio, Table } from "antd";
 import Loading from "../LoadingComponent/Loading";
+import { Excel } from "antd-table-saveas-excel";
+import { useMemo } from "react";
 
 // rowSelection object indicates the need for row selection
 
@@ -12,8 +14,11 @@ const TableComponent = (prop) => {
     columns = [],
     handleDelteMany,
   } = prop;
-
   const [rowSelectedKeys, setRowSelectedKeys] = useState([]);
+  const newColumnExport = useMemo(() => {
+    const arr = columns?.filter((col) => col.dataIndex !== "action");
+    return arr;
+  }, [columns]);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -24,6 +29,18 @@ const TableComponent = (prop) => {
     console.log(`selectedRowKeys: ${rowSelectedKeys}`);
     handleDelteMany(rowSelectedKeys);
   };
+
+  const exportExcel = () => {
+    const excel = new Excel();
+    excel
+      .addSheet("test")
+      .addColumns(newColumnExport)
+      .addDataSource(data, {
+        str2Percent: true,
+      })
+      .saveAs("Excel.xlsx");
+  };
+
   return (
     <div>
       <Loading isLoading={isLoading}>
@@ -42,6 +59,7 @@ const TableComponent = (prop) => {
             Xóa tất cả
           </div>
         )}
+        <button onClick={exportExcel}>Export Excel</button>
         <Table
           rowSelection={{
             type: selectionType,

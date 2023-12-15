@@ -9,3 +9,11 @@ export const signupStore = async (id, data) => {
 
   return res.data;
 };
+export const getDetailsStore = async (id) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/store/store-detail/${id}`
+  );
+  // console.log("data", res.data);
+
+  return res.data;
+};

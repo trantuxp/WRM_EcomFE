@@ -10,6 +10,7 @@ import AdminPage from "../pages/AdminPage/AdminPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import StorePage from "../pages/StorePage/StorePage";
+import DetailStorePage from "../pages/DetailStorePage/DetailStorePage";
 
 export const routes = [
   {
@@ -74,6 +75,11 @@ export const routes = [
     isPrivated: true,
   },
   {
+    path: "/store/:id",
+    page: DetailStorePage,
+    isShowHeader: true,
+  },
+  {
     path: "/store/admin",
     page: StorePage,
     isShowHeader: false,
@@ -85,23 +91,5 @@ export const routes = [
   //   isShowHeader: false,
   // },
 ];
-
-// const Routers = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         {/* <Route path="/home" element={<Home />} /> */}
-//         <Route path="/foods" element={<AllFoods />} />
-//         <Route path="/foods/:id" element={<FoodDetails />} />
-//         <Route path="/cart" element={<Cart />} />
-//         <Route path="/checkout" element={<Checkout />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/register" element={<Register />} />
-//         <Route path="/contact" element={<Contact />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
 
 export default routes;

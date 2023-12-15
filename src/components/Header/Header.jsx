@@ -103,14 +103,13 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           Quản lí hệ thống
         </WrapperContentPopup>
       )}
-      {!user?.isStore ||
-        (!user?.isAdmin && (
-          <WrapperContentPopup
-            onClick={() => handleClickNavigate(`signup-store`)}
-          >
-            Đăng ký Bán hàng
-          </WrapperContentPopup>
-        ))}
+      {!user?.isStore && !user?.isAdmin && (
+        <WrapperContentPopup
+          onClick={() => handleClickNavigate(`signup-store`)}
+        >
+          Đăng ký Bán hàng
+        </WrapperContentPopup>
+      )}
       {!!user?.isStore && (
         <WrapperContentPopup onClick={() => handleClickNavigate(`store`)}>
           Quản lý Cửa hàng
@@ -160,8 +159,10 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
       <Container>
         <div className="nav__wrapper d-flex align-items-center justify-content-between">
           <div className="logo">
-            <img src={logo} alt="logo" />
-            <h5>Tasty Treat</h5>
+            <Link to={`/`}>
+              <img src={logo} alt="logo" />
+              <h5>Tasty Treat</h5>
+            </Link>
           </div>
 
           {/* ======= menu ======= */}

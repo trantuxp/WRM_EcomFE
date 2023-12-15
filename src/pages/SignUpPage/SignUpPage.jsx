@@ -5,9 +5,11 @@ import {
   WrapperContainerLeft,
   WrapperContainerRight,
   WrapperTextLight,
+  WrapperUploadFile,
 } from "./style";
 import imageLogo from "../../assets/images/logo-login.png";
-import { Image } from "antd";
+
+import { Image, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 import * as StoreService from "../../services/StoreService";
@@ -17,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as message from "../../components/Message/Message";
 import { useEffect } from "react";
 import { updateUser } from "../../store/shopping-cart/userSlide";
+import { getBase64 } from "../../utils";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -48,12 +51,8 @@ const SignUpPage = () => {
     setaddressStore(value);
   };
 
-  const handleOnchangeConfirmPassword = (value) => {
-    setavatarStore(value);
-  };
-
   const handleNavigateSignIn = () => {
-    navigate("/system/admin");
+    navigate("/store/admin");
   };
   const handleSignUp = () => {
     mutation.mutate({
@@ -62,6 +61,14 @@ const SignUpPage = () => {
       avatarStore,
     });
     dispatch(updateUser({ ...data, isStore: true }));
+  };
+
+  const handleOnchangeAvatar = async ({ fileList }) => {
+    const file = fileList[0];
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setavatarStore(file.preview);
   };
   return (
     <div
@@ -116,11 +123,27 @@ const SignUpPage = () => {
                 right: "8px",
               }}
             ></span>
-            <InputForm
+            <WrapperUploadFile onChange={handleOnchangeAvatar} maxCount={1}>
+              <Button>Select File</Button>
+              {avatarStore && (
+                <img
+                  src={avatarStore}
+                  style={{
+                    height: "60px",
+                    width: "60px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    marginLeft: "10px",
+                  }}
+                  alt="avatar"
+                />
+              )}
+            </WrapperUploadFile>
+            {/* <InputForm
               placeholder="index.png"
               value={avatarStore}
               onChange={handleOnchangeConfirmPassword}
-            />
+            /> */}
           </div>
           {data?.status === "ERR" && (
             <span style={{ color: "red" }}>{data?.message}</span>

@@ -2,9 +2,9 @@ import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
 import { getItem } from "../../utils";
 import {
-  UserOutlined,
   AppstoreOutlined,
   ShoppingCartOutlined,
+  FileOutlined,
 } from "@ant-design/icons";
 import HeaderComponent from "../../components/Header/Header";
 import AdminUser from "../../components/AdminUser/AdminUser";
@@ -12,6 +12,7 @@ import AdminProduct from "../../components/AdminProduct/AdminProduct";
 import OrderAdmin from "../../components/OrderAdmin/OrderAdmin";
 import * as ProductService from "../../services/ProductService";
 import * as UserService from "../../services/UserService";
+import StorePost from "../../components/StorePost/StorePost";
 
 // import CustomizedContent from "./components/CustomizedContent";
 import { useSelector } from "react-redux";
@@ -23,7 +24,7 @@ const StorePage = () => {
   const user = useSelector((state) => state?.user);
 
   const items = [
-    // getItem("Người dùng", "users", <UserOutlined />),
+    getItem("Bài đăng", "posts", <FileOutlined />),
     getItem("Sản phẩm", "products", <AppstoreOutlined />),
     // getItem("Đơn hàng", "orders", <ShoppingCartOutlined />),
   ];
@@ -74,8 +75,8 @@ const StorePage = () => {
 
   const renderPage = (key) => {
     switch (key) {
-      case "users":
-        return <AdminUser />;
+      case "posts":
+        return <StorePost />;
       case "products":
         return <AdminProduct />;
       case "orders":

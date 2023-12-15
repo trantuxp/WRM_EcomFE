@@ -50,7 +50,7 @@ const Login = () => {
     const refreshToken = JSON.parse(storage);
 
     const res = await UserService.getDetailsUser(id, token);
-    // console.log("res", res);
+    console.log("res", res);
     dispatch(updateUser({ ...res.data, access_token: token }));
   };
 

@@ -28,63 +28,91 @@ import whyImg from "../assets/images/location.png";
 
 import networkImg from "../assets/images/network.png";
 
-import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
+import { useDebounce } from "../hooks/useDebounce";
+import * as ProductService from "../services/ProductService";
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 
+// import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 const featureData = [
   {
     title: "Quick Delivery",
     imgUrl: featureImg01,
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
+    desc: "",
   },
 
   {
     title: "Super Dine In",
     imgUrl: featureImg02,
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
+    desc: "",
   },
   {
     title: "Easy Pick Up",
     imgUrl: featureImg03,
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, doloremque.",
+    desc: "",
   },
 ];
-
 const Home = () => {
   const [category, setCategory] = useState("ALL");
-  const [allProducts, setAllProducts] = useState(products);
 
   const [hotPizza, setHotPizza] = useState([]);
 
+  const searchProduct = useSelector((state) => state?.product?.search);
+  const searchDebounce = useDebounce(searchProduct, 500);
+  const [limit, setLimit] = useState(6);
+
+  const fetchProductAll = async (context) => {
+    const limit = context?.queryKey && context?.queryKey[1];
+    const search = context?.queryKey && context?.queryKey[2];
+    const res = await ProductService.getAllProduct(search, limit);
+
+    return res;
+  };
+
+  const {
+    isPending,
+    data: product,
+    isPreviousData,
+  } = useQuery({
+    queryKey: ["product", limit, searchDebounce],
+    queryFn: fetchProductAll,
+  });
+
+  const [allProducts, setAllProducts] = useState(product?.data);
   useEffect(() => {
     const filteredPizza = products.filter((item) => item.category === "Pizza");
-    const slicePizza = filteredPizza.slice(0, 4);
+    const filteredPizza1 = product?.data.filter(
+      (item) => item.type === "Đồ ăn"
+    );
+
+    const slicePizza = filteredPizza1.slice(0, 4);
     setHotPizza(slicePizza);
-  }, []);
+  }, [product]);
 
   useEffect(() => {
     if (category === "ALL") {
-      setAllProducts(products);
+      setAllProducts(product?.data);
     }
 
-    if (category === "BURGER") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Burger"
+    if (category === "Đồ ăn") {
+      const filteredProducts = product?.data.filter(
+        (item) => item.type === "Đồ ăn"
       );
 
       setAllProducts(filteredProducts);
     }
 
-    if (category === "PIZZA") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Pizza"
+    if (category === "Đồ uống") {
+      const filteredProducts = product?.data.filter(
+        (item) => item.type === "Đồ uống"
       );
 
       setAllProducts(filteredProducts);
     }
 
-    if (category === "BREAD") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Bread"
+    if (category === "Đồ chay") {
+      const filteredProducts = product?.data.filter(
+        (item) => item.type === "Đồ chay"
       );
 
       setAllProducts(filteredProducts);
@@ -104,10 +132,7 @@ const Home = () => {
                   <span> your door</span>
                 </h1>
 
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui
-                  magni delectus tenetur autem, sint veritatis!
-                </p>
+                <p></p>
 
                 <div className="hero__btns d-flex align-items-center gap-5 mt-4">
                   <button className="order__btn d-flex align-items-center justify-content-between">
@@ -159,14 +184,8 @@ const Home = () => {
               <h2 className="feature__title">
                 we will <span>take care</span>
               </h2>
-              <p className="mb-1 mt-4 feature__text">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor,
-                officiis?
-              </p>
-              <p className="feature__text">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Aperiam, eius.{" "}
-              </p>
+              <p className="mb-1 mt-4 feature__text"></p>
+              <p className="feature__text"></p>
             </Col>
 
             {featureData.map((item, index) => (
@@ -256,12 +275,7 @@ const Home = () => {
                 <h2 className="tasty__treat-title mb-4">
                   Why <span>Tasty Treat?</span>
                 </h2>
-                <p className="tasty__treat-desc">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Dolorum, minus. Tempora reprehenderit a corporis velit,
-                  laboriosam vitae ullam, repellat illo sequi odio esse iste
-                  fugiat dolor, optio incidunt eligendi deleniti!
-                </p>
+                <p className="tasty__treat-desc"></p>
 
                 <ListGroup className="mt-4">
                   <ListGroupItem className="border-0 ps-0">
@@ -269,10 +283,7 @@ const Home = () => {
                       <i className="ri-checkbox-circle-line"></i> Fresh and
                       tasty foods
                     </p>
-                    <p className="choose__us-desc">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Quia, voluptatibus.
-                    </p>
+                    <p className="choose__us-desc"></p>
                   </ListGroupItem>
 
                   <ListGroupItem className="border-0 ps-0">
@@ -280,10 +291,7 @@ const Home = () => {
                       <i className="ri-checkbox-circle-line"></i> Quality
                       support
                     </p>
-                    <p className="choose__us-desc">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Qui, earum.
-                    </p>
+                    <p className="choose__us-desc"></p>
                   </ListGroupItem>
 
                   <ListGroupItem className="border-0 ps-0">
@@ -291,10 +299,7 @@ const Home = () => {
                       <i className="ri-checkbox-circle-line"></i>Order from any
                       location{" "}
                     </p>
-                    <p className="choose__us-desc">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Qui, earum.
-                    </p>
+                    <p className="choose__us-desc"></p>
                   </ListGroupItem>
                 </ListGroup>
               </div>
@@ -328,13 +333,9 @@ const Home = () => {
                 <h2 className="testimonial__title mb-4">
                   What our <span>customers</span> are saying
                 </h2>
-                <p className="testimonial__desc">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Distinctio quasi qui minus quos sit perspiciatis inventore
-                  quis provident placeat fugiat!
-                </p>
+                <p className="testimonial__desc"></p>
 
-                <TestimonialSlider />
+                {/* <TestimonialSlider /> */}
               </div>
             </Col>
 

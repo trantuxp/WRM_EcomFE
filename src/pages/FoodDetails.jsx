@@ -6,9 +6,9 @@ import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../store/shopping-cart/cartSlice";
-
+import { Link } from "react-router-dom";
 import "../styles/product-details.css";
 
 import ProductCard from "../components/UI/product-card/ProductCard";
@@ -18,7 +18,9 @@ const FoodDetails = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
   const [reviewMsg, setReviewMsg] = useState("");
+  const [Commented, setCommented] = useState(false);
   const { id } = useParams();
+  const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
 
   const product = products.find((product) => product.id === id);
@@ -42,6 +44,10 @@ const FoodDetails = () => {
     e.preventDefault();
 
     console.log(enteredName, enteredEmail, reviewMsg);
+    setCommented(true);
+    setEnteredEmail("");
+    setEnteredName("");
+    setReviewMsg("");
   };
 
   useEffect(() => {
@@ -59,7 +65,7 @@ const FoodDetails = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="2" md="2">
+            {/* <Col lg="2" md="2">
               <div className="product__images ">
                 <div
                   className="img__item mb-3"
@@ -81,7 +87,7 @@ const FoodDetails = () => {
                   <img src={product.image03} alt="" className="w-50" />
                 </div>
               </div>
-            </Col>
+            </Col> */}
 
             <Col lg="4" md="4">
               <div className="product__main-img">
@@ -103,6 +109,9 @@ const FoodDetails = () => {
                 <button onClick={addItem} className="addTOCart__btn">
                   Add to Cart
                 </button>
+                <p className="category mb-5 mt-3">
+                  Store: <Link to={`/store/${user?.id}`}>{user?.name}</Link>
+                </p>
               </div>
             </Col>
 
@@ -145,12 +154,19 @@ const FoodDetails = () => {
                     <p className="user__email">jhon1@gmail.com</p>
                     <p className="feedback__text">great product</p>
                   </div>
+                  {Commented && (
+                    <div className="review">
+                      <p className="user__name mb-0">tu</p>
+                      <p className="user__email">tu@gmail.com</p>
+                      <p className="feedback__text">good</p>
+                    </div>
+                  )}
                   <form className="form" onSubmit={submitHandler}>
                     <div className="form__group">
                       <input
                         type="text"
                         placeholder="Enter your name"
-                        // value={"tu"}
+                        value={enteredName}
                         onChange={(e) => setEnteredName(e.target.value)}
                         required
                       />
@@ -160,6 +176,7 @@ const FoodDetails = () => {
                       <input
                         type="text"
                         placeholder="Enter your email"
+                        value={enteredEmail}
                         onChange={(e) => setEnteredEmail(e.target.value)}
                         required
                       />
@@ -169,6 +186,7 @@ const FoodDetails = () => {
                       <textarea
                         rows={5}
                         type="text"
+                        value={reviewMsg}
                         placeholder="Write your review"
                         onChange={(e) => setReviewMsg(e.target.value)}
                         required
