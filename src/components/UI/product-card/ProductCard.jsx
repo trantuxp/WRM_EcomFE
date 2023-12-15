@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/shopping-cart/cartSlice";
+import { convertPrice } from "../../../utils";
 
 const ProductCard = (props) => {
   const { _id, name, image, price } = props.item;
@@ -33,7 +34,7 @@ const ProductCard = (props) => {
           <Link to={`/foods/${_id}`}>{name}</Link>
         </h5>
         <div className=" d-flex align-items-center justify-content-between ">
-          <span className="product__price">{price} VND</span>
+          <span className="product__price">{convertPrice(price)} </span>
           <button className="addTOCart__btn" onClick={addToCart}>
             Add to Cart
           </button>

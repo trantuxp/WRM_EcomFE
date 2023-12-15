@@ -91,7 +91,7 @@ const SignUpPage = () => {
       >
         <WrapperContainerLeft>
           <h1>Xin chào</h1>
-          <p>Đăng nhập vào tạo tài khoản</p>
+          <p>Đăng ký bán hàng </p>
           <InputForm
             style={{ marginBottom: "10px" }}
             placeholder="name"
@@ -178,7 +178,8 @@ const SignUpPage = () => {
             height="203px"
             width="203px"
           />
-          <h4>Mua sắm tại LTTD</h4>
+          <h4>Kinh doanh đem</h4>
+          <h4> lại lợi nhuận</h4>
         </WrapperContainerRight>
       </div>
     </div>

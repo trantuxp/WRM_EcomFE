@@ -55,7 +55,7 @@ const DetailStorePage = () => {
           <Row>
             <Col lg="4" md="4">
               <div className="product__main-img">
-                <img src={storeDetails?.avatarStore} alt="" className="w-100" />
+                <img src={storeDetails?.avatarStore} alt="" className="w-50" />
               </div>
             </Col>
 

@@ -11,6 +11,8 @@ import "../../../styles/shopping-cart.css";
 
 const Carts = () => {
   const dispatch = useDispatch();
+  const cartProducts1 = useSelector((state) => state.order);
+  console.log("cartProducts1", cartProducts1);
   const cartProducts = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
 
@@ -27,10 +29,10 @@ const Carts = () => {
         </div>
 
         <div className="cart__item-list">
-          {cartProducts.length === 0 ? (
+          {cartProducts1?.orderItems?.length === 0 ? (
             <h6 className="text-center mt-5">No item added to the cart</h6>
           ) : (
-            cartProducts.map((item, index) => (
+            cartProducts1?.orderItems?.map((item, index) => (
               <CartItem item={item} key={index} />
             ))
           )}

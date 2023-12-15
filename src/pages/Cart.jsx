@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const cartProducts1 = useSelector((state) => state.order);
   return (
     <Helmet title="Cart">
       <CommonSection title="Your Cart" />
@@ -18,7 +19,7 @@ const Cart = () => {
         <Container>
           <Row>
             <Col lg="12">
-              {cartItems.length === 0 ? (
+              {cartProducts1?.orderItems?.length === 0 ? (
                 <h5 className="text-center">Your cart is empty</h5>
               ) : (
                 <table className="table table-bordered">
@@ -32,7 +33,7 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartItems.map((item) => (
+                    {cartProducts1?.orderItems?.map((item) => (
                       <Tr item={item} key={item.id} />
                     ))}
                   </tbody>
@@ -63,7 +64,7 @@ const Cart = () => {
 };
 
 const Tr = (props) => {
-  const { id, image01, title, price, quantity } = props.item;
+  const { id, image, name, price, amount } = props.item;
   const dispatch = useDispatch();
 
   const deleteItem = () => {
@@ -72,11 +73,11 @@ const Tr = (props) => {
   return (
     <tr>
       <td className="text-center cart__img-box">
-        <img src={image01} alt="" />
+        <img src={image} alt="" />
       </td>
-      <td className="text-center">{title}</td>
+      <td className="text-center">{name}</td>
       <td className="text-center">{price} VND</td>
-      <td className="text-center">{quantity}px</td>
+      <td className="text-center">{amount}px</td>
       <td className="text-center cart__item-del">
         <i className="ri-delete-bin-line" onClick={deleteItem}></i>
       </td>

@@ -54,6 +54,8 @@ const featureData = [
 ];
 const Home = () => {
   const [category, setCategory] = useState("ALL");
+  const [allProducts, setAllProducts] = useState([]);
+  const [allProductsOrigin, setAllProductsOrigin] = useState([]);
 
   const [hotPizza, setHotPizza] = useState([]);
 
@@ -61,41 +63,35 @@ const Home = () => {
   const searchDebounce = useDebounce(searchProduct, 500);
   const [limit, setLimit] = useState(6);
 
-  const fetchProductAll = async (context) => {
-    const limit = context?.queryKey && context?.queryKey[1];
-    const search = context?.queryKey && context?.queryKey[2];
-    const res = await ProductService.getAllProduct(search, limit);
-
-    return res;
+  const fetchProductAll = async () => {
+    const res = await ProductService.getAllProduct(searchDebounce, limit);
+    if (res?.status === "OK") {
+      setAllProducts(res?.data);
+      setAllProductsOrigin(res?.data);
+    }
   };
 
-  const {
-    isPending,
-    data: product,
-    isPreviousData,
-  } = useQuery({
-    queryKey: ["product", limit, searchDebounce],
-    queryFn: fetchProductAll,
-  });
-
-  const [allProducts, setAllProducts] = useState(product?.data);
   useEffect(() => {
-    const filteredPizza = products.filter((item) => item.category === "Pizza");
-    const filteredPizza1 = product?.data.filter(
+    fetchProductAll();
+  }, []);
+
+  useEffect(() => {
+    // const filteredPizza = products.filter((item) => item.category === "Pizza");
+    const filteredPizza1 = allProductsOrigin.filter(
       (item) => item.type === "Đồ ăn"
     );
 
     const slicePizza = filteredPizza1.slice(0, 4);
     setHotPizza(slicePizza);
-  }, [product]);
+  }, [allProductsOrigin]);
 
   useEffect(() => {
     if (category === "ALL") {
-      setAllProducts(product?.data);
+      setAllProducts(allProductsOrigin);
     }
 
     if (category === "Đồ ăn") {
-      const filteredProducts = product?.data.filter(
+      const filteredProducts = allProductsOrigin.filter(
         (item) => item.type === "Đồ ăn"
       );
 
@@ -103,7 +99,7 @@ const Home = () => {
     }
 
     if (category === "Đồ uống") {
-      const filteredProducts = product?.data.filter(
+      const filteredProducts = allProductsOrigin.filter(
         (item) => item.type === "Đồ uống"
       );
 
@@ -111,7 +107,7 @@ const Home = () => {
     }
 
     if (category === "Đồ chay") {
-      const filteredProducts = product?.data.filter(
+      const filteredProducts = allProductsOrigin.filter(
         (item) => item.type === "Đồ chay"
       );
 
@@ -119,6 +115,7 @@ const Home = () => {
     }
   }, [category]);
 
+  console.log("category", category);
   return (
     <Helmet title="Home">
       <section>
@@ -224,9 +221,9 @@ const Home = () => {
                 </button>
                 <button
                   className={`d-flex align-items-center gap-2 ${
-                    category === "BURGER" ? "foodBtnActive" : ""
+                    category === "Đồ ăn" ? "foodBtnActive" : ""
                   } `}
-                  onClick={() => setCategory("BURGER")}
+                  onClick={() => setCategory("Đồ ăn")}
                 >
                   <img src={foodCategoryImg01} alt="" />
                   Burger
@@ -234,9 +231,9 @@ const Home = () => {
 
                 <button
                   className={`d-flex align-items-center gap-2 ${
-                    category === "PIZZA" ? "foodBtnActive" : ""
+                    category === "Đồ uống" ? "foodBtnActive" : ""
                   } `}
-                  onClick={() => setCategory("PIZZA")}
+                  onClick={() => setCategory("Đồ uống")}
                 >
                   <img src={foodCategoryImg02} alt="" />
                   Pizza
@@ -244,9 +241,9 @@ const Home = () => {
 
                 <button
                   className={`d-flex align-items-center gap-2 ${
-                    category === "BREAD" ? "foodBtnActive" : ""
+                    category === "Đồ chay" ? "foodBtnActive" : ""
                   } `}
-                  onClick={() => setCategory("BREAD")}
+                  onClick={() => setCategory("Đồ chay")}
                 >
                   <img src={foodCategoryImg03} alt="" />
                   Bread
