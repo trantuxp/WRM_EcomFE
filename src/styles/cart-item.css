@@ -7,6 +7,14 @@
 .cart__product-title {
   font-size: 0.8rem;
   font-weight: 600;
+    /* Set the height to the equivalent of three lines of text */
+  line-height: 2em;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .cart__product-price {
@@ -23,6 +31,7 @@
   background: #fde4e4;
   padding: 2px 5px;
   border-radius: 5px;
+  width: 100px;
 }
 
 .increase__btn,

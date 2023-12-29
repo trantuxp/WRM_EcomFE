@@ -14,22 +14,28 @@ const Login = () => {
   const loginPasswordRef = useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [carts, setCarts] = useState([]);
 
   const location = useLocation();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   const navigate = useNavigate();
 
   const mutation = useMutationHooks((data) => UserService.loginUser(data));
   const { data, isPending, isSuccess } = mutation;
-  console.log("mutation", mutation);
+  // console.log("mutation", mutation);
 
   useEffect(() => {
     if (isSuccess) {
       if (location?.state) {
         navigate(location?.state);
       } else {
-        if (data?.status !== "ERR") navigate("/");
+        window.location.reload();
+        if (data?.status !== "ERR") {
+          navigate("/");
+          window.location.reload();
+        }
       }
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
       localStorage.setItem(
@@ -51,6 +57,9 @@ const Login = () => {
 
     const res = await UserService.getDetailsUser(id, token);
     console.log("res", res);
+    localStorage.setItem("myid", res.data._id);
+    // console.log(localStorage.getItem("myid"));
+
     dispatch(updateUser({ ...res.data, access_token: token }));
   };
 

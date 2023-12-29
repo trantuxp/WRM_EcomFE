@@ -17,12 +17,19 @@ th {
 .cart__page-btn button a:hover {
   color: #fff;
 }
+.increase__btn,
 
 .cart__subtotal {
   color: #df2020;
   font-size: 1.5rem;
 }
-
+.increase__decrease-btn {
+  background: #fde4e4;
+  padding: 2px 5px;
+  border-radius: 5px;
+  width: 100%;
+ 
+}
 @media only screen and (max-width: 768px) {
   th,
   td {

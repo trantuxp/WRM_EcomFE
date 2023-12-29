@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import products from "../../assets/fake-data/products";
 import { useParams } from "react-router-dom";
 import Helmet from "../../components/Helmet/Helmet";
 import CommonSection from "../../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "../../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
 import "../../styles/product-details.css";
 import * as ProductService from "../../services/ProductService";
@@ -18,8 +16,8 @@ import {
   resetOrder,
 } from "../../store/shopping-cart/orderSlide";
 import { useNavigate } from "react-router-dom";
+import * as CartService from "../../services/CartService";
 
-import ProductCard from "../../components/UI/product-card/ProductCard";
 import { convertPrice } from "../../utils";
 
 const ProductDetailComponent = (idProduct) => {
@@ -39,10 +37,6 @@ const ProductDetailComponent = (idProduct) => {
   const [errorLimitOrder, setErrorLimitOrder] = useState(false);
   const [numProduct, setNumProduct] = useState(1);
 
-  const product = products.find((product) => product.id === id);
-  const [previewImg, setPreviewImg] = useState(product.image01);
-  const { title, price, category, desc, image01 } = product;
-
   const fetchGetDetailsProduct = async () => {
     if (idProduct.idProduct.id) {
       const res = await ProductService.getDetailsProduct(
@@ -58,46 +52,48 @@ const ProductDetailComponent = (idProduct) => {
     queryFn: fetchGetDetailsProduct,
   });
 
-  //   console.log("relatedProduct,productDetails", relatedProduct, productDetails);
-  //   const relatedProduct = productDetails.filter((item) => item.type === "Đồ ăn");
-
   const addItem = () => {
     if (!user?.id) {
       navigate("/login");
     } else {
-      // const orderRedux = order?.orderItems?.find(
-      //   (item) => item.product === productDetails?._id
-      // );
-      // console.log("orderRedux", orderRedux);
-      // if (
-      //   orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
-      //   (!orderRedux && productDetails?.countInStock > 0)
-      // )
-      //  {
-      // dispatch(
-      //   addOrderProduct({
-      //     orderItem: {
-      //       name: productDetails?.name,
-      //       amount: numProduct,
-      //       image: productDetails?.image,
-      //       price: productDetails?.price,
-      //       product: productDetails?._id,
-      //       discount: productDetails?.discount,
-      //       countInstock: productDetails?.countInStock,
-      //     },
-      //   })
-      // );
-      // } else {
-      //   setErrorLimitOrder(true);
-      // }
-      // dispatch(
-      //   cartActions.addItem({
-      //     id,
-      //     title,
-      //     price,
-      //     image01,
-      //   })
-      // );
+      const orderRedux = order?.orderItems?.find(
+        (item) => item.product === productDetails?._id
+      );
+      console.log("orderRedux", orderRedux);
+      if (
+        orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
+        (!orderRedux && productDetails?.countInStock > 0)
+      ) {
+        if (orderRedux) {
+          console.log("orderRedux.amount", orderRedux.amount);
+          const idItem = productDetails?._id;
+          const amount = orderRedux.amount + numProduct;
+          const idUser = user?.id;
+          CartService.UpdateCart(idItem, amount, idUser);
+        } else {
+          const idItem = productDetails?._id;
+          const amount = numProduct;
+          const totalPrice = productDetails?.price * amount;
+          const idUser = user?.id;
+          CartService.createCart({ idItem, amount, totalPrice, idUser });
+        }
+
+        dispatch(
+          addOrderProduct({
+            orderItem: {
+              name: productDetails?.name,
+              amount: numProduct,
+              image: productDetails?.image,
+              price: productDetails?.price,
+              product: productDetails?._id,
+              discount: productDetails?.discount,
+              countInstock: productDetails?.countInStock,
+            },
+          })
+        );
+      } else {
+        setErrorLimitOrder(true);
+      }
     }
   };
 
@@ -111,13 +107,16 @@ const ProductDetailComponent = (idProduct) => {
     setReviewMsg("");
   };
 
-  useEffect(() => {
-    setPreviewImg(product.image01);
-  }, [product]);
+  const incrementItem = () => {
+    if (numProduct <= productDetails?.countInStock)
+      setNumProduct((prevCount) => prevCount + 1);
+  };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [product]);
+  const decreaseItem = () => {
+    if (numProduct > 1) {
+      setNumProduct((prevCount) => prevCount - 1);
+    }
+  };
 
   return (
     <Helmet title="Product-details">
@@ -160,11 +159,22 @@ const ProductDetailComponent = (idProduct) => {
               <div className="single__product-content">
                 <h2 className="product__title mb-3">{productDetails?.name}</h2>
                 <p className="product__price">
-                  {" "}
                   Price: <span>{convertPrice(productDetails?.price)} </span>
                 </p>
-                <p className="category mb-5">
+                <p className="category mb-3">
                   Category: <span>{productDetails?.type}</span>
+                </p>
+                <p className="category-input mb-5">
+                  Amount:
+                  <div className=" d-flex align-items-center justify-content-between text-center  increase__decrease-btn ">
+                    <span className="increase__btn" onClick={incrementItem}>
+                      <i className="ri-add-line"></i>
+                    </span>
+                    <span className="quantity">{numProduct}</span>
+                    <span className="decrease__btn" onClick={decreaseItem}>
+                      <i className="ri-subtract-line "></i>
+                    </span>
+                  </div>
                 </p>
 
                 <button onClick={addItem} className="addTOCart__btn">

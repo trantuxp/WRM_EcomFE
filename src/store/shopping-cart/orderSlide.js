@@ -33,11 +33,17 @@ export const orderSlide = createSlice({
           state.isErrorOrder = false;
         }
       } else {
-        state.orderItems.push(orderItem);
+        state?.orderItems?.push(orderItem);
+
+        // console.log("orderItem", state?.orderItems);
       }
     },
     resetOrder: (state) => {
       state.isSucessOrder = false;
+    },
+    resetAllOrder: (state) => {
+      state.orderItemsSlected = initialState.orderItemsSlected;
+      state.orderItems = initialState.orderItems;
     },
     increaseAmount: (state, action) => {
       const { idProduct } = action.payload;
@@ -112,6 +118,7 @@ export const {
   removeAllOrderProduct,
   selectedOrder,
   resetOrder,
+  resetAllOrder,
 } = orderSlide.actions;
 
 export default orderSlide.reducer;

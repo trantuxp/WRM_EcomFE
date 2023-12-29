@@ -21,6 +21,7 @@ import {
 } from "@ant-design/icons";
 import * as UserService from "../../services/UserService";
 import { resetUser } from "../../store/shopping-cart/userSlide";
+import { resetAllOrder } from "../../store/shopping-cart/orderSlide";
 import { useNavigate } from "react-router-dom";
 
 import "../../styles/header.css";
@@ -47,7 +48,8 @@ const nav__links = [
 const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const menuRef = useRef(null);
   const headerRef = useRef(null);
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const order = useSelector((state) => state.order);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -90,6 +92,8 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setLoading(true);
     await UserService.logoutUser();
     dispatch(resetUser());
+    localStorage.setItem("myid", "");
+    dispatch(resetAllOrder());
     setLoading(false);
     navigate("/");
   };
@@ -147,7 +151,6 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     }
     setIsOpenPopup(false);
   };
-
   return (
     <header
       className="header"
@@ -189,7 +192,7 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
             {!isHiddenCart && (
               <span className="cart__icon" onClick={toggleCart}>
                 <i className="ri-shopping-basket-line"></i>
-                <span className="cart__badge">{totalQuantity}</span>
+                <span className="cart__badge">{order?.orderItems?.length}</span>
               </span>
             )}
 

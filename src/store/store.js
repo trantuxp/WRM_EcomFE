@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import cartSliceReducer from "./shopping-cart/cartSlice";
 import cartUiSliceReducer from "./shopping-cart/cartUiSlice";
 import userReducer from "./shopping-cart/userSlide";
 import productReducer from "./shopping-cart/productSlide";
@@ -28,7 +27,6 @@ const rootReducer = combineReducers({
   product: productReducer,
   user: userReducer,
   order: orderReducer,
-  cart: cartSliceReducer,
   cartUi: cartUiSliceReducer,
 });
 

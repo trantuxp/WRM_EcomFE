@@ -8,17 +8,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartUiActions } from "../../../store/shopping-cart/cartUiSlice";
 
 import "../../../styles/shopping-cart.css";
+import { useMemo } from "react";
 
 const Carts = () => {
   const dispatch = useDispatch();
   const cartProducts1 = useSelector((state) => state.order);
   console.log("cartProducts1", cartProducts1);
-  const cartProducts = useSelector((state) => state.cart.cartItems);
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
 
   const toggleCart = () => {
     dispatch(cartUiActions.toggle());
   };
+  const priceMemo = useMemo(() => {
+    const result = cartProducts1?.orderItems?.reduce((total, cur) => {
+      return total + cur.price * cur.amount;
+    }, 0);
+    return result;
+  }, [cartProducts1]);
   return (
     <div className="cart__container">
       <ListGroup className="cart">
@@ -40,7 +45,7 @@ const Carts = () => {
 
         <div className="cart__bottom d-flex align-items-center justify-content-between">
           <h6>
-            Subtotal : <span>{totalAmount} VND</span>
+            Subtotal : <span>{priceMemo} VND</span>
           </h6>
           <button>
             <Link to="/checkout" onClick={toggleCart}>

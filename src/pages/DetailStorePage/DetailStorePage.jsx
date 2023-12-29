@@ -10,7 +10,6 @@ import * as StoreService from "../../services/StoreService";
 import * as PostService from "../../services/PostService";
 
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "../../store/shopping-cart/cartSlice";
 
 import "../../styles/product-details.css";
 

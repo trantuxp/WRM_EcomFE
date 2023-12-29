@@ -16,11 +16,10 @@ import featureImg01 from "../assets/images/service-01.png";
 import featureImg02 from "../assets/images/service-02.png";
 import featureImg03 from "../assets/images/service-03.png";
 
-import products from "../assets/fake-data/products.js";
-
 import foodCategoryImg01 from "../assets/images/hamburger.png";
-import foodCategoryImg02 from "../assets/images/pizza.png";
+import foodCategoryImg02 from "../assets/images/drink.png";
 import foodCategoryImg03 from "../assets/images/bread.png";
+import foodCategoryImg04 from "../assets/images/cake.png";
 
 import ProductCard from "../components/UI/product-card/ProductCard.jsx";
 
@@ -30,8 +29,15 @@ import networkImg from "../assets/images/network.png";
 
 import { useDebounce } from "../hooks/useDebounce";
 import * as ProductService from "../services/ProductService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useQuery } from "@tanstack/react-query";
+import * as CartService from "../services/CartService";
+
+import {
+  resetAllOrder,
+  addOrderProduct,
+} from "../store/shopping-cart/orderSlide";
 
 // import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 const featureData = [
@@ -53,15 +59,19 @@ const featureData = [
   },
 ];
 const Home = () => {
+  const dispatch = useDispatch();
+
   const [category, setCategory] = useState("ALL");
   const [allProducts, setAllProducts] = useState([]);
   const [allProductsOrigin, setAllProductsOrigin] = useState([]);
 
   const [hotPizza, setHotPizza] = useState([]);
+  const user = useSelector((state) => state.user);
 
   const searchProduct = useSelector((state) => state?.product?.search);
   const searchDebounce = useDebounce(searchProduct, 500);
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState();
+  const [carts1, setCarts1] = useState([]);
 
   const fetchProductAll = async () => {
     const res = await ProductService.getAllProduct(searchDebounce, limit);
@@ -83,7 +93,7 @@ const Home = () => {
 
     const slicePizza = filteredPizza1.slice(0, 4);
     setHotPizza(slicePizza);
-  }, [allProductsOrigin]);
+  }, [allProducts]);
 
   useEffect(() => {
     if (category === "ALL") {
@@ -113,9 +123,15 @@ const Home = () => {
 
       setAllProducts(filteredProducts);
     }
+    if (category === "Bánh kem") {
+      const filteredProducts = allProductsOrigin.filter(
+        (item) => item.type === "Bánh kem"
+      );
+
+      setAllProducts(filteredProducts);
+    }
   }, [category]);
 
-  console.log("category", category);
   return (
     <Helmet title="Home">
       <section>
@@ -226,7 +242,7 @@ const Home = () => {
                   onClick={() => setCategory("Đồ ăn")}
                 >
                   <img src={foodCategoryImg01} alt="" />
-                  Burger
+                  Food
                 </button>
 
                 <button
@@ -236,7 +252,7 @@ const Home = () => {
                   onClick={() => setCategory("Đồ uống")}
                 >
                   <img src={foodCategoryImg02} alt="" />
-                  Pizza
+                  Drink
                 </button>
 
                 <button
@@ -246,7 +262,16 @@ const Home = () => {
                   onClick={() => setCategory("Đồ chay")}
                 >
                   <img src={foodCategoryImg03} alt="" />
-                  Bread
+                  Vegetarian food
+                </button>
+                <button
+                  className={`d-flex align-items-center gap-2 ${
+                    category === "Bánh kem" ? "foodBtnActive" : ""
+                  } `}
+                  onClick={() => setCategory("Bánh kem")}
+                >
+                  <img src={foodCategoryImg04} alt="" />
+                  Cake
                 </button>
               </div>
             </Col>

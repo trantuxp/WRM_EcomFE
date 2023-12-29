@@ -2,31 +2,31 @@ import React from "react";
 
 import { Container, Row, Col } from "reactstrap";
 
-import categoryImg01 from "../../../assets/images/category-01.png";
-import categoryImg02 from "../../../assets/images/category-02.png";
-import categoryImg03 from "../../../assets/images/category-03.png";
-import categoryImg04 from "../../../assets/images/category-04.png";
+import foodCategoryImg01 from "../../../assets/images/hamburger.png";
+import foodCategoryImg02 from "../../../assets/images/drink.png";
+import foodCategoryImg03 from "../../../assets/images/bread.png";
+import foodCategoryImg04 from "../../../assets/images/cake.png";
 
 import "../../../styles/category.css";
 
 const categoryData = [
   {
-    display: "Fastfood",
-    imgUrl: categoryImg01,
+    display: "Đồ ăn",
+    imgUrl: foodCategoryImg01,
   },
   {
-    display: "Pizza",
-    imgUrl: categoryImg02,
-  },
-
-  {
-    display: "Asian Food",
-    imgUrl: categoryImg03,
+    display: "Đồ uống",
+    imgUrl: foodCategoryImg02,
   },
 
   {
-    display: "Row Meat",
-    imgUrl: categoryImg04,
+    display: "Đồ chay",
+    imgUrl: foodCategoryImg03,
+  },
+
+  {
+    display: "Bánh kem",
+    imgUrl: foodCategoryImg04,
   },
 ];
 
@@ -38,7 +38,11 @@ const Category = () => {
           <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={index}>
             <div className="category__item d-flex align-items-center gap-3">
               <div className="category__img">
-                <img src={item.imgUrl} alt="category__item" />
+                <img
+                  src={item.imgUrl}
+                  alt="category__item"
+                  style={{ width: "64px" }}
+                />
               </div>
               <h6>{item.display}</h6>
             </div>

@@ -1,17 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import CommonSection from "../components/UI/common-section/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 import "../styles/cart-page.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col } from "reactstrap";
-import { cartActions } from "../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import {
+  decreaseAmount,
+  increaseAmount,
+  removeOrderProduct,
+  resetAllOrder,
+  addOrderProduct,
+} from "../store/shopping-cart/orderSlide";
+
+import * as CartService from "../services/CartService";
+import { useMutationHooks } from "../hooks/useMutationHook";
+
+import { useState } from "react";
 
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
   const cartProducts1 = useSelector((state) => state.order);
+  const [carts1, setCarts1] = useState([]);
+  const dispatch = useDispatch();
+
+  const priceMemo = useMemo(() => {
+    const result = cartProducts1?.orderItems?.reduce((total, cur) => {
+      return total + cur.price * cur.amount;
+    }, 0);
+    return result;
+  }, [cartProducts1]);
+
   return (
     <Helmet title="Cart">
       <CommonSection title="Your Cart" />
@@ -29,6 +51,7 @@ const Cart = () => {
                       <th>Product Title</th>
                       <th>Price</th>
                       <th>Quantity</th>
+                      <th>Action</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -43,7 +66,7 @@ const Cart = () => {
               <div className="mt-4">
                 <h6>
                   Subtotal:
-                  <span className="cart__subtotal">{totalAmount} VND</span>
+                  <span className="cart__subtotal"> {priceMemo || 0} VND</span>
                 </h6>
                 <p>Taxes and shipping will calculate at checkout</p>
                 <div className="cart__page-btn">
@@ -64,11 +87,33 @@ const Cart = () => {
 };
 
 const Tr = (props) => {
-  const { id, image, name, price, amount } = props.item;
+  const { product: idProduct, image, name, price, amount } = props.item;
+  const idUser = localStorage.getItem("myid");
+
   const dispatch = useDispatch();
 
   const deleteItem = () => {
-    dispatch(cartActions.deleteItem(id));
+    dispatch(removeOrderProduct({ idProduct }));
+    CartService.deleteCart(idProduct, idUser);
+  };
+  const incrementItem = () => {
+    dispatch(increaseAmount({ idProduct }));
+    const newAmount = amount + 1;
+    CartService.UpdateCart(idProduct, newAmount, idUser);
+    // mutation.mutate({
+    //   id: idProduct,
+    //   amount: newAmount,
+    // });
+  };
+
+  const decreaseItem = () => {
+    if (amount > 1) {
+      dispatch(decreaseAmount({ idProduct }));
+      const newAmount = amount - 1;
+      CartService.UpdateCart(idProduct, newAmount, idUser);
+    } else {
+      // dispatch(removeOrderProduct({ idProduct }));
+    }
   };
   return (
     <tr>
@@ -78,6 +123,17 @@ const Tr = (props) => {
       <td className="text-center">{name}</td>
       <td className="text-center">{price} VND</td>
       <td className="text-center">{amount}px</td>
+      <td className="text-center cart__item-del">
+        <div className=" d-flex align-items-center justify-content-between text-center  increase__decrease-btn">
+          <span className="increase__btn" onClick={incrementItem}>
+            <i className="ri-add-line"></i>
+          </span>
+          <span className="quantity">{amount}</span>
+          <span className="decrease__btn" onClick={decreaseItem}>
+            <i className="ri-subtract-line "></i>
+          </span>
+        </div>
+      </td>
       <td className="text-center cart__item-del">
         <i className="ri-delete-bin-line" onClick={deleteItem}></i>
       </td>

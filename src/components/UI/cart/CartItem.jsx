@@ -4,34 +4,30 @@ import { ListGroupItem } from "reactstrap";
 import "../../../styles/cart-item.css";
 
 import { useDispatch } from "react-redux";
-import { cartActions } from "../../../store/shopping-cart/cartSlice";
 
+import {
+  decreaseAmount,
+  increaseAmount,
+  removeOrderProduct,
+} from "../../../store/shopping-cart/orderSlide";
 const CartItem = ({ item }) => {
-  const [numProduct, setNumProduct] = useState(1);
-
-  const { id, name, price, image, countInstock } = item;
-
+  const { product, name, price, image, amount } = item;
+  console.log("product", product);
   const dispatch = useDispatch();
-
+  const idProduct = product;
   const incrementItem = () => {
-    dispatch(
-      cartActions.addItem({
-        id,
-        name,
-        price,
-        image,
-      })
-    );
-    setNumProduct(numProduct + 1);
+    dispatch(increaseAmount({ idProduct }));
   };
 
   const decreaseItem = () => {
-    dispatch(cartActions.removeItem(id));
-    setNumProduct(numProduct - 1);
+    if (amount > 1) dispatch(decreaseAmount({ idProduct }));
+    else {
+      dispatch(removeOrderProduct({ idProduct }));
+    }
   };
 
   const deleteItem = () => {
-    dispatch(cartActions.deleteItem(id));
+    dispatch(removeOrderProduct({ idProduct }));
   };
 
   return (
@@ -43,13 +39,13 @@ const CartItem = ({ item }) => {
           <div>
             <h6 className="cart__product-title">{name}</h6>
             <p className=" d-flex align-items-center gap-5 cart__product-price">
-              {countInstock}x <span>{countInstock * price} VND</span>
+              {amount}x <span>{amount * price} VND</span>
             </p>
             <div className=" d-flex align-items-center justify-content-between increase__decrease-btn">
               <span className="increase__btn" onClick={incrementItem}>
                 <i className="ri-add-line"></i>
               </span>
-              <span className="quantity">{numProduct}</span>
+              <span className="quantity">{amount}</span>
               <span className="decrease__btn" onClick={decreaseItem}>
                 <i className="ri-subtract-line"></i>
               </span>

@@ -4,23 +4,64 @@ import "../../../styles/product-card.css";
 
 import { Link } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
-import { cartActions } from "../../../store/shopping-cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { convertPrice } from "../../../utils";
+import { useNavigate } from "react-router-dom";
+import { addOrderProduct } from "../../../store/shopping-cart/orderSlide";
+import { useState } from "react";
+import * as CartService from "../../../services/CartService";
 
 const ProductCard = (props) => {
-  const { _id, name, image, price } = props.item;
+  const { _id, name, image, price, countInStock, discount } = props.item;
   const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const order = useSelector((state) => state.order);
+  const navigate = useNavigate();
+  const [errorLimitOrder, setErrorLimitOrder] = useState(false);
+  const [numProduct, setNumProduct] = useState(1);
 
   const addToCart = () => {
-    dispatch(
-      cartActions.addItem({
-        _id,
-        name,
-        image,
-        price,
-      })
-    );
+    if (!user?.id) {
+      navigate("/login");
+    } else {
+      const orderRedux = order?.orderItems?.find(
+        (item) => item.product === _id
+      );
+      console.log("orderRedux", orderRedux);
+      if (
+        orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
+        (!orderRedux && countInStock > 0)
+      ) {
+        if (orderRedux) {
+          console.log("orderRedux.amount", orderRedux.amount);
+          const idItem = _id;
+          const amount = orderRedux.amount + numProduct;
+          const idUser = user?.id;
+          CartService.UpdateCart(idItem, amount, idUser);
+        } else {
+          const idItem = _id;
+          const amount = numProduct;
+          const totalPrice = price * amount;
+          const idUser = user?.id;
+          CartService.createCart({ idItem, amount, totalPrice, idUser });
+        }
+        dispatch(
+          addOrderProduct({
+            orderItem: {
+              name: name,
+              amount: numProduct,
+              image: image,
+              price: price,
+              product: _id,
+              discount: discount,
+              countInstock: countInStock,
+            },
+          })
+        );
+      } else {
+        setErrorLimitOrder(true);
+      }
+    }
   };
 
   return (

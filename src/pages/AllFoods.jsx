@@ -10,7 +10,8 @@ import ReactPaginate from "react-paginate";
 
 import { useDebounce } from "../hooks/useDebounce";
 import * as ProductService from "../services/ProductService";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { searchProduct } from "../store/shopping-cart/productSlide";
 
 import "../styles/all-foods.css";
 import "../styles/pagination.css";
@@ -22,9 +23,10 @@ const AllFoods = () => {
 
   const [allProducts, setAllProducts] = useState([]);
   const [allProductsOrigin, setAllProductsOrigin] = useState([]);
-  const searchProduct = useSelector((state) => state?.product?.search);
-  const searchDebounce = useDebounce(searchProduct, 500);
-  const [limit, setLimit] = useState(6);
+  const searchPro = useSelector((state) => state?.product?.search);
+  const searchDebounce = useDebounce(searchPro, 0);
+  const [limit, setLimit] = useState();
+  const dispatch = useDispatch();
 
   const fetchProductAll = async () => {
     const res = await ProductService.getAllProduct(searchDebounce, limit);
@@ -61,7 +63,12 @@ const AllFoods = () => {
   // const changePage = ({ selected }) => {
   //   setPageNumber(selected);
   // };
-
+  const onSearch = (e) => {
+    setSearchTerm(e.target.value);
+    dispatch(searchProduct(e.target.value));
+    fetchProductAll();
+    // console.log("search", e.target.value);
+  };
   return (
     <Helmet title="All-Foods">
       <CommonSection title="All Foods" />
@@ -74,8 +81,7 @@ const AllFoods = () => {
                 <input
                   type="text"
                   placeholder="I'm looking for...."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={onSearch}
                 />
                 <span>
                   <i className="ri-search-line"></i>

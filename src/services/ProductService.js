@@ -15,10 +15,17 @@ import { axiosJWT } from "./UserService";
 //   return res.data;
 // };
 export const getAllProduct = async (search, limit) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_API_URL}/product/get-all`
-  );
-
+  let res = {};
+  console.log("search", search);
+  if (search?.length > 0) {
+    res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}&limit=${limit}`
+    );
+  } else {
+    res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}`
+    );
+  }
   return res.data;
 };
 

@@ -4,29 +4,40 @@ import Carts from "./components/UI/cart/Carts";
 import routes from "./routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useMemo } from "react";
 
 import { isJsonString } from "./utils";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "./services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser, updateUser } from "./store/shopping-cart/userSlide";
+import { useQuery } from "@tanstack/react-query";
 
+import {
+  decreaseAmount,
+  increaseAmount,
+  removeOrderProduct,
+  resetAllOrder,
+  addOrderProduct,
+} from "./store/shopping-cart/orderSlide";
+
+import * as CartService from "./services/CartService";
 function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const user = useSelector((state) => state.user);
+  const order = useSelector((state) => state.order);
 
   // console.log("process.env.REACT_APP_API_URL", process.env.REACT_APP_API_URL);
   // console.log("user.isAdmin", user.isAdmin);
+
   useEffect(() => {
     setIsLoading(true);
 
     const { storageData, decoded } = handleDecoded();
     console.log("storageData", storageData, "asdasd", decoded);
     if (decoded?.id) {
-      console.log("co vo day ne");
-
+      localStorage.setItem("myid", decoded.id);
       handleGetDetailsUser(decoded?.id, storageData);
     }
     setIsLoading(false);
@@ -93,6 +104,52 @@ function App() {
       console.log("login");
     }
   };
+
+  const fetchGetCart = async () => {
+    const id = localStorage.getItem("myid");
+    if (id) {
+      const res = await CartService.getCartByUser(id);
+      return res;
+    }
+  };
+
+  const { isPending: isPendingCart, data: cartByUser } = useQuery({
+    queryKey: ["cart-by-user"],
+    queryFn: fetchGetCart,
+  });
+
+  useEffect(
+    () => {
+      if (cartByUser) {
+        console.log("cartByUser", cartByUser);
+        cartByUser.map((cart) => {
+          console.log("id", cart._id);
+          const itemOrder = order?.orderItems?.find(
+            (item) => item?.product === cart.product[0]?._id
+          );
+          if (!itemOrder) {
+            console.log("cart._id", cart.product[0]?._id);
+            dispatch(
+              addOrderProduct({
+                orderItem: {
+                  name: cart?.product[0]?.name,
+                  amount: cart?.amount,
+                  image: cart?.product[0]?.image,
+                  price: cart?.product[0]?.price,
+                  product: cart?.idItem,
+                  discount: cart?.product[0]?.discount,
+                  countInstock: cart?.product[0]?.countInStock,
+                },
+              })
+            );
+          }
+        });
+      }
+    },
+    [cartByUser],
+    [localStorage.getItem("myid")]
+  );
+
   return (
     <div>
       <Router>
