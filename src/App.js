@@ -66,12 +66,12 @@ function App() {
       if (decoded?.exp < currentTime.getTime() / 1000) {
         if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
           const data = await UserService.refreshToken(refreshToken);
-          console.log("co vo day ", data, "asdsa");
+          // console.log("co vo day ", data, "asdsa");
 
           config.headers["token"] = `${data?.access_token}`;
-          console.log("config.headers[token]", config.headers["token"]);
+          // console.log("config.headers[token]", config.headers["token"]);
         } else {
-          console.log("co vo day nua ");
+          // console.log("co vo day nua ");
 
           dispatch(resetUser());
         }

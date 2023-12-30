@@ -11,6 +11,8 @@ import ProfilePage from "../pages/Profile/ProfilePage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import StorePage from "../pages/StorePage/StorePage";
 import DetailStorePage from "../pages/DetailStorePage/DetailStorePage";
+import PaymentPage from "../pages/PaymentPage/PaymentPage";
+import OrderSucess from "../pages/OrderSuccess/OrderSuccess";
 
 export const routes = [
   {
@@ -36,6 +38,16 @@ export const routes = [
   {
     path: "/cart",
     page: Cart,
+    isShowHeader: true,
+  },
+  {
+    path: "/payment",
+    page: PaymentPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/orderSuccess",
+    page: OrderSucess,
     isShowHeader: true,
   },
   {
