@@ -114,6 +114,11 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           Đăng ký Bán hàng
         </WrapperContentPopup>
       )}
+      {!user?.isStore && !user?.isAdmin && (
+        <WrapperContentPopup onClick={() => handleClickNavigate(`myorder`)}>
+          Đơn hàng của tôi
+        </WrapperContentPopup>
+      )}
       {!!user?.isStore && (
         <WrapperContentPopup onClick={() => handleClickNavigate(`store`)}>
           Quản lý Cửa hàng
@@ -136,6 +141,8 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
       navigate("/signup-store");
     } else if (type === "store") {
       navigate("/store/admin");
+    } else if (type === "myorder") {
+      navigate("/myorder");
     }
     // else if (type === "my-order") {
     //   navigate("/my-order", {

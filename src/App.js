@@ -106,8 +106,8 @@ function App() {
   };
 
   const fetchGetCart = async () => {
-    const id = localStorage.getItem("myid");
-    if (id) {
+    if (localStorage.getItem("myid")) {
+      const id = localStorage.getItem("myid");
       const res = await CartService.getCartByUser(id);
       return res;
     }
@@ -139,6 +139,7 @@ function App() {
                   product: cart?.idItem,
                   discount: cart?.product[0]?.discount,
                   countInstock: cart?.product[0]?.countInStock,
+                  idStore: cart?.product[0]?.idStore,
                 },
               })
             );

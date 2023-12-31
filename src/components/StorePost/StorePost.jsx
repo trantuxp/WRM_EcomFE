@@ -143,11 +143,11 @@ const StorePost = () => {
     return (
       <div>
         <DeleteOutlined
-          style={{ color: "red", fontSize: "30px", cursor: "pointer" }}
+          style={{ color: "red", fontSize: "20px", cursor: "pointer" }}
           onClick={() => setIsModalOpenDelete(true)}
         />
         <EditOutlined
-          style={{ color: "orange", fontSize: "30px", cursor: "pointer" }}
+          style={{ color: "orange", fontSize: "20px", cursor: "pointer" }}
           onClick={handleDetailsPost}
         />
       </div>

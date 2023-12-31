@@ -26,7 +26,7 @@ const StorePage = () => {
   const items = [
     getItem("Bài đăng", "posts", <FileOutlined />),
     getItem("Sản phẩm", "products", <AppstoreOutlined />),
-    // getItem("Đơn hàng", "orders", <ShoppingCartOutlined />),
+    getItem("Đơn hàng", "orders", <ShoppingCartOutlined />),
   ];
 
   const [keySelected, setKeySelected] = useState("");

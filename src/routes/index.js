@@ -13,6 +13,8 @@ import StorePage from "../pages/StorePage/StorePage";
 import DetailStorePage from "../pages/DetailStorePage/DetailStorePage";
 import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import OrderSucess from "../pages/OrderSuccess/OrderSuccess";
+import MyOrderPage from "../pages/MyOrder/MyOrder";
+import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage";
 
 export const routes = [
   {
@@ -68,6 +70,16 @@ export const routes = [
   {
     path: "/contact",
     page: Contact,
+    isShowHeader: true,
+  },
+  {
+    path: "/myorder",
+    page: MyOrderPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/details-order/:id",
+    page: DetailsOrderPage,
     isShowHeader: true,
   },
   {

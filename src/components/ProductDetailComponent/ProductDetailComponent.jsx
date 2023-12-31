@@ -88,6 +88,7 @@ const ProductDetailComponent = (idProduct) => {
               product: productDetails?._id,
               discount: productDetails?.discount,
               countInstock: productDetails?.countInStock,
+              idStore: productDetails?.idStore,
             },
           })
         );

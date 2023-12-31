@@ -12,7 +12,8 @@ import { useState } from "react";
 import * as CartService from "../../../services/CartService";
 
 const ProductCard = (props) => {
-  const { _id, name, image, price, countInStock, discount } = props.item;
+  const { _id, name, image, price, countInStock, discount, idStore } =
+    props.item;
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const order = useSelector((state) => state.order);
@@ -55,6 +56,7 @@ const ProductCard = (props) => {
               product: _id,
               discount: discount,
               countInstock: countInStock,
+              idStore: idStore,
             },
           })
         );
@@ -71,9 +73,10 @@ const ProductCard = (props) => {
       </div>
 
       <div className="product__content">
-        <h5>
-          <Link to={`/foods/${_id}`}>{name}</Link>
-        </h5>
+        <Link to={`/foods/${_id}`}>
+          <h5>{name} </h5>
+        </Link>
+
         <div className=" d-flex align-items-center justify-content-between ">
           <span className="product__price">{convertPrice(price)} </span>
           <button className="addTOCart__btn" onClick={addToCart}>
