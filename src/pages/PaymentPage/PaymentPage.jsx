@@ -155,7 +155,7 @@ const PaymentPage = () => {
         arrayOrdered.push(element.product);
       });
       dispatch(removeAllOrderProduct({ listChecked: arrayOrdered }));
-      message.success("Đặt hàng thành công");
+      message.success("Order Success");
       navigate("/orderSuccess", {
         state: {
           delivery,
@@ -252,37 +252,34 @@ const PaymentPage = () => {
     <div style={{ background: "#f5f5fa", with: "100%", height: "100vh" }}>
       <Loading isLoading={isLoadingAddOrder}>
         <div style={{ height: "100%", width: "1270px", margin: "0 auto" }}>
-          <h3>Thanh toán</h3>
+          <h3>Pay</h3>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <WrapperLeft>
               <WrapperInfo>
                 <div>
-                  <Lable>Chọn phương thức giao hàng</Lable>
+                  <Lable>Select delivery method</Lable>
                   <WrapperRadio onChange={handleDilivery} value={delivery}>
                     <Radio value="fast">
                       <span style={{ color: "#ea8500", fontWeight: "bold" }}>
                         FAST
                       </span>{" "}
-                      Giao hàng tiết kiệm
+                      Economical delivery
                     </Radio>
                     <Radio value="gojek">
                       <span style={{ color: "#ea8500", fontWeight: "bold" }}>
                         GO_JEK
                       </span>{" "}
-                      Giao hàng tiết kiệm
+                      Economical delivery
                     </Radio>
                   </WrapperRadio>
                 </div>
               </WrapperInfo>
               <WrapperInfo>
                 <div>
-                  <Lable>Chọn phương thức thanh toán</Lable>
+                  <Lable>Select a payment method</Lable>
                   <WrapperRadio onChange={handlePayment} value={payment}>
-                    <Radio value="later_money">
-                      {" "}
-                      Thanh toán tiền mặt khi nhận hàng
-                    </Radio>
-                    <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio>
+                    <Radio value="later_money"> Pay cash upon receipt</Radio>
+                    <Radio value="paypal"> Payment by paypal</Radio>
                   </WrapperRadio>
                 </div>
               </WrapperInfo>
@@ -291,7 +288,7 @@ const PaymentPage = () => {
               <div style={{ width: "100%" }}>
                 <WrapperInfo>
                   <div>
-                    <span>Địa chỉ: </span>
+                    <span>Address: </span>
                     <span style={{ fontWeight: "bold" }}>
                       {`${user?.address} ${user?.city}`}{" "}
                     </span>
@@ -299,7 +296,7 @@ const PaymentPage = () => {
                       onClick={handleChangeAddress}
                       style={{ color: "#9255FD", cursor: "pointer" }}
                     >
-                      Thay đổi
+                      Change
                     </span>
                   </div>
                 </WrapperInfo>
@@ -311,7 +308,7 @@ const PaymentPage = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <span>Tạm tính</span>
+                    <span>Provisional</span>
                     <span
                       style={{
                         color: "#000",
@@ -329,7 +326,7 @@ const PaymentPage = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <span>Giảm giá</span>
+                    <span>Discount</span>
                     <span
                       style={{
                         color: "#000",
@@ -347,7 +344,7 @@ const PaymentPage = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <span>Phí giao hàng</span>
+                    <span>Delivery charges</span>
                     <span
                       style={{
                         color: "#000",
@@ -360,7 +357,7 @@ const PaymentPage = () => {
                   </div>
                 </WrapperInfo>
                 <WrapperTotal>
-                  <span>Tổng tiền</span>
+                  <span>Total payment</span>
                   <span style={{ display: "flex", flexDirection: "column" }}>
                     <span
                       style={{
@@ -372,7 +369,7 @@ const PaymentPage = () => {
                       {convertPrice(totalPriceMemo)}
                     </span>
                     <span style={{ color: "#000", fontSize: "11px" }}>
-                      (Đã bao gồm VAT nếu có)
+                      (VAT included if applicable)
                     </span>
                   </span>
                 </WrapperTotal>
@@ -399,7 +396,7 @@ const PaymentPage = () => {
                   border: "none",
                   borderRadius: "4px",
                 }}
-                textbutton={"Đặt hàng"}
+                textbutton={"Order"}
                 styleTextButton={{
                   color: "#fff",
                   fontSize: "15px",
@@ -411,7 +408,7 @@ const PaymentPage = () => {
           </div>
         </div>
         <ModalComponent
-          title="Cập nhật thông tin giao hàng"
+          title="Update delivery information"
           open={isOpenModalUpdateInfo}
           onCancel={handleCancleUpdate}
           onOk={handleUpdateInforUser}

@@ -176,7 +176,7 @@ const OrderAdmin = () => {
 
   return (
     <div>
-      <WrapperHeader>Quản lý đơn hàng</WrapperHeader>
+      <WrapperHeader>Order management</WrapperHeader>
       <div
         style={{
           height: 200,
@@ -186,7 +186,7 @@ const OrderAdmin = () => {
         }}
       >
         <PieChartComponent data={orders?.data} />
-        100% Thanh toán bằng tiền mặt
+        100% Payment in cash
       </div>
       <div style={{ marginTop: "20px" }}>
         <TableComponent

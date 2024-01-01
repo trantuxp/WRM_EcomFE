@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { addOrderProduct } from "../../../store/shopping-cart/orderSlide";
 import { useState } from "react";
 import * as CartService from "../../../services/CartService";
+import StarRatingUI from "../../StarRatingUI/StarRatingUI";
 
 const ProductCard = (props) => {
-  const { _id, name, image, price, countInStock, discount, idStore } =
+  const { _id, name, image, price, countInStock, discount, idStore, rating } =
     props.item;
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
@@ -76,6 +77,16 @@ const ProductCard = (props) => {
         <Link to={`/foods/${_id}`}>
           <h5>{name} </h5>
         </Link>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            textDecoration: "underline",
+            justifyContent: "center",
+          }}
+        >
+          <StarRatingUI rating={rating} color={"lightgray"}></StarRatingUI>
+        </div>
 
         <div className=" d-flex align-items-center justify-content-between ">
           <span className="product__price">{convertPrice(price)} </span>

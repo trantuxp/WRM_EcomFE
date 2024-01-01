@@ -23,7 +23,7 @@ const AdminPage = () => {
   const user = useSelector((state) => state?.user);
 
   const items = [
-    getItem("Người dùng", "users", <UserOutlined />),
+    getItem("User", "users", <UserOutlined />),
     // getItem("Sản phẩm", "products", <AppstoreOutlined />),
     // getItem("Đơn hàng", "orders", <ShoppingCartOutlined />),
   ];

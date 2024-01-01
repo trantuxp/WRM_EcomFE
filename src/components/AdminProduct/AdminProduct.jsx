@@ -511,7 +511,7 @@ const AdminProduct = () => {
 
   return (
     <div>
-      <WrapperHeader>Quản lý Sản phẩm</WrapperHeader>
+      <WrapperHeader>Product Management</WrapperHeader>
       <Button type="primary" onClick={showModal}>
         Add
       </Button>
@@ -688,7 +688,7 @@ const AdminProduct = () => {
         </Loading>
       </Modal>
       <DrawerComponent
-        title="Chi tiết sản phẩm"
+        title="Product details"
         isOpen={isOpenDrawer}
         onClose={() => setIsOpenDrawer(false)}
         width="90%"
@@ -838,7 +838,7 @@ const AdminProduct = () => {
         onOk={handleDeleteProduct}
       >
         <Loading isLoading={isLoadingDeleted}>
-          <div>Bạn có chắc xóa sản phẩm này không?</div>
+          <div>Are you sure to delete this product?</div>
         </Loading>
       </ModalComponent>
     </div>

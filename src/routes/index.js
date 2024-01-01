@@ -15,6 +15,7 @@ import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import OrderSucess from "../pages/OrderSuccess/OrderSuccess";
 import MyOrderPage from "../pages/MyOrder/MyOrder";
 import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage";
+import EvaluateStore from "../components/EvaluateStore/EvaluateStore";
 
 export const routes = [
   {
@@ -30,6 +31,11 @@ export const routes = [
   {
     path: "/foods",
     page: AllFoods,
+    isShowHeader: true,
+  },
+  {
+    path: "/store/evaluate",
+    page: EvaluateStore,
     isShowHeader: true,
   },
   {

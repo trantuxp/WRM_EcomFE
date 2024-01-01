@@ -90,8 +90,8 @@ const SignUpPage = () => {
         }}
       >
         <WrapperContainerLeft>
-          <h1>Xin chào</h1>
-          <p>Đăng ký bán hàng </p>
+          <h1>Hello</h1>
+          <p>Register to sell</p>
           <InputForm
             style={{ marginBottom: "10px" }}
             placeholder="name"
@@ -161,7 +161,7 @@ const SignUpPage = () => {
                 borderRadius: "4px",
                 margin: "26px 0 10px",
               }}
-              textbutton={"Đăng ký"}
+              textbutton={"Register"}
               styleTextButton={{
                 color: "#fff",
                 fontSize: "15px",
@@ -178,8 +178,8 @@ const SignUpPage = () => {
             height="203px"
             width="203px"
           />
-          <h4>Kinh doanh đem</h4>
-          <h4> lại lợi nhuận</h4>
+          <h4>Business provides </h4>
+          <h4> motivation</h4>
         </WrapperContainerRight>
       </div>
     </div>

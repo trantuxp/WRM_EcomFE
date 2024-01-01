@@ -92,8 +92,15 @@ const ProfilePage = () => {
     });
   };
   return (
-    <div style={{ width: "1270px", margin: "0 auto", height: "500px" }}>
-      <WrapperHeader>Thông tin người dùng</WrapperHeader>
+    <div
+      style={{
+        width: "1270px",
+        margin: "0 auto",
+        height: "500px",
+        paddingTop: "10px",
+      }}
+    >
+      <WrapperHeader>User information</WrapperHeader>
       <Loading isLoading={isPending}>
         <WrapperContentProfile>
           <WrapperInput>
@@ -113,7 +120,7 @@ const ProfilePage = () => {
                 borderRadius: "4px",
                 padding: "2px 6px 6px",
               }}
-              textbutton={"Cập nhật"}
+              textbutton={"Update"}
               styleTextButton={{
                 color: "rgb(26, 148, 255)",
                 fontSize: "15px",
@@ -138,7 +145,7 @@ const ProfilePage = () => {
                 borderRadius: "4px",
                 padding: "2px 6px 6px",
               }}
-              textbutton={"Cập nhật"}
+              textbutton={"Update"}
               styleTextButton={{
                 color: "rgb(26, 148, 255)",
                 fontSize: "15px",
@@ -163,7 +170,7 @@ const ProfilePage = () => {
                 borderRadius: "4px",
                 padding: "2px 6px 6px",
               }}
-              textbutton={"Cập nhật"}
+              textbutton={"Update"}
               styleTextButton={{
                 color: "rgb(26, 148, 255)",
                 fontSize: "15px",
@@ -198,7 +205,7 @@ const ProfilePage = () => {
                 borderRadius: "4px",
                 padding: "2px 6px 6px",
               }}
-              textbutton={"Cập nhật"}
+              textbutton={"Update"}
               styleTextButton={{
                 color: "rgb(26, 148, 255)",
                 fontSize: "15px",
@@ -223,7 +230,7 @@ const ProfilePage = () => {
                 borderRadius: "4px",
                 padding: "2px 6px 6px",
               }}
-              textbutton={"Cập nhật"}
+              textbutton={"Update"}
               styleTextButton={{
                 color: "rgb(26, 148, 255)",
                 fontSize: "15px",

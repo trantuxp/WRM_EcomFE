@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import * as CartService from "../../services/CartService";
 
 import { convertPrice } from "../../utils";
+import StarRatingUI from "../StarRatingUI/StarRatingUI";
 
 const ProductDetailComponent = (idProduct) => {
   const [tab, setTab] = useState("desc");
@@ -160,6 +161,21 @@ const ProductDetailComponent = (idProduct) => {
               <div className="single__product-content">
                 <h2 className="product__title mb-3">{productDetails?.name}</h2>
                 <p className="product__price">
+                  <span
+                    style={{
+                      textDecoration: "underline",
+                    }}
+                  >
+                    {productDetails?.rating}
+                  </span>
+                  <span>
+                    <StarRatingUI
+                      rating={productDetails?.rating}
+                      color={"lightgray"}
+                    ></StarRatingUI>
+                  </span>
+                </p>
+                <p className="product__price">
                   Price: <span>{convertPrice(productDetails?.price)} </span>
                 </p>
                 <p className="category mb-3">
@@ -177,16 +193,15 @@ const ProductDetailComponent = (idProduct) => {
                     </span>
                   </div>
                 </p>
-
-                <button onClick={addItem} className="addTOCart__btn">
-                  Add to Cart
-                </button>
-                <p className="category mb-5 mt-3">
+                <p className="category ">
                   Store:{" "}
                   <Link to={`/store/${user?.id}`}>
                     {!user?.name || "Shop Food"}
                   </Link>
                 </p>
+                <button onClick={addItem} className="addTOCart__btn">
+                  Add to Cart
+                </button>
               </div>
             </Col>
 

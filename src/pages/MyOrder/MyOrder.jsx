@@ -115,18 +115,18 @@ const MyOrderPage = () => {
     <Loading isLoading={isPending || isLoadingCancel}>
       <WrapperContainer>
         <div style={{ height: "100%", width: "1270px", margin: "0 auto" }}>
-          <h5 style={{ padding: "10px" }}>Đơn hàng của tôi</h5>
+          <h5 style={{ padding: "10px" }}>My order</h5>
           <WrapperListOrder>
             {data?.map((order) => {
               return (
                 <WrapperItemOrder key={order?._id}>
                   <WrapperStatus>
                     <span style={{ fontSize: "14px", fontWeight: "bold" }}>
-                      Trạng thái
+                      Status
                     </span>
                     <div>
                       <span style={{ color: "rgb(255, 66, 78)" }}>
-                        Giao hàng:{" "}
+                        Delivery:{" "}
                       </span>
                       <span
                         style={{
@@ -134,28 +134,24 @@ const MyOrderPage = () => {
                           fontWeight: "bold",
                         }}
                       >{`${
-                        order.isDelivered ? "Đã giao hàng" : "Chưa giao hàng"
+                        order.isDelivered ? "Delivered" : "Not delivery"
                       }`}</span>
                     </div>
                     <div>
-                      <span style={{ color: "rgb(255, 66, 78)" }}>
-                        Thanh toán:{" "}
-                      </span>
+                      <span style={{ color: "rgb(255, 66, 78)" }}>Pay: </span>
                       <span
                         style={{
                           color: "rgb(90, 32, 193)",
                           fontWeight: "bold",
                         }}
-                      >{`${
-                        order.isPaid ? "Đã thanh toán" : "Chưa thanh toán"
-                      }`}</span>
+                      >{`${order.isPaid ? "Paid" : "Unpaid"}`}</span>
                     </div>
                   </WrapperStatus>
                   {renderProduct(order?.orderItems)}
                   <WrapperFooterItem>
                     <div>
                       <span style={{ color: "rgb(255, 66, 78)" }}>
-                        Tổng tiền:{" "}
+                        Total amount:{" "}
                       </span>
                       <span
                         style={{
@@ -176,7 +172,7 @@ const MyOrderPage = () => {
                           border: "1px solid #9255FD",
                           borderRadius: "4px",
                         }}
-                        textbutton={"Hủy đơn hàng"}
+                        textbutton={"Cancel order"}
                         styleTextButton={{ color: "#9255FD", fontSize: "14px" }}
                       ></ButtonComponent>
                       <ButtonComponent
@@ -187,7 +183,7 @@ const MyOrderPage = () => {
                           border: "1px solid #9255FD",
                           borderRadius: "4px",
                         }}
-                        textbutton={"Xem chi tiết"}
+                        textbutton={"Details"}
                         styleTextButton={{ color: "#9255FD", fontSize: "14px" }}
                       ></ButtonComponent>
                     </div>

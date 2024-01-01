@@ -396,7 +396,7 @@ const StorePost = () => {
   };
   return (
     <div>
-      <WrapperHeader>Quản lý Bài đăng</WrapperHeader>
+      <WrapperHeader>Manage Posts</WrapperHeader>
       <Button type="primary" onClick={showModal}>
         Add
       </Button>
@@ -489,7 +489,7 @@ const StorePost = () => {
         </Loading>
       </Modal>
       <DrawerComponent
-        title="Chi tiết sản phẩm"
+        title="Post details"
         isOpen={isOpenDrawer}
         onClose={() => setIsOpenDrawer(false)}
         width="90%"
@@ -568,7 +568,7 @@ const StorePost = () => {
         onOk={handleDeletePost}
       >
         <Loading isLoading={isLoadingDeleted}>
-          <div>Bạn có chắc xóa sản phẩm này không?</div>
+          <div>Are you sure to delete this post?</div>
         </Loading>
       </ModalComponent>
     </div>

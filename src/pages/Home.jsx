@@ -139,10 +139,8 @@ const Home = () => {
           <Row>
             <Col lg="6" md="6">
               <div className="hero__content  ">
-                <h5 className="mb-3">Easy way to make an order</h5>
                 <h1 className="mb-4 hero__title">
-                  <span>HUNGRY?</span> Just wait <br /> food at
-                  <span> your door</span>
+                  <span>HUNGRY?</span> Savor <br /> Our Culinary Surprises!"
                 </h1>
 
                 <p></p>
@@ -162,7 +160,7 @@ const Home = () => {
                     <span className="shipping__icon">
                       <i className="ri-car-line"></i>
                     </span>{" "}
-                    No shipping charge
+                    Can free shipping charge
                   </p>
 
                   <p className=" d-flex align-items-center gap-2 ">
@@ -192,7 +190,6 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="12" className="text-center">
-              <h5 className="feature__subtitle mb-4">What we serve</h5>
               <h2 className="feature__title">Just sit back at home</h2>
               <h2 className="feature__title">
                 we will <span>take care</span>
@@ -334,7 +331,7 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="12" className="text-center mb-5 ">
-              <h2>Hot Pizza</h2>
+              <h2>Hot Search</h2>
             </Col>
 
             {hotPizza.map((item) => (
@@ -342,28 +339,6 @@ const Home = () => {
                 <ProductCard item={item} />
               </Col>
             ))}
-          </Row>
-        </Container>
-      </section>
-
-      <section>
-        <Container>
-          <Row>
-            <Col lg="6" md="6">
-              <div className="testimonial ">
-                <h5 className="testimonial__subtitle mb-4">Testimonial</h5>
-                <h2 className="testimonial__title mb-4">
-                  What our <span>customers</span> are saying
-                </h2>
-                <p className="testimonial__desc"></p>
-
-                {/* <TestimonialSlider /> */}
-              </div>
-            </Col>
-
-            <Col lg="6" md="6">
-              <img src={networkImg} alt="testimonial-img" className="w-100" />
-            </Col>
           </Row>
         </Container>
       </section>

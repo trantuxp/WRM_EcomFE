@@ -5,6 +5,7 @@ import {
   AppstoreOutlined,
   ShoppingCartOutlined,
   FileOutlined,
+  StarOutlined,
 } from "@ant-design/icons";
 import HeaderComponent from "../../components/Header/Header";
 import AdminUser from "../../components/AdminUser/AdminUser";
@@ -19,14 +20,16 @@ import { useSelector } from "react-redux";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
 import Loading from "../../components/LoadingComponent/Loading";
+import EvaluateStore from "../../components/EvaluateStore/EvaluateStore";
 
 const StorePage = () => {
   const user = useSelector((state) => state?.user);
 
   const items = [
-    getItem("Bài đăng", "posts", <FileOutlined />),
-    getItem("Sản phẩm", "products", <AppstoreOutlined />),
-    getItem("Đơn hàng", "orders", <ShoppingCartOutlined />),
+    getItem("Post", "posts", <FileOutlined />),
+    getItem("Product", "products", <AppstoreOutlined />),
+    getItem("Order", "orders", <ShoppingCartOutlined />),
+    getItem("Evaluate", "Evaluate", <StarOutlined />),
   ];
 
   const [keySelected, setKeySelected] = useState("");
@@ -81,6 +84,8 @@ const StorePage = () => {
         return <AdminProduct />;
       case "orders":
         return <OrderAdmin />;
+      case "Evaluate":
+        return <EvaluateStore />;
       default:
         return <></>;
     }

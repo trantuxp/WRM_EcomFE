@@ -100,33 +100,33 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const content = (
     <div>
       <WrapperContentPopup onClick={() => handleClickNavigate("profile")}>
-        Thông tin người dùng
+        User information
       </WrapperContentPopup>
       {user?.isAdmin && (
         <WrapperContentPopup onClick={() => handleClickNavigate("admin")}>
-          Quản lí hệ thống
+          System management
         </WrapperContentPopup>
       )}
       {!user?.isStore && !user?.isAdmin && (
         <WrapperContentPopup
           onClick={() => handleClickNavigate(`signup-store`)}
         >
-          Đăng ký Bán hàng
+          Register for Sales
         </WrapperContentPopup>
       )}
       {!user?.isStore && !user?.isAdmin && (
         <WrapperContentPopup onClick={() => handleClickNavigate(`myorder`)}>
-          Đơn hàng của tôi
+          My order
         </WrapperContentPopup>
       )}
       {!!user?.isStore && (
         <WrapperContentPopup onClick={() => handleClickNavigate(`store`)}>
-          Quản lý Cửa hàng
+          Store manager
         </WrapperContentPopup>
       )}
 
       <WrapperContentPopup onClick={() => handleClickNavigate()}>
-        Đăng xuất
+        Log out
       </WrapperContentPopup>
     </div>
   );
@@ -171,7 +171,7 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           <div className="logo">
             <Link to={`/`}>
               <img src={logo} alt="logo" />
-              <h5>Tasty Treat</h5>
+              <h5>Culinary Oasis</h5>
             </Link>
           </div>
 

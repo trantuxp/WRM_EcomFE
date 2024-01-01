@@ -56,43 +56,41 @@ const DetailsOrderPage = () => {
     <Loading isLoading={isPending}>
       <div style={{ width: "100%", minHeight: "100vh", background: "#f5f5fa" }}>
         <div style={{ width: "1270px", margin: "0 auto", height: "1270px" }}>
-          <h2 style={{ padding: "10px 10px 10px 0" }}>Chi tiết đơn hàng</h2>
+          <h2 style={{ padding: "10px 10px 10px 0" }}>Order details</h2>
           <WrapperHeaderUser>
             <WrapperInfoUser>
-              <WrapperLabel>Địa chỉ người nhận</WrapperLabel>
+              <WrapperLabel>Receiver's address</WrapperLabel>
               <WrapperContentInfo>
                 <div className="name-info">
                   {data?.shippingAddress?.fullName}
                 </div>
                 <div className="address-info">
-                  <span>Địa chỉ: </span>{" "}
+                  <span>Address: </span>{" "}
                   {`${data?.shippingAddress?.address} ${data?.shippingAddress?.city}`}
                 </div>
                 <div className="phone-info">
-                  <span>Điện thoại: </span> {data?.shippingAddress?.phone}
+                  <span>Phone: </span> {data?.shippingAddress?.phone}
                 </div>
               </WrapperContentInfo>
             </WrapperInfoUser>
             <WrapperInfoUser>
-              <WrapperLabel>Hình thức giao hàng</WrapperLabel>
+              <WrapperLabel>Delivery method</WrapperLabel>
               <WrapperContentInfo>
                 <div className="delivery-info">
-                  <span className="name-delivery">FAST </span>Giao hàng tiết
-                  kiệm
+                  <span className="name-delivery">FAST </span>Economical
+                  delivery
                 </div>
                 <div className="delivery-fee">
-                  <span>Phí giao hàng: </span> {data?.shippingPrice}
+                  <span>Delivery charges: </span> {data?.shippingPrice}
                 </div>
               </WrapperContentInfo>
             </WrapperInfoUser>
             <WrapperInfoUser>
-              <WrapperLabel>Hình thức thanh toán</WrapperLabel>
+              <WrapperLabel>Payments</WrapperLabel>
               <WrapperContentInfo>
-                <div className="payment-info">
-                  {orderContant.payment[data?.paymentMethod]}
-                </div>
+                <div className="payment-info">{data?.paymentMethod}</div>
                 <div className="status-payment">
-                  {data?.isPaid ? "Đã thanh toán" : "Chưa thanh toán"}
+                  {data?.isPaid ? "Paid" : "Unpaid"}
                 </div>
               </WrapperContentInfo>
             </WrapperInfoUser>
@@ -109,11 +107,11 @@ const DetailsOrderPage = () => {
                 justifyContent: "space-between",
               }}
             >
-              <div style={{ flex: 5, display: "flex" }}>Sản phẩm</div>
-              <WrapperItemLabel>Giá</WrapperItemLabel>
-              <WrapperItemLabel>Số lượng</WrapperItemLabel>
-              <WrapperItemLabel>Giảm giá</WrapperItemLabel>
-              <WrapperItemLabel>Đánh giá</WrapperItemLabel>
+              <div style={{ flex: 5, display: "flex" }}>Product</div>
+              <WrapperItemLabel>Price</WrapperItemLabel>
+              <WrapperItemLabel>Amount</WrapperItemLabel>
+              <WrapperItemLabel>Discount</WrapperItemLabel>
+              <WrapperItemLabel>Evaluate</WrapperItemLabel>
             </div>
             {data?.orderItems?.map((order, key) => {
               return (
@@ -144,7 +142,7 @@ const DetailsOrderPage = () => {
                       HandleRating();
                     }}
                   >
-                    Đánh giá
+                    Evaluate
                   </WrapperItem>
                 </WrapperProduct>
               );
@@ -167,7 +165,7 @@ const DetailsOrderPage = () => {
                   <div
                     style={{ display: "flex", flex: 1, paddingLeft: "20px" }}
                   >
-                    Nội dung Đánh giá:
+                    Content rated:
                   </div>
                   <div
                     style={{
@@ -181,7 +179,7 @@ const DetailsOrderPage = () => {
                   <div
                     style={{ display: "flex", flex: 1, paddingLeft: "20px" }}
                   >
-                    Đánh giá sản phẩm:
+                    Product reviews:
                   </div>
                   <div
                     style={{
@@ -247,19 +245,19 @@ const DetailsOrderPage = () => {
             <div style={{ backgroundColor: "white", padding: "10px" }}>
               <WrapperAllPrice>
                 <WrapperItemLabel>
-                  Tạm tính:&nbsp;
+                  Provisional:&nbsp;
                   <WrapperItem>{convertPrice(priceMemo)}</WrapperItem>
                 </WrapperItemLabel>
               </WrapperAllPrice>
               <WrapperAllPrice>
                 <WrapperItemLabel>
-                  Phí vận chuyển:&nbsp;
+                  Transport fee:&nbsp;
                   <WrapperItem>{convertPrice(data?.shippingPrice)}</WrapperItem>
                 </WrapperItemLabel>
               </WrapperAllPrice>
               <WrapperAllPrice>
                 <WrapperItemLabel>
-                  Tổng cộng:&nbsp;
+                  Total:&nbsp;
                   <WrapperItem>{convertPrice(data?.totalPrice)}</WrapperItem>
                 </WrapperItemLabel>
               </WrapperAllPrice>

@@ -147,15 +147,15 @@ const Cart = () => {
   const itemsDelivery = [
     {
       title: "20.000 VND",
-      description: "Dưới 200.000 VND",
+      description: "Under 200,000 VND",
     },
     {
       title: "10.000 VND",
-      description: "Từ 200.000 VND đến dưới 500.000 VND",
+      description: "From 200,000 VND to under 500,000 VND",
     },
     {
       title: "Free ship",
-      description: "Trên 500.000 VND",
+      description: "Over 500,000 VND",
     },
   ];
   const handleChangeAddress = () => {
@@ -178,7 +178,7 @@ const Cart = () => {
   }, [isOpenModalUpdateInfo]);
   const handleAddCard = () => {
     if (!order?.orderItemsSlected?.length) {
-      message.error("Vui lòng chọn sản phẩm");
+      message.error("Please choose a product");
     } else if (!user?.phone || !user.address || !user.name || !user.city) {
       setIsOpenModalUpdateInfo(true);
     } else {
@@ -240,7 +240,7 @@ const Cart = () => {
                     onClick={handleChangeAddress}
                     style={{ color: "#9255FD", cursor: "pointer" }}
                   >
-                    Thay đổi
+                    Change
                   </span>
                 </div>
               </WrapperInfo>

@@ -21,23 +21,23 @@ const OrderSucess = () => {
     <div style={{ background: "#f5f5fa", with: "100%", height: "100vh" }}>
       <Loading isLoading={false}>
         <div style={{ height: "100%", width: "1270px", margin: "0 auto" }}>
-          <h3>Đơn hàng đặt thành công</h3>
+          <h3>Order placed successfully</h3>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <WrapperContainer>
               <WrapperInfo>
                 <div>
-                  <Lable>Phương thức giao hàng</Lable>
+                  <Lable>Delivery method</Lable>
                   <WrapperValue>
                     <span style={{ color: "#ea8500", fontWeight: "bold" }}>
                       {orderContant.delivery[state?.delivery]}
                     </span>{" "}
-                    Giao hàng tiết kiệm
+                    Economical delivery
                   </WrapperValue>
                 </div>
               </WrapperInfo>
               <WrapperInfo>
                 <div>
-                  <Lable>Phương thức thanh toán</Lable>
+                  <Lable>Payment methods</Lable>
 
                   <WrapperValue>
                     {orderContant.payment[state?.payment]}
@@ -86,18 +86,18 @@ const OrderSucess = () => {
                       >
                         <span>
                           <span style={{ fontSize: "13px", color: "#242424" }}>
-                            Số lượng: {order?.amount}
+                            Amount: {order?.amount}
                           </span>
                         </span>
                         <span>
                           <span style={{ fontSize: "13px", color: "#242424" }}>
-                            Đơn giá: {convertPrice(order?.price)}
+                            Unit Price: {convertPrice(order?.price)}
                           </span>
                         </span>
                       </div>
                       <span>
                         <span style={{ fontSize: "13px", color: "#242424" }}>
-                          Giá tiền: {convertPrice(order?.price * order?.amount)}
+                          Price: {convertPrice(order?.price * order?.amount)}
                         </span>
                       </span>
                     </WrapperItemOrder>
@@ -113,7 +113,7 @@ const OrderSucess = () => {
                       justifyContent: "flex-end",
                     }}
                   >
-                    Tổng tiền: {convertPrice(state?.totalPriceMemo)}
+                    Total payment: {convertPrice(state?.totalPriceMemo)}
                   </span>
                 </div>
               </WrapperItemOrderInfo>

@@ -379,7 +379,7 @@ const AdminUser = () => {
 
   return (
     <div>
-      <WrapperHeader>Quản lý người dùng</WrapperHeader>
+      <WrapperHeader>user management</WrapperHeader>
       <div style={{ marginTop: "20px" }}>
         <TableComponent
           handleDelteMany={handleDelteManyUsers}
@@ -396,7 +396,7 @@ const AdminUser = () => {
         />
       </div>
       <DrawerComponent
-        title="Chi tiết người dùng"
+        title="User details"
         isOpen={isOpenDrawer}
         onClose={() => setIsOpenDrawer(false)}
         width="90%"
@@ -493,13 +493,13 @@ const AdminUser = () => {
         </Loading>
       </DrawerComponent>
       <ModalComponent
-        title="Xóa người dùng"
+        title="Delete users"
         open={isModalOpenDelete}
         onCancel={handleCancelDelete}
         onOk={handleDeleteUser}
       >
         <Loading isLoading={isLoadingDeleted}>
-          <div>Bạn có chắc xóa tài khoản này không?</div>
+          <div>Are you sure to delete this account?</div>
         </Loading>
       </ModalComponent>
     </div>

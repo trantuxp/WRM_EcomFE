@@ -11,21 +11,21 @@ import "../../../styles/category.css";
 
 const categoryData = [
   {
-    display: "Đồ ăn",
+    display: "Food",
     imgUrl: foodCategoryImg01,
   },
   {
-    display: "Đồ uống",
+    display: "Drink",
     imgUrl: foodCategoryImg02,
   },
 
   {
-    display: "Đồ chay",
+    display: "Vegatarian food",
     imgUrl: foodCategoryImg03,
   },
 
   {
-    display: "Bánh kem",
+    display: "Cake",
     imgUrl: foodCategoryImg04,
   },
 ];

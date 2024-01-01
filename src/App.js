@@ -22,6 +22,7 @@ import {
 } from "./store/shopping-cart/orderSlide";
 
 import * as CartService from "./services/CartService";
+import ChatbotButton from "./components/Chatbot/ChatbotButton";
 function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -168,6 +169,7 @@ function App() {
                 element={
                   <Layout>
                     <Page />
+                    <ChatbotButton />
                   </Layout>
                 }
               />

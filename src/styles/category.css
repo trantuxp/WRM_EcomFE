@@ -4,6 +4,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: 0.4s;
+  justify-content: center;
 }
 
 .category__item:hover {
