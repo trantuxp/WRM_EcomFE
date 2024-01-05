@@ -10,9 +10,9 @@ import ReactPaginate from "react-paginate";
 
 import { useDebounce } from "../hooks/useDebounce";
 import * as ProductService from "../services/ProductService";
+import * as SearchService from "../services/SearchService";
 import { useSelector, useDispatch } from "react-redux";
 import { searchProduct } from "../store/shopping-cart/productSlide";
-
 import "../styles/all-foods.css";
 import "../styles/pagination.css";
 
@@ -26,10 +26,12 @@ const AllFoods = () => {
   const searchPro = useSelector((state) => state?.product?.search);
   const searchDebounce = useDebounce(searchPro, 0);
   const [limit, setLimit] = useState();
+  const user = useSelector((state) => state?.user);
+
   const dispatch = useDispatch();
 
   const fetchProductAll = async () => {
-    const res = await ProductService.getAllProduct(searchDebounce, limit);
+    const res = await ProductService.getAllProduct(searchTerm, limit);
     if (res?.status === "OK") {
       setAllProducts(res?.data);
       setAllProductsOrigin(res?.data);
@@ -38,12 +40,15 @@ const AllFoods = () => {
 
   useEffect(() => {
     fetchProductAll();
-  }, []);
+  }, [searchDebounce]);
 
-  const onSearch = (e) => {
-    setSearchTerm(e.target.value);
-    dispatch(searchProduct(e.target.value));
-    fetchProductAll();
+  const onSearch = () => {
+    console.log("searchTerm", searchTerm);
+    dispatch(searchProduct(searchTerm));
+    const id = user?.id;
+    const content = searchTerm;
+    SearchService.createSearch({ id, content });
+    // fetchProductAll();
     // console.log("search", e.target.value);
   };
   return (
@@ -58,9 +63,15 @@ const AllFoods = () => {
                 <input
                   type="text"
                   placeholder="I'm looking for...."
-                  onChange={onSearch}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    console.log("setsearchTerm", searchTerm);
+                  }}
+                  value={searchTerm}
+                  name="search"
+                  style={{ width: "100%" }}
                 />
-                <span>
+                <span onClick={onSearch}>
                   <i className="ri-search-line"></i>
                 </span>
               </div>

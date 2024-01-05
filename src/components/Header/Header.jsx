@@ -92,6 +92,8 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setLoading(true);
     await UserService.logoutUser();
     dispatch(resetUser());
+    localStorage.setItem("access_token", "");
+    localStorage.setItem("refresh_token", "");
     localStorage.setItem("myid", "");
     dispatch(resetAllOrder());
     setLoading(false);

@@ -11,6 +11,8 @@ import "../../styles/product-details.css";
 import * as ProductService from "../../services/ProductService";
 import { useQuery } from "@tanstack/react-query";
 import * as message from "../Message/Message";
+import products from "../../assets/fake-data/products";
+
 import {
   addOrderProduct,
   resetOrder,
@@ -20,6 +22,8 @@ import * as CartService from "../../services/CartService";
 
 import { convertPrice } from "../../utils";
 import StarRatingUI from "../StarRatingUI/StarRatingUI";
+import ProductCard from "../UI/product-card/ProductCard";
+import { all } from "axios";
 
 const ProductDetailComponent = (idProduct) => {
   const [tab, setTab] = useState("desc");
@@ -33,48 +37,89 @@ const ProductDetailComponent = (idProduct) => {
   const id = "02";
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
-
+  const [allProducts, setAllProducts] = useState([]);
+  const [productDetail, setproductDetail] = useState([]);
   const order = useSelector((state) => state.order);
   const [errorLimitOrder, setErrorLimitOrder] = useState(false);
   const [numProduct, setNumProduct] = useState(1);
+
+  const product = products.find((product) => product.id === id);
+  const { title, price, category, desc, image01 } = product;
+  const relatedProduct = products.filter((item) => category === item.category);
 
   const fetchGetDetailsProduct = async () => {
     if (idProduct.idProduct.id) {
       const res = await ProductService.getDetailsProduct(
         idProduct.idProduct.id
       );
-      console.log("res.data", res.data);
-      return res.data;
+      setproductDetail(res.data);
     }
   };
 
-  const { isPending, data: productDetails } = useQuery({
-    queryKey: ["product-details"],
-    queryFn: fetchGetDetailsProduct,
-  });
+  // const { isPending, data: productDetail } = useQuery({
+  //   queryKey: ["product-details"],
+  //   queryFn: fetchGetDetailsProduct,
+  // });
+
+  useEffect(() => {
+    if (idProduct.idProduct.id) {
+      fetchGetDetailsProduct();
+    }
+  }, [idProduct.idProduct.id]);
+
+  const fetchGetRecommend = async (id) => {
+    const res = await ProductService.getRecommend(id);
+    if (res) {
+      setAllProducts(res);
+    }
+  };
+  const fetchGetRecommendNoId = async () => {
+    const res = await ProductService.getRecommendNoId();
+    if (res) {
+      setAllProducts(res);
+    }
+  };
+
+  // const { isPending: isloading, data: productRecommend } = useQuery({
+  //   queryKey: ["product-details"],
+  //   queryFn: fetchGetRecommend,
+  // });
+  useEffect(() => {
+    if (user.id) {
+      console.log("vo day 1");
+      fetchGetRecommend(user.id);
+    }
+  }, [user.id]);
+  useEffect(() => {
+    if (localStorage.getItem("myid") === "") {
+      console.log("vo day 2");
+
+      fetchGetRecommendNoId();
+    }
+  }, [localStorage.getItem("myid")]);
 
   const addItem = () => {
     if (!user?.id) {
       navigate("/login");
     } else {
       const orderRedux = order?.orderItems?.find(
-        (item) => item.product === productDetails?._id
+        (item) => item.product === productDetail?._id
       );
       console.log("orderRedux", orderRedux);
       if (
         orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
-        (!orderRedux && productDetails?.countInStock > 0)
+        (!orderRedux && productDetail?.countInStock > 0)
       ) {
         if (orderRedux) {
           console.log("orderRedux.amount", orderRedux.amount);
-          const idItem = productDetails?._id;
+          const idItem = productDetail?._id;
           const amount = orderRedux.amount + numProduct;
           const idUser = user?.id;
           CartService.UpdateCart(idItem, amount, idUser);
         } else {
-          const idItem = productDetails?._id;
+          const idItem = productDetail?._id;
           const amount = numProduct;
-          const totalPrice = productDetails?.price * amount;
+          const totalPrice = productDetail?.price * amount;
           const idUser = user?.id;
           CartService.createCart({ idItem, amount, totalPrice, idUser });
         }
@@ -82,14 +127,14 @@ const ProductDetailComponent = (idProduct) => {
         dispatch(
           addOrderProduct({
             orderItem: {
-              name: productDetails?.name,
+              name: productDetail?.name,
               amount: numProduct,
-              image: productDetails?.image,
-              price: productDetails?.price,
-              product: productDetails?._id,
-              discount: productDetails?.discount,
-              countInstock: productDetails?.countInStock,
-              idStore: productDetails?.idStore,
+              image: productDetail?.image,
+              price: productDetail?.price,
+              product: productDetail?._id,
+              discount: productDetail?.discount,
+              countInstock: productDetail?.countInStock,
+              idStore: productDetail?.idStore,
             },
           })
         );
@@ -110,7 +155,7 @@ const ProductDetailComponent = (idProduct) => {
   };
 
   const incrementItem = () => {
-    if (numProduct <= productDetails?.countInStock)
+    if (numProduct <= productDetail?.countInStock)
       setNumProduct((prevCount) => prevCount + 1);
   };
 
@@ -122,64 +167,40 @@ const ProductDetailComponent = (idProduct) => {
 
   return (
     <Helmet title="Product-details">
-      <CommonSection title={productDetails?.name} />
+      <CommonSection title={productDetail?.name} />
 
       <section>
         <Container>
           <Row>
-            {/* <Col lg="2" md="2">
-              <div className="product__images ">
-                <div
-                  className="img__item mb-3"
-                  onClick={() => setPreviewImg(product.image01)}
-                >
-                  <img src={product.image01} alt="" className="w-50" />
-                </div>
-                <div
-                  className="img__item mb-3"
-                  onClick={() => setPreviewImg(product.image02)}
-                >
-                  <img src={product.image02} alt="" className="w-50" />
-                </div>
-
-                <div
-                  className="img__item"
-                  onClick={() => setPreviewImg(product.image03)}
-                >
-                  <img src={product.image03} alt="" className="w-50" />
-                </div>
-              </div>
-            </Col> */}
-
             <Col lg="4" md="4">
               <div className="product__main-img">
-                <img src={productDetails?.image} alt="" className="w-100" />
+                <img src={productDetail?.image} alt="" className="w-100" />
               </div>
             </Col>
 
             <Col lg="6" md="6">
               <div className="single__product-content">
-                <h2 className="product__title mb-3">{productDetails?.name}</h2>
+                <h2 className="product__title mb-3">{productDetail?.name}</h2>
                 <p className="product__price">
                   <span
                     style={{
                       textDecoration: "underline",
                     }}
                   >
-                    {productDetails?.rating}
+                    {productDetail?.rating}
                   </span>
                   <span>
                     <StarRatingUI
-                      rating={productDetails?.rating}
+                      rating={productDetail?.rating}
                       color={"lightgray"}
                     ></StarRatingUI>
                   </span>
                 </p>
                 <p className="product__price">
-                  Price: <span>{convertPrice(productDetails?.price)} </span>
+                  Price: <span>{convertPrice(productDetail?.price)} </span>
                 </p>
                 <p className="category mb-3">
-                  Category: <span>{productDetails?.type}</span>
+                  Category: <span>{productDetail?.type}</span>
                 </p>
                 <p className="category-input mb-5">
                   Amount:
@@ -223,7 +244,7 @@ const ProductDetailComponent = (idProduct) => {
 
               {tab === "desc" ? (
                 <div className="tab__content">
-                  <p>{productDetails?.description}</p>
+                  <p>{productDetail?.description}</p>
                 </div>
               ) : (
                 <div className="tab__form mb-3">
@@ -292,14 +313,21 @@ const ProductDetailComponent = (idProduct) => {
             </Col>
 
             <Col lg="12" className="mb-5 mt-4">
-              {/* <h2 className="related__Product-title">You might also like</h2> */}
+              {allProducts.length > 0 && (
+                <h2 className="related__Product-title">You might also like</h2>
+              )}
             </Col>
 
-            {/* {relatedProduct.map((item) => (
+            {allProducts.map((item) => (
               <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
-                <ProductCard item={item} />
+                <ProductCard item={item.products[0]} />
+                {/* {localStorage.getItem("myid") !== "" ? (
+                  
+                ) : (
+                  <ProductCard item={item} />
+                )} */}
               </Col>
-            ))} */}
+            ))}
           </Row>
         </Container>
       </section>

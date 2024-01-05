@@ -82,3 +82,15 @@ export const getAllTypeProduct = async () => {
   );
   return res.data;
 };
+export const getRecommend = async (id) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/product/get-recommend/${id}`
+  );
+  return res.data;
+};
+export const getRecommendNoId = async () => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/product/get-recommend-no-id`
+  );
+  return res.data;
+};
