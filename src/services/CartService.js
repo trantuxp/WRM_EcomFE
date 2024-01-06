@@ -24,6 +24,13 @@ export const deleteCart = async (id, idUser) => {
   );
   return res.data;
 };
+export const deleteManyCart = async (ids, idUser) => {
+  console.log("ids", ids);
+  const res = await axiosJWT.delete(
+    `${process.env.REACT_APP_API_URL}/cart/delete-many?ids=${ids}&idUser=${idUser}`
+  );
+  return res.data;
+};
 
 export const createCart = async (data) => {
   const res = await axios.post(

@@ -18,15 +18,24 @@ export const createEvaluate = async (data) => {
 
 export const createReplyEvaluate = async (data) => {
   const res = await axios.post(
-    `${process.env.REACT_APP_API_URL}/reply/create/`,
+    `${process.env.REACT_APP_API_URL}/reply/create`,
     data
   );
 
   return res.data;
 };
-export const getReplyEvaluate = async (id) => {
+export const getReplyEvaluate = async (id, idUser) => {
+  console.log("api data", idUser);
   const res = await axios.get(
-    `${process.env.REACT_APP_API_URL}/reply/get-by-evaluate/${id}`
+    `${process.env.REACT_APP_API_URL}/reply/get-by-evaluate/${id}?idUser=${idUser}`
+  );
+
+  return res.data;
+};
+export const getEvaluateByItem = async (data) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/evaluate/get-by-item`,
+    data
   );
 
   return res.data;
@@ -35,6 +44,14 @@ export const updateReplyEvaluate = async (id, content) => {
   const res = await axiosJWT.put(
     `${process.env.REACT_APP_API_URL}/reply/update/${id}`,
     { content: content }
+  );
+
+  return res.data;
+};
+export const updateEvaluate = async (id, data) => {
+  const res = await axiosJWT.put(
+    `${process.env.REACT_APP_API_URL}/evaluate/update/${id}`,
+    data
   );
 
   return res.data;

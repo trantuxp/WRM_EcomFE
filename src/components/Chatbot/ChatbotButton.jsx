@@ -28,7 +28,7 @@ const ChatbotButton = () => {
         border: "none",
         borderRadius: "50%",
         cursor: "pointer",
-        width: "5%",
+        width: "4%",
       }}
     >
       <img src={logo} style={{ width: "100%" }} />

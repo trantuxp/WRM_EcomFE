@@ -42,12 +42,13 @@ const CartItem = ({ item }) => {
               {amount}x <span>{amount * price} VND</span>
             </p>
             <div className=" d-flex align-items-center justify-content-between increase__decrease-btn">
-              <span className="increase__btn" onClick={incrementItem}>
-                <i className="ri-add-line"></i>
-              </span>
-              <span className="quantity">{amount}</span>
               <span className="decrease__btn" onClick={decreaseItem}>
                 <i className="ri-subtract-line"></i>
+              </span>
+              <span className="quantity">{amount}</span>
+
+              <span className="increase__btn" onClick={incrementItem}>
+                <i className="ri-add-line"></i>
               </span>
             </div>
           </div>

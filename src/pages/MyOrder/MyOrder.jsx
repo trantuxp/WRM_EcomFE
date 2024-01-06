@@ -74,7 +74,7 @@ const MyOrderPage = () => {
     } else if (isErrorCancle) {
       message.error();
     }
-  }, [isErrorCancle, isSuccessCancel]);
+  }, [isSuccessCancel]);
 
   const renderProduct = (data) => {
     return data?.map((order) => {

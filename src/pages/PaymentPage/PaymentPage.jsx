@@ -17,6 +17,7 @@ import ModalComponent from "../../components/ModalComponent/ModalComponent";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import * as UserService from "../../services/UserService";
+import * as CartService from "../../services/CartService";
 import * as OrderService from "../../services/OrderService";
 import Loading from "../../components/LoadingComponent/Loading";
 import * as message from "../../components/Message/Message";
@@ -139,6 +140,11 @@ const PaymentPage = () => {
     const res = OrderService.createOrder({ ...rests }, token);
     return res;
   });
+  const mutationDeleteManyCart = useMutationHooks((data) => {
+    const ids = data;
+    const res = CartService.deleteManyCart(ids, user.id);
+    return res;
+  });
 
   const { isPending, data } = mutationUpdate;
   const {
@@ -147,6 +153,12 @@ const PaymentPage = () => {
     isSuccess,
     isError,
   } = mutationAddOrder;
+  const {
+    data: dataDeletedCart,
+    isPending: isLoadingDeletedCart,
+    isSuccessDeletedCart,
+    isErrorDeletedCart,
+  } = mutationDeleteManyCart;
 
   useEffect(() => {
     if (isSuccess && dataAdd?.status === "OK") {
@@ -154,6 +166,7 @@ const PaymentPage = () => {
       order?.orderItemsSlected?.forEach((element) => {
         arrayOrdered.push(element.product);
       });
+      mutationDeleteManyCart.mutate(arrayOrdered);
       dispatch(removeAllOrderProduct({ listChecked: arrayOrdered }));
       message.success("Order Success");
       navigate("/orderSuccess", {

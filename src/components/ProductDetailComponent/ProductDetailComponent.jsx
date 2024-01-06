@@ -62,9 +62,7 @@ const ProductDetailComponent = (idProduct) => {
   // });
 
   useEffect(() => {
-    if (idProduct.idProduct.id) {
-      fetchGetDetailsProduct();
-    }
+    fetchGetDetailsProduct();
   }, [idProduct.idProduct.id]);
 
   const fetchGetRecommend = async (id) => {
@@ -205,12 +203,13 @@ const ProductDetailComponent = (idProduct) => {
                 <p className="category-input mb-5">
                   Amount:
                   <div className=" d-flex align-items-center justify-content-between text-center  increase__decrease-btn ">
-                    <span className="increase__btn" onClick={incrementItem}>
-                      <i className="ri-add-line"></i>
-                    </span>
-                    <span className="quantity">{numProduct}</span>
                     <span className="decrease__btn" onClick={decreaseItem}>
                       <i className="ri-subtract-line "></i>
+                    </span>
+                    <span className="quantity">{numProduct}</span>
+
+                    <span className="increase__btn" onClick={incrementItem}>
+                      <i className="ri-add-line"></i>
                     </span>
                   </div>
                 </p>

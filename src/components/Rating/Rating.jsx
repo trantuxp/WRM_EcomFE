@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-const Rating = ({ initialRating }) => {
+const Rating = ({ initialRating, onRatingChange }) => {
   const [rating, setRating] = useState(initialRating || 0);
 
   const handleStarClick = (selectedRating) => {
     setRating(selectedRating);
 
-    // onRatingChange(selectedRating);
+    if (onRatingChange) {
+      onRatingChange(selectedRating);
+    }
   };
 
   return (
