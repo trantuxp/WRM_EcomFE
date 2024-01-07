@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 
-const StarRatingUI = ({ rating, color = "white" }) => {
+const StarRatingUI = ({ rating, color = "white", fontSize = "1em" }) => {
   const stars = Array.from({ length: 5 }, (_, index) => {
     let starIcon;
     if (index < Math.floor(rating)) {
@@ -22,7 +22,7 @@ const StarRatingUI = ({ rating, color = "white" }) => {
         icon={starIcon}
         style={{
           color: index < rating ? "gold" : color, // Màu vàng khi được chọn, màu xám khi không được chọn
-          fontSize: "1em",
+          fontSize: fontSize,
         }}
       />
     );

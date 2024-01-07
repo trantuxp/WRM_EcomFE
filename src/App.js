@@ -169,7 +169,7 @@ function App() {
                 element={
                   <Layout>
                     <Page />
-                    <ChatbotButton />
+                    {/* <ChatbotButton /> */}
                   </Layout>
                 }
               />

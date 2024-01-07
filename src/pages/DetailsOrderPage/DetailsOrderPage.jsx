@@ -13,7 +13,7 @@ import {
 } from "./style";
 import { useSelector } from "react-redux";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import * as OrderService from "../../services/OrderService";
 import * as EvaluateService from "../../services/EvaluateService";
@@ -21,10 +21,12 @@ import { useQuery } from "@tanstack/react-query";
 import { orderContant } from "../../contant";
 import { convertPrice } from "../../utils";
 import { useMemo } from "react";
+
 import Loading from "../../components/LoadingComponent/Loading";
 import Rating from "../../components/Rating/Rating";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
+
 const DetailsOrderPage = () => {
   const [isOpenModalRating, setIsOpenModalRating] = useState(false);
   const [contentE, setContentE] = useState("");
@@ -33,6 +35,7 @@ const DetailsOrderPage = () => {
   const params = useParams();
   const user = useSelector((state) => state.user);
   const { id } = params;
+  const navigate = useNavigate();
 
   const fetchDetailsOrder = async () => {
     const res = await OrderService.getDetailsOrder(id, user?.token);
@@ -67,7 +70,10 @@ const DetailsOrderPage = () => {
     return result;
   }, [data]);
 
-  const HandleRating = () => {
+  const HandleRating = (idOrder, data) => {
+    navigate(`/details-order-item/${idOrder}`, {
+      state: data,
+    });
     setIsOpenModalRating(true);
   };
 
@@ -78,7 +84,6 @@ const DetailsOrderPage = () => {
   const handleAddEvaluate = async (rating, contentE) => {
     console.log(` Selected Rating: ${rating}`);
     console.log(` contentE: ${contentE}`);
-    // createEvaluate();
   };
   return (
     <Loading isLoading={isPending}>
@@ -142,11 +147,6 @@ const DetailsOrderPage = () => {
               <WrapperItemLabel>Evaluate</WrapperItemLabel>
             </div>
             {data?.orderItems?.map((order, key) => {
-              // const queryEvaluate = fetchGetEvaluateByItem(
-              //   user.id,
-              //   order?.product
-              // );
-              // console.log("queryEvaluate", queryEvaluate);
               return (
                 <div>
                   <WrapperProduct key={order?._id}>
@@ -171,230 +171,31 @@ const DetailsOrderPage = () => {
                         ? convertPrice((priceMemo * order?.discount) / 100)
                         : "0 VND"}
                     </WrapperItem>
-                    <WrapperItem
-                      onClick={() => {
-                        HandleRating();
-                      }}
-                    >
-                      Evaluate
-                    </WrapperItem>
+
+                    {!data?.isDelivered ? (
+                      <WrapperItem
+                        style={{ color: "black" }}
+                        // onClick={() => {
+                        //   HandleRating(id, order);
+                        // }}
+                      >
+                        Evaluate
+                      </WrapperItem>
+                    ) : (
+                      <WrapperItem
+                        onClick={() => {
+                          HandleRating(id, order);
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Let's Evaluate
+                      </WrapperItem>
+                    )}
                   </WrapperProduct>
-                  {isOpenModalRating && (
-                    <div
-                      style={{
-                        backgroundColor: "white",
-                        marginTop: "5px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          backgroundColor: "white",
-                          padding: "10px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 1,
-                            paddingLeft: "20px",
-                          }}
-                        >
-                          Content rated:
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 4,
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          <InputComponent
-                            placeholder={"Content Evaluate"}
-                            name="content"
-                            onChange={(e) => setContentE(e.target.value)}
-                          ></InputComponent>
-                          {/* {queryEvaluate.content} */}
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 1,
-                            paddingLeft: "20px",
-                          }}
-                        >
-                          Product reviews:
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 2,
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          <Rating onRatingChange={handleRatingChange}></Rating>
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          backgroundColor: "white",
-                          padding: "10px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 1,
-                            paddingLeft: "20px",
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 4,
-                            alignItems: "flex-start",
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 1,
-                            paddingLeft: "20px",
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex: 2,
-                            justifyContent: "flex-end",
-                            paddingRight: "10px",
-                          }}
-                        >
-                          <ButtonComponent
-                            onClick={() => handleAddEvaluate(rating, contentE)}
-                            size={40}
-                            styleButton={{
-                              background: "rgb(255, 57, 69)",
-                              height: "50%",
-                              width: "50%",
-                              border: "none",
-                              borderRadius: "4px",
-                            }}
-                            textbutton={"Submit"}
-                            styleTextButton={{
-                              color: "#fff",
-                              fontSize: "15px",
-                              fontWeight: "700",
-                            }}
-                          ></ButtonComponent>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               );
             })}
 
-            <div
-              style={{
-                backgroundColor: "white",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flex: 1,
-                  backgroundColor: "white",
-                  padding: "10px",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flex: 1,
-                    paddingLeft: "20px",
-                  }}
-                >
-                  Content rated:
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: 4,
-                    alignItems: "flex-start",
-                  }}
-                >
-                  {"Conte"}
-                </div>
-                <div style={{ display: "flex", flex: 1, paddingLeft: "20px" }}>
-                  Product reviews:
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: 2,
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <Rating></Rating>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flex: 1,
-                  backgroundColor: "white",
-                  padding: "10px",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{ display: "flex", flex: 1, paddingLeft: "20px" }}
-                ></div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: 4,
-                    alignItems: "flex-start",
-                  }}
-                ></div>
-                <div
-                  style={{ display: "flex", flex: 1, paddingLeft: "20px" }}
-                ></div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: 2,
-                    justifyContent: "flex-end",
-                    paddingRight: "10px",
-                  }}
-                >
-                  <ButtonComponent
-                    // onClick={() => handleAddOrder()}
-                    size={40}
-                    styleButton={{
-                      background: "rgb(255, 57, 69)",
-                      height: "50%",
-                      width: "50%",
-                      border: "none",
-                      borderRadius: "4px",
-                    }}
-                    textbutton={"Submit"}
-                    styleTextButton={{
-                      color: "#fff",
-                      fontSize: "15px",
-                      fontWeight: "700",
-                    }}
-                  ></ButtonComponent>
-                </div>
-              </div>
-            </div>
             <div style={{ backgroundColor: "white", padding: "10px" }}>
               <WrapperAllPrice>
                 <WrapperItemLabel>

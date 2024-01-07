@@ -37,7 +37,7 @@ const ProductDetailComponent = (idProduct) => {
   const id = "02";
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
-  const [allProducts, setAllProducts] = useState([]);
+  const [recommendProducts, setRecommendProducts] = useState([]);
   const [productDetail, setproductDetail] = useState([]);
   const order = useSelector((state) => state.order);
   const [errorLimitOrder, setErrorLimitOrder] = useState(false);
@@ -68,30 +68,23 @@ const ProductDetailComponent = (idProduct) => {
   const fetchGetRecommend = async (id) => {
     const res = await ProductService.getRecommend(id);
     if (res) {
-      setAllProducts(res);
+      setRecommendProducts(res);
     }
   };
   const fetchGetRecommendNoId = async () => {
     const res = await ProductService.getRecommendNoId();
     if (res) {
-      setAllProducts(res);
+      setRecommendProducts(res);
     }
   };
 
-  // const { isPending: isloading, data: productRecommend } = useQuery({
-  //   queryKey: ["product-details"],
-  //   queryFn: fetchGetRecommend,
-  // });
   useEffect(() => {
     if (user.id) {
-      console.log("vo day 1");
       fetchGetRecommend(user.id);
     }
   }, [user.id]);
   useEffect(() => {
     if (localStorage.getItem("myid") === "") {
-      console.log("vo day 2");
-
       fetchGetRecommendNoId();
     }
   }, [localStorage.getItem("myid")]);
@@ -219,6 +212,7 @@ const ProductDetailComponent = (idProduct) => {
                     {!user?.name || "Shop Food"}
                   </Link>
                 </p>
+                <p className="category ">Open: 8:00 - 23:00</p>
                 <button onClick={addItem} className="addTOCart__btn">
                   Add to Cart
                 </button>
@@ -312,12 +306,12 @@ const ProductDetailComponent = (idProduct) => {
             </Col>
 
             <Col lg="12" className="mb-5 mt-4">
-              {allProducts.length > 0 && (
+              {recommendProducts.length > 0 && (
                 <h2 className="related__Product-title">You might also like</h2>
               )}
             </Col>
 
-            {allProducts.map((item) => (
+            {recommendProducts.map((item) => (
               <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
                 <ProductCard item={item.products[0]} />
                 {/* {localStorage.getItem("myid") !== "" ? (

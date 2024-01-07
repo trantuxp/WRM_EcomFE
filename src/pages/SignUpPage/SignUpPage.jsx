@@ -76,7 +76,7 @@ const SignUpPage = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "rgba(0, 0, 0, 0.53)",
+        background: "lightgray",
         height: "100vh",
       }}
     >

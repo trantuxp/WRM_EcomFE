@@ -38,6 +38,7 @@ import {
   resetAllOrder,
   addOrderProduct,
 } from "../store/shopping-cart/orderSlide";
+import ChatbotButton from "../components/Chatbot/ChatbotButton.jsx";
 
 // import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 const featureData = [

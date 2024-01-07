@@ -16,6 +16,7 @@ import OrderSucess from "../pages/OrderSuccess/OrderSuccess";
 import MyOrderPage from "../pages/MyOrder/MyOrder";
 import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage";
 import EvaluateStore from "../components/EvaluateStore/EvaluateStore";
+import DetailOrderItemPage from "../pages/DetailOrderItemPage/DetailOrderItemPage";
 
 export const routes = [
   {
@@ -41,6 +42,11 @@ export const routes = [
   {
     path: "/foods/:id",
     page: FoodDetails,
+    isShowHeader: true,
+  },
+  {
+    path: "/details-order-item/:id",
+    page: DetailOrderItemPage,
     isShowHeader: true,
   },
   {

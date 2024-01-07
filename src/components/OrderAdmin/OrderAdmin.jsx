@@ -1,5 +1,4 @@
 import { Button, Form, Space } from "antd";
-import React from "react";
 import { WrapperHeader, WrapperUploadFile } from "./style";
 import TableComponent from "../TableComponent/TableComponent";
 import InputComponent from "../InputComponent/InputComponent";
@@ -7,7 +6,6 @@ import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import Loading from "../LoadingComponent/Loading";
 import ModalComponent from "../ModalComponent/ModalComponent";
 import { convertPrice, getBase64 } from "../../utils";
-import { useEffect } from "react";
 import * as message from "../Message/Message";
 
 import * as OrderService from "../../services/OrderService";
@@ -16,14 +14,27 @@ import {
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { orderContant } from "../../contant";
 import PieChartComponent from "./PieChart";
+import React, { useState, useEffect, useRef } from "react";
+import { useMutationHooks } from "../../hooks/useMutationHook";
 
 const OrderAdmin = () => {
   const user = useSelector((state) => state?.user);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [orderItem, setOrderItem] = useState([]);
+  const [rowSelected, setRowSelected] = useState("");
 
+  const handleCancelDelete = () => {
+    setIsModalOpenDelete(false);
+  };
+  const handleCancelUpdate = () => {
+    setIsModalOpenUpdate(false);
+  };
   const getAllOrder = async () => {
     const res = await OrderService.getAllOrder(user?.access_token);
     return res;
@@ -111,7 +122,53 @@ const OrderAdmin = () => {
     //     text
     //   ),
   });
+  const mutationDeleted = useMutationHooks((data) => {
+    const { id, token, orderItems, userId } = data;
 
+    const res = OrderService.cancelOrder(id, token, orderItems, userId);
+    return res;
+  });
+  const {
+    data: dataDeleted,
+    isPending: isLoadingDeleted,
+    isSuccess: isSuccessDelected,
+    isError: isErrorDeleted,
+  } = mutationDeleted;
+  const handleDeleteProduct = () => {
+    mutationDeleted.mutate(
+      {
+        id: rowSelected,
+        token: user?.token,
+        orderItems: orderItem,
+        userId: user.id,
+      },
+      {
+        onSettled: () => {
+          queryOrder.refetch();
+        },
+      }
+    );
+    setIsModalOpenDelete(false);
+  };
+  const renderAction = () => {
+    return (
+      <div>
+        <CheckOutlined
+          style={{
+            color: "orange",
+            fontSize: "30px",
+            cursor: "pointer",
+            marginRight: "5px",
+          }}
+          onClick={() => setIsModalOpenUpdate(true)}
+        />
+        <DeleteOutlined
+          style={{ color: "red", fontSize: "30px", cursor: "pointer" }}
+          onClick={() => setIsModalOpenDelete(true)}
+        />
+      </div>
+    );
+  };
   const columns = [
     {
       title: "User name",
@@ -155,6 +212,11 @@ const OrderAdmin = () => {
       sorter: (a, b) => a.totalPrice.length - b.totalPrice.length,
       ...getColumnSearchProps("totalPrice"),
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: renderAction,
+    },
   ];
 
   const dataTable =
@@ -173,6 +235,34 @@ const OrderAdmin = () => {
         totalPrice: convertPrice(order?.totalPrice),
       };
     });
+
+  const mutationUpdate = useMutationHooks((id) => {
+    const res = OrderService.updateStateOrder(id);
+    return res;
+  });
+
+  const {
+    data: dataUpdated,
+    isPending: isLoadingUpdated,
+    isSuccess: isSuccessUpdated,
+    isError: isErrorUpdated,
+  } = mutationUpdate;
+  const onUpdateOrder = () => {
+    mutationUpdate.mutate(rowSelected, {
+      onSettled: () => {
+        queryOrder.refetch();
+      },
+    });
+    setIsModalOpenUpdate(false);
+  };
+
+  useEffect(() => {
+    if (isSuccessUpdated && dataUpdated?.status === "OK") {
+      message.success();
+    } else if (isErrorUpdated) {
+      message.error();
+    }
+  }, [isSuccessUpdated]);
 
   return (
     <div>
@@ -193,8 +283,36 @@ const OrderAdmin = () => {
           columns={columns}
           isLoading={isLoadingOrders}
           data={dataTable}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                setRowSelected(record._id);
+                setOrderItem(record.orderItems);
+              }, // click row
+            };
+          }}
         />
       </div>
+      <ModalComponent
+        title="Cancel Order"
+        open={isModalOpenDelete}
+        onCancel={handleCancelDelete}
+        onOk={handleDeleteProduct}
+      >
+        <Loading isLoading={isLoadingDeleted}>
+          <div>Are you sure to cancel this order?</div>
+        </Loading>
+      </ModalComponent>
+      <ModalComponent
+        title="Confirm paid Order"
+        open={isModalOpenUpdate}
+        onCancel={handleCancelUpdate}
+        onOk={onUpdateOrder}
+      >
+        <Loading isLoading={isLoadingUpdated}>
+          <div>Are you sure your order has been paid?</div>
+        </Loading>
+      </ModalComponent>
     </div>
   );
 };

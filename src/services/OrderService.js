@@ -43,3 +43,15 @@ export const getAllOrder = async (access_token) => {
   );
   return res.data;
 };
+export const updateStateOrder = async (id) => {
+  const res = await axiosJWT.put(
+    `${process.env.REACT_APP_API_URL}/order/update/${id}`
+  );
+  return res.data;
+};
+export const updateStateDeliveryOrder = async (id) => {
+  const res = await axiosJWT.put(
+    `${process.env.REACT_APP_API_URL}/order/update-delivery/${id}`
+  );
+  return res.data;
+};

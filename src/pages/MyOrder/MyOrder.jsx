@@ -76,6 +76,39 @@ const MyOrderPage = () => {
     }
   }, [isSuccessCancel]);
 
+  const mutationConfirm = useMutationHooks((id) => {
+    const res = OrderService.updateStateDeliveryOrder(id);
+    return res;
+  });
+
+  const handleConfirmOrder = (id) => {
+    mutationConfirm.mutate(
+      id,
+
+      {
+        onSuccess: () => {
+          queryOrder.refetch();
+        },
+      }
+    );
+  };
+  const {
+    isPending: isLoadingConfirm,
+    isSuccess: isSuccessConfirm,
+    isError: isErrorConfirm,
+    data: dataConfirm,
+  } = mutationConfirm;
+
+  useEffect(() => {
+    if (isSuccessConfirm && dataConfirm?.status === "OK") {
+      message.success();
+    } else if (isSuccessConfirm && dataConfirm?.status === "ERR") {
+      message.error(dataConfirm?.message);
+    } else if (isErrorConfirm) {
+      message.error();
+    }
+  }, [isSuccessConfirm]);
+
   const renderProduct = (data) => {
     return data?.map((order) => {
       return (
@@ -114,8 +147,14 @@ const MyOrderPage = () => {
   return (
     <Loading isLoading={isPending || isLoadingCancel}>
       <WrapperContainer>
-        <div style={{ height: "100%", width: "1270px", margin: "0 auto" }}>
-          <h5 style={{ padding: "10px" }}>My order</h5>
+        <div style={{ height: "100%", width: "1220px", margin: "0 auto" }}>
+          <h5
+            style={{
+              padding: "10px",
+            }}
+          >
+            My order
+          </h5>
           <WrapperListOrder>
             {data?.map((order) => {
               return (
@@ -164,6 +203,17 @@ const MyOrderPage = () => {
                       </span>
                     </div>
                     <div style={{ display: "flex", gap: "10px" }}>
+                      <ButtonComponent
+                        onClick={() => handleConfirmOrder(order._id)}
+                        size={40}
+                        styleButton={{
+                          height: "36px",
+                          border: "1px solid #9255FD",
+                          borderRadius: "4px",
+                        }}
+                        textbutton={"Confirm delivered"}
+                        styleTextButton={{ color: "#9255FD", fontSize: "14px" }}
+                      ></ButtonComponent>
                       <ButtonComponent
                         onClick={() => handleCanceOrder(order)}
                         size={40}

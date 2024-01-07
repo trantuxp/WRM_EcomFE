@@ -38,14 +38,17 @@ import StepComponent from "../components/StepComponent/StepComponent";
 import ModalComponent from "../components/ModalComponent/ModalComponent";
 import InputComponent from "../components/InputComponent/InputComponent";
 import * as UserService from "../services/UserService";
+import * as ProductService from "../services/ProductService";
 import Loading from "../components/LoadingComponent/Loading";
 import * as message from "../components/Message/Message";
 import { updateUser } from "../store/shopping-cart/userSlide";
+import ProductCard from "../components//UI/product-card/ProductCard";
 
 const Cart = () => {
   const cartProducts1 = useSelector((state) => state.order);
   const [carts1, setCarts1] = useState([]);
   const dispatch = useDispatch();
+  const [recommendProducts, setRecommendProducts] = useState([]);
   const order = useSelector((state) => state.order);
   const user = useSelector((state) => state.user);
   const [listChecked, setListChecked] = useState([]);
@@ -223,6 +226,30 @@ const Cart = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const fetchGetRecommend = async (id) => {
+    const res = await ProductService.getRecommend(id);
+    if (res) {
+      setRecommendProducts(res);
+    }
+  };
+  const fetchGetRecommendNoId = async () => {
+    const res = await ProductService.getRecommendNoId();
+    if (res) {
+      setRecommendProducts(res);
+    }
+  };
+
+  useEffect(() => {
+    if (user.id) {
+      fetchGetRecommend(user.id);
+    }
+  }, [user.id]);
+  useEffect(() => {
+    if (localStorage.getItem("myid") === "") {
+      fetchGetRecommendNoId();
+    }
+  }, [localStorage.getItem("myid")]);
   return (
     <Helmet title="Cart">
       <CommonSection title="Your Cart" />
@@ -359,6 +386,22 @@ const Cart = () => {
                 </div>
               </div>
             </Col>
+            <Col lg="12" className="mb-5 mt-4">
+              {recommendProducts.length > 0 && (
+                <h2 className="related__Product-title">You might also like</h2>
+              )}
+            </Col>
+
+            {recommendProducts.map((item) => (
+              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
+                <ProductCard item={item.products[0]} />
+                {/* {localStorage.getItem("myid") !== "" ? (
+                  
+                ) : (
+                  <ProductCard item={item} />
+                )} */}
+              </Col>
+            ))}
           </Row>
         </Container>
       </section>

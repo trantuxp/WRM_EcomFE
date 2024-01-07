@@ -832,7 +832,7 @@ const AdminProduct = () => {
         </Loading>
       </DrawerComponent>
       <ModalComponent
-        title="Xóa sản phẩm"
+        title="Delete Product"
         open={isModalOpenDelete}
         onCancel={handleCancelDelete}
         onOk={handleDeleteProduct}
