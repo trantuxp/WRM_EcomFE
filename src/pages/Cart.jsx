@@ -227,12 +227,12 @@ const Cart = () => {
     });
   };
 
-  const fetchGetRecommend = async (id) => {
-    const res = await ProductService.getRecommend(id);
-    if (res) {
-      setRecommendProducts(res);
-    }
-  };
+  // const fetchGetRecommend = async (id) => {
+  //   const res = await ProductService.getRecommend(id);
+  //   if (res) {
+  //     setRecommendProducts(res);
+  //   }
+  // };
   const fetchGetRecommendNoId = async () => {
     const res = await ProductService.getRecommendNoId();
     if (res) {
@@ -240,11 +240,11 @@ const Cart = () => {
     }
   };
 
-  useEffect(() => {
-    if (user.id) {
-      fetchGetRecommend(user.id);
-    }
-  }, [user.id]);
+  // useEffect(() => {
+  //   if (user.id) {
+  //     fetchGetRecommend(user.id);
+  //   }
+  // }, [user.id]);
   useEffect(() => {
     if (localStorage.getItem("myid") === "") {
       fetchGetRecommendNoId();
@@ -309,14 +309,7 @@ const Cart = () => {
                   </thead>
                   <tbody>
                     {cartProducts1?.orderItems?.map((item) => (
-                      // <Tr
-                      //   item={item}
-                      //   key={item.id}
-                      //   listChecked={listChecked}
-                      //   setListChecked={updatelistCheckedState}
-                      // />
-
-                      <tr>
+                      <tr key={item.product}>
                         <td className="text-center ">
                           <CustomCheckbox
                             onChange={onChange}
@@ -393,7 +386,7 @@ const Cart = () => {
             </Col>
 
             {recommendProducts.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
+              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item._id}>
                 <ProductCard item={item.products[0]} />
                 {/* {localStorage.getItem("myid") !== "" ? (
                   
@@ -416,7 +409,8 @@ const Cart = () => {
             name="basic"
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 20 }}
-            // onFinish={onUpdateUser}
+            onFinish={""}
+            onFinishFailed={""}
             autoComplete="on"
             form={form}
           >

@@ -6,6 +6,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@kommunicate/kommunicate-chatbot-plugin": "^0.0.7",
     "@reduxjs/toolkit": "^1.6.2",
     "@tanstack/react-query": "^5.8.9",
     "@tanstack/react-query-devtools": "^5.8.9",

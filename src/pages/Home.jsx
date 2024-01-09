@@ -275,7 +275,7 @@ const Home = () => {
             </Col>
 
             {allProducts.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mt-5">
+              <Col lg="3" md="4" sm="6" xs="6" key={item._id} className="mt-5">
                 <ProductCard item={item} />
               </Col>
             ))}
@@ -336,7 +336,7 @@ const Home = () => {
             </Col>
 
             {hotPizza.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" key={item.id}>
+              <Col lg="3" md="4" sm="6" xs="6" key={item._id}>
                 <ProductCard item={item} />
               </Col>
             ))}

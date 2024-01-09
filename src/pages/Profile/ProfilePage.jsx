@@ -90,6 +90,7 @@ const ProfilePage = () => {
       avatar,
       access_token: user?.access_token,
     });
+    window.location.reload();
   };
   return (
     <div

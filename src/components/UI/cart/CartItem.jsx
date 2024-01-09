@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ListGroupItem } from "reactstrap";
 
 import "../../../styles/cart-item.css";
+import * as CartService from "../../../services/CartService";
 
 import { useDispatch } from "react-redux";
 
@@ -11,22 +12,33 @@ import {
   removeOrderProduct,
 } from "../../../store/shopping-cart/orderSlide";
 const CartItem = ({ item }) => {
-  const { product, name, price, image, amount } = item;
+  const { product, name, price, image, amount, countInstock } = item;
   console.log("product", product);
   const dispatch = useDispatch();
   const idProduct = product;
+  const idUser = localStorage.getItem("myid");
+
   const incrementItem = () => {
-    dispatch(increaseAmount({ idProduct }));
+    const newAmount = amount + 1;
+
+    if (newAmount <= countInstock) {
+      CartService.UpdateCart(idProduct, newAmount, idUser);
+      dispatch(increaseAmount({ idProduct }));
+    }
   };
 
   const decreaseItem = () => {
-    if (amount > 1) dispatch(decreaseAmount({ idProduct }));
-    else {
-      dispatch(removeOrderProduct({ idProduct }));
+    if (amount > 1) {
+      dispatch(decreaseAmount({ idProduct }));
+      const newAmount = amount - 1;
+      CartService.UpdateCart(idProduct, newAmount, idUser);
+    } else {
+      // dispatch(removeOrderProduct({ idProduct }));
     }
   };
 
   const deleteItem = () => {
+    CartService.deleteCart(idProduct, idUser);
     dispatch(removeOrderProduct({ idProduct }));
   };
 

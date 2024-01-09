@@ -227,6 +227,7 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                       maxWidth: 100,
                       overflow: "hidden",
                       textOverflow: "ellipsis",
+                      lineHeight: "1em",
                     }}
                     onClick={() => setIsOpenPopup((prev) => !prev)}
                   >

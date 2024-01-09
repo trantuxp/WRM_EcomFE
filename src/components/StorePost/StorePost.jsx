@@ -92,14 +92,14 @@ const StorePost = () => {
     isSuccess: isSuccessDelectedMany,
     isError: isErrorDeletedMany,
   } = mutationDeletedMany;
-  const getAllPosts = async () => {
-    const res = await PostService.getAllPost();
+  const getPostByStore = async () => {
+    const res = await PostService.getPostByStore(user.id);
     console.log("resdata", res);
     return res;
   };
   const queryPost = useQuery({
     queryKey: ["Posts"],
-    queryFn: getAllPosts,
+    queryFn: getPostByStore,
   });
   const { isPending: isLoadingPosts, data: Posts } = queryPost;
   const dataTable =

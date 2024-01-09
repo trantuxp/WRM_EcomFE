@@ -121,8 +121,8 @@ const AdminProduct = () => {
     isError: isErrorDeletedMany,
   } = mutationDeletedMany;
   const getAllProducts = async () => {
-    const res = await ProductService.getAllProduct();
-    console.log("resdata", res);
+    const res = await ProductService.getProByStore(user.id);
+    // console.log("resdata", res);
     return res;
   };
   const queryProduct = useQuery({

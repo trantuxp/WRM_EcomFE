@@ -12,6 +12,7 @@ import * as UserService from "./services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser, updateUser } from "./store/shopping-cart/userSlide";
 import { useQuery } from "@tanstack/react-query";
+import Kommunicate from "@kommunicate/kommunicate-chatbot-plugin";
 
 import {
   decreaseAmount,
@@ -180,5 +181,8 @@ function App() {
     </div>
   );
 }
-
+Kommunicate.init("b952240e4fa142ec51487875fe754072", {
+  automaticChatOpenOnNavigation: true,
+  popupWidget: true,
+});
 export default App;

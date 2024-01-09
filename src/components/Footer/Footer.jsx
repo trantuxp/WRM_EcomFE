@@ -13,7 +13,7 @@ const Footer = () => {
         <Row>
           <Col lg="3" md="4" sm="6">
             <div className=" footer__logo text-start">
-              <img src={logo} alt="logo" />
+              <img src={logo} alt="logo" style={{ borderRadius: "50%" }} />
               <h5>Culinary Oasis</h5>
               <p>
                 Indulge Your Senses, Elevate Your Tastes - Exclusively Yours at

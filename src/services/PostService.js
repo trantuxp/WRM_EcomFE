@@ -67,13 +67,6 @@ export const deleteManyPost = async (data, access_token) => {
   return res.data;
 };
 
-export const getAllTypePost = async () => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_API_URL}/post/get-all-type`
-  );
-  return res.data;
-};
-
 export const getPostByStore = async (id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_API_URL}/post/get-all-by-store/${id}`

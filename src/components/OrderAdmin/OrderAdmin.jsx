@@ -36,7 +36,7 @@ const OrderAdmin = () => {
     setIsModalOpenUpdate(false);
   };
   const getAllOrder = async () => {
-    const res = await OrderService.getAllOrder(user?.access_token);
+    const res = await OrderService.getOrderByStore(user.id);
     return res;
   };
 

@@ -71,23 +71,23 @@ const ProductDetailComponent = (idProduct) => {
       setRecommendProducts(res);
     }
   };
-  const fetchGetRecommendNoId = async () => {
-    const res = await ProductService.getRecommendNoId();
-    if (res) {
-      setRecommendProducts(res);
-    }
-  };
+  // const fetchGetRecommendNoId = async () => {
+  //   const res = await ProductService.getRecommendNoId();
+  //   if (res) {
+  //     setRecommendProducts(res);
+  //   }
+  // };
 
   useEffect(() => {
-    if (user.id) {
-      fetchGetRecommend(user.id);
+    if (idProduct.idProduct.id) {
+      fetchGetRecommend(idProduct.idProduct.id);
     }
-  }, [user.id]);
-  useEffect(() => {
-    if (localStorage.getItem("myid") === "") {
-      fetchGetRecommendNoId();
-    }
-  }, [localStorage.getItem("myid")]);
+  }, [idProduct.idProduct.id]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("myid") === "") {
+  //     fetchGetRecommendNoId();
+  //   }
+  // }, [localStorage.getItem("myid")]);
 
   const addItem = () => {
     if (!user?.id) {
@@ -132,6 +132,7 @@ const ProductDetailComponent = (idProduct) => {
       } else {
         setErrorLimitOrder(true);
       }
+      navigate("/cart");
     }
   };
 
