@@ -23,7 +23,6 @@ import {
 } from "./store/shopping-cart/orderSlide";
 
 import * as CartService from "./services/CartService";
-import ChatbotButton from "./components/Chatbot/ChatbotButton";
 function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +91,7 @@ function App() {
     // console.log("Res", res);
 
     if (!res.data) {
-      console.log("log out ", user.access_token, "asda");
+      // console.log("log out ", user.access_token, "asda");
     } else {
       dispatch(
         updateUser({
@@ -103,7 +102,7 @@ function App() {
       );
       // await UserService.logoutUser();
       // dispatch(resetUser());
-      console.log("login");
+      // console.log("login");
     }
   };
 
@@ -123,14 +122,14 @@ function App() {
   useEffect(
     () => {
       if (cartByUser) {
-        console.log("cartByUser", cartByUser);
+        // console.log("cartByUser", cartByUser);
         cartByUser.map((cart) => {
-          console.log("id", cart._id);
+          // console.log("id", cart._id);
           const itemOrder = order?.orderItems?.find(
             (item) => item?.product === cart.product[0]?._id
           );
           if (!itemOrder) {
-            console.log("cart._id", cart.product[0]?._id);
+            // console.log("cart._id", cart.product[0]?._id);
             dispatch(
               addOrderProduct({
                 orderItem: {
@@ -170,7 +169,6 @@ function App() {
                 element={
                   <Layout>
                     <Page />
-                    {/* <ChatbotButton /> */}
                   </Layout>
                 }
               />

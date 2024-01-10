@@ -38,7 +38,8 @@ import {
   resetAllOrder,
   addOrderProduct,
 } from "../store/shopping-cart/orderSlide";
-import ChatbotButton from "../components/Chatbot/ChatbotButton.jsx";
+import axios from "axios";
+import ProductCardV2 from "../components/UI/product-card-recom/ProductCardv2.jsx";
 
 // import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 const featureData = [
@@ -73,6 +74,7 @@ const Home = () => {
   const searchDebounce = useDebounce(searchProduct, 500);
   const [limit, setLimit] = useState();
   const [carts1, setCarts1] = useState([]);
+  const [listRecom, setListRecom] = useState(null);
 
   const fetchProductAll = async () => {
     const res = await ProductService.getAllProduct(searchDebounce, limit);
@@ -96,6 +98,39 @@ const Home = () => {
     setHotPizza(slicePizza);
   }, [allProducts]);
 
+  console.log("as", localStorage.getItem("myid"));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const myId = localStorage.getItem("myid");
+
+      if (myId) {
+        const data = {
+          _id: myId,
+        };
+        const reconmmed = await axios.post(
+          `http://127.0.0.1:80/api/recommend_product`,
+          data
+        );
+        var arr = [];
+        if (reconmmed) {
+          const result = await Promise.all(
+            reconmmed.data.map(async (item) => {
+              const list = await axios.get(
+                `http://localhost:3001/api/product/get-details/${item.Product_ID}`
+              );
+
+              return list.data;
+            })
+          );
+
+          setListRecom(result);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+  console.log("ooo", listRecom);
   useEffect(() => {
     if (category === "ALL") {
       setAllProducts(allProductsOrigin);
@@ -335,11 +370,12 @@ const Home = () => {
               <h2>Hot Search</h2>
             </Col>
 
-            {hotPizza.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" key={item._id}>
-                <ProductCard item={item} />
-              </Col>
-            ))}
+            {listRecom &&
+              listRecom.map((item) => (
+                <Col lg="3" md="4" sm="6" xs="6" key={item._id}>
+                  <ProductCardV2 item={item} />
+                </Col>
+              ))}
           </Row>
         </Container>
       </section>

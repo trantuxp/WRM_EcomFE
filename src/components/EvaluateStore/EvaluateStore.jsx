@@ -53,7 +53,7 @@ const EvaluateStore = () => {
 
   const mutationUpdate = useMutationHooks((data) => {
     const { id, token, content } = data;
-    console.log("content", content);
+    // console.log("content", content);
     const res = EvaluateService.updateReplyEvaluate(id, content);
     return res;
   });
@@ -130,7 +130,7 @@ const EvaluateStore = () => {
 
   const fetchGetReplyDetail = async (rowSelected, idUser) => {
     const res = await EvaluateService.getReplyEvaluate(rowSelected, idUser);
-    console.log("idUser", idUser, res, res[0]);
+    // console.log("idUser", idUser, res, res[0]);
 
     if (res[0]) {
       setStateReply({
@@ -141,7 +141,7 @@ const EvaluateStore = () => {
         evaluate: res[0]?.evaluate,
         user: res[0]?.user,
       });
-      console.log("khong co gi", res[0]);
+      // console.log("khong co gi", res[0]);
     } else {
       setStateReply(inittialDetail());
     }
@@ -164,7 +164,7 @@ const EvaluateStore = () => {
       fetchGetReplyDetail(rowSelected, idUser);
     }
     setIsOpenDrawer(true);
-    console.log("rowSelected", rowSelected);
+    // console.log("rowSelected", rowSelected);
   };
 
   const renderAction = () => {
@@ -324,12 +324,12 @@ const EvaluateStore = () => {
   };
 
   const onUpdateReply = (id) => {
-    console.log(
-      " id: rowSelected, token: user?.access_token, ...stateReply ",
-      rowSelected,
-      user?.access_token,
-      stateContent
-    );
+    // console.log(
+    //   " id: rowSelected, token: user?.access_token, ...stateReply ",
+    //   rowSelected,
+    //   user?.access_token,
+    //   stateContent
+    // );
     mutationUpdate.mutate(
       {
         id: id,
@@ -344,12 +344,12 @@ const EvaluateStore = () => {
     );
   };
   const onAddReply = () => {
-    console.log(
-      " id: rowSelected, stateContent: stateReply,rating ",
-      rowSelected,
-      stateContent,
-      user.id
-    );
+    // console.log(
+    //   " id: rowSelected, stateContent: stateReply,rating ",
+    //   rowSelected,
+    //   stateContent,
+    //   user.id
+    // );
     mutationCreateReply.mutate(
       {
         idEvaluate: rowSelected,
@@ -428,7 +428,7 @@ const EvaluateStore = () => {
             form={form}
             style={{ backgroundColor: "#f5f5f5" }}
           >
-            {console.log("stateReply?.user?.name", stateReply)}
+            {/* {console.log("stateReply?.user?.name", stateReply)} */}
 
             <Form.Item
               label="User Name: "

@@ -12,7 +12,7 @@ import { useState } from "react";
 import * as CartService from "../../../services/CartService";
 import StarRatingUI from "../../StarRatingUI/StarRatingUI";
 
-const ProductCard = (props) => {
+const ProductCardV2 = (props) => {
   const { _id, name, image, price, countInStock, discount, idStore, rating } =
     props.item;
 
@@ -69,35 +69,42 @@ const ProductCard = (props) => {
   };
 
   return (
-    <div className="product__item">
-      <div className="product__img">
-        <img src={image} alt="product-img" className="w-50" />
-      </div>
+    <>
+      {props?.item.map((i) => (
+        <div className="product__item">
+          <div className="product__img">
+            <img src={i.image} alt="product-img" className="w-50" />
+          </div>
 
-      <div className="product__content">
-        <Link to={`/foods/${_id}`}>
-          <h5>{name} </h5>
-        </Link>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            textDecoration: "underline",
-            justifyContent: "center",
-          }}
-        >
-          <StarRatingUI rating={rating} color={"lightgray"}></StarRatingUI>
-        </div>
+          <div className="product__content">
+            <Link to={`/foods/${i._id}`}>
+              <h5>{i.name} </h5>
+            </Link>
+            <div
+              style={{
+                display: "flex",
+                flex: 1,
+                textDecoration: "underline",
+                justifyContent: "center",
+              }}
+            >
+              <StarRatingUI
+                rating={i.rating}
+                color={"lightgray"}
+              ></StarRatingUI>
+            </div>
 
-        <div className=" d-flex align-items-center justify-content-between ">
-          <span className="product__price">{convertPrice(price)} </span>
-          <button className="addTOCart__btn" onClick={addToCart}>
-            Add to Cart
-          </button>
+            <div className=" d-flex align-items-center justify-content-between ">
+              <span className="product__price">{convertPrice(i.price)} </span>
+              <button className="addTOCart__btn" onClick={addToCart}>
+                Add to Cart
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ))}
+    </>
   );
 };
 
-export default ProductCard;
+export default ProductCardV2;

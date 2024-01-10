@@ -52,7 +52,6 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const user = useSelector((state) => state.user);
 
   const [userName, setUserName] = useState("");
@@ -73,20 +72,20 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setLoading(false);
   }, [user?.name, user?.avatar]);
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => {
-  //     if (
-  //       document.body.scrollTop > 80 ||
-  //       document.documentElement.scrollTop > 80
-  //     ) {
-  //       headerRef.current.classList.add("header__shrink");
-  //     } else {
-  //       headerRef.current.classList.remove("header__shrink");
-  //     }
-  //   });
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (
+        document.body.scrollTop > 80 ||
+        document.documentElement.scrollTop > 80
+      ) {
+        headerRef.current.classList.add("header__shrink");
+      } else {
+        headerRef.current.classList.remove("header__shrink");
+      }
+    });
 
-  //   return () => window.removeEventListener("scroll");
-  // }, []);
+    return () => window.removeEventListener("scroll");
+  }, []);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -134,7 +133,7 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   );
 
   const handleClickNavigate = (type) => {
-    console.log("isstore", user.isStore);
+    // console.log("isstore", user.isStore);
     if (type === "profile") {
       navigate("/profile-user");
     } else if (type === "admin") {
@@ -145,27 +144,23 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
       navigate("/store/admin");
     } else if (type === "myorder") {
       navigate("/myorder");
-    }
-    // else if (type === "my-order") {
-    //   navigate("/my-order", {
-    //     state: {
-    //       id: user?.id,
-    //       token: user?.access_token,
-    //     },
-    //   });
-    // }
-    else {
+    } else {
       handleLogout();
-      console.log("dang xuat");
+      // console.log("dang xuat");
     }
     setIsOpenPopup(false);
   };
+
   return (
     <header
       className="header"
       ref={headerRef}
       style={{
         background: !isHiddenCart ? "#fff" : "rgb(185 212 250)",
+        position: "fixed",
+        width: "100%",
+        top: 0,
+        zIndex: 1000,
       }}
     >
       <Container>

@@ -10,16 +10,27 @@ export const getProByStore = async (id) => {
   }
   return res.data;
 };
-export const getAllProduct = async (search, limit) => {
+export const getAllProduct = async (sort, search, page, limit) => {
   let res = {};
-  console.log("search", search);
+  console.log("sort", sort);
   if (search?.length > 0) {
+    if (sort !== 0) {
+      res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}&limit=${limit}&page=${page}&sort=price&sort=${sort}`
+      );
+    } else {
+      res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}&limit=${limit}&page=${page}`
+      );
+    }
+  } else if (sort !== 0) {
     res = await axios.get(
-      `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}&limit=${limit}`
+      `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}&page=${page}&sort=${sort}`
     );
+    console.log("sort123", sort);
   } else {
     res = await axios.get(
-      `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}`
+      `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}&page=${page}`
     );
   }
   return res.data;

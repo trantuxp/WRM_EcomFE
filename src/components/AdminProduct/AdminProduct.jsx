@@ -163,13 +163,13 @@ const AdminProduct = () => {
     form.setFieldsValue(stateProductDetail);
   }, [form, stateProductDetail]);
 
-  console.log("resdataDetail", stateProductDetail);
+  // console.log("resdataDetail", stateProductDetail);
   const handleDetailsProduct = () => {
     if (rowSelected) {
       fetchGetProductsDetail(rowSelected);
     }
     setIsOpenDrawer(true);
-    console.log("rowSelected", rowSelected);
+    // console.log("rowSelected", rowSelected);
   };
 
   const fetchAllTypeProduct = async () => {
