@@ -171,8 +171,15 @@ const DetailsOrderPage = () => {
                         ? convertPrice((priceMemo * order?.discount) / 100)
                         : "0 VND"}
                     </WrapperItem>
-
-                    {!data?.isDelivered ? (
+                    <WrapperItem
+                      onClick={() => {
+                        HandleRating(id, order);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Evaluate
+                    </WrapperItem>
+                    {/* {!data?.isDelivered ? (
                       <WrapperItem
                         style={{ color: "black" }}
                         // onClick={() => {
@@ -190,7 +197,7 @@ const DetailsOrderPage = () => {
                       >
                         Let's Evaluate
                       </WrapperItem>
-                    )}
+                    )} */}
                   </WrapperProduct>
                 </div>
               );

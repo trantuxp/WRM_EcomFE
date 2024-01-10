@@ -30,6 +30,7 @@ import StarRatingUI from "../../components/StarRatingUI/StarRatingUI";
 const DetailOrderItemPage = () => {
   const [contentE, setContentE] = useState("");
   const [rating, setRating] = useState("");
+  const [data, setData] = useState([]);
   const location = useLocation();
 
   const params = useParams();
@@ -42,21 +43,17 @@ const DetailOrderItemPage = () => {
   }
   const fetchGetEvaluateByItem = async () => {
     const idOrder = id;
-    const idItem = state._id;
+    const idItem = state.product;
     console.log("idOrder", idOrder, idItem);
 
     const res = await EvaluateService.getEvaluateByItem(idOrder, idItem);
-    return res.data[0];
+    console.log("res.data", res.data);
+    setData(res.data[0]);
   };
-  const queryEva = useQuery({
-    queryKey: ["evaluates-details"],
-    queryFn: fetchGetEvaluateByItem,
-  });
-  const { isPending, data } = queryEva;
-  console.log("dataEVa", data);
+
   useEffect(() => {
     fetchGetEvaluateByItem();
-  }, [data, id]);
+  }, [data]);
   const createEvaluate = async (idItem, idUser, idOrder, content, star) => {
     console.log(
       "idItem, idUser, idOrder, content, star",
@@ -82,7 +79,7 @@ const DetailOrderItemPage = () => {
   const handleAddEvaluate = async (rating, contentE) => {
     console.log(` Selected Rating: ${rating}`);
     console.log(` contentE: ${contentE}`);
-    await createEvaluate(state._id, user.id, id, contentE, rating);
+    await createEvaluate(state.product, user.id, id, contentE, rating);
     window.location.reload();
   };
 
@@ -220,25 +217,7 @@ const DetailOrderItemPage = () => {
                     justifyContent: "flex-end",
                     paddingRight: "10px",
                   }}
-                >
-                  <ButtonComponent
-                    // onClick={() => handleAddOrder()}
-                    size={40}
-                    styleButton={{
-                      background: "rgb(255, 57, 69)",
-                      height: "50%",
-                      width: "50%",
-                      border: "none",
-                      borderRadius: "4px",
-                    }}
-                    textbutton={"Submit"}
-                    styleTextButton={{
-                      color: "#fff",
-                      fontSize: "15px",
-                      fontWeight: "700",
-                    }}
-                  ></ButtonComponent>
-                </div>
+                ></div>
               </div>
             </div>
           )}

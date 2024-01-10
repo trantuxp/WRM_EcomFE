@@ -84,7 +84,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchProductAll();
-  }, []);
+  }, [searchDebounce]);
 
   useEffect(() => {
     // const filteredPizza = products.filter((item) => item.category === "Pizza");

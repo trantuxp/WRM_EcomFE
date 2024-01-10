@@ -52,7 +52,7 @@ const ProductDetailComponent = (idProduct) => {
       const res = await ProductService.getDetailsProduct(
         idProduct.idProduct.id
       );
-      setproductDetail(res.data);
+      setproductDetail(res[0]);
     }
   };
 
@@ -147,7 +147,7 @@ const ProductDetailComponent = (idProduct) => {
   };
 
   const incrementItem = () => {
-    if (numProduct <= productDetail?.countInStock)
+    if (numProduct < productDetail?.countInStock)
       setNumProduct((prevCount) => prevCount + 1);
   };
 
@@ -200,17 +200,23 @@ const ProductDetailComponent = (idProduct) => {
                     <span className="decrease__btn" onClick={decreaseItem}>
                       <i className="ri-subtract-line "></i>
                     </span>
-                    <span className="quantity">{numProduct}</span>
-
+                    <span className="quantity">{numProduct}</span>{" "}
                     <span className="increase__btn" onClick={incrementItem}>
                       <i className="ri-add-line"></i>
                     </span>
                   </div>
                 </p>
                 <p className="category ">
+                  Remaining: {productDetail?.countInStock}
+                </p>
+                <p className="category ">
+                  Store:{productDetail?.selled} Remaining:{" "}
+                  {productDetail?.countInStock}
+                </p>
+                <p className="category ">
                   Store:{" "}
-                  <Link to={`/store/${user?.id}`}>
-                    {!user?.name || "Shop Food"}
+                  <Link to={`/store/${productDetail?.idStore}`}>
+                    {productDetail?.store?.nameStore || "Shop Food"}
                   </Link>
                 </p>
                 <p className="category ">Open: 8:00 - 23:00</p>
