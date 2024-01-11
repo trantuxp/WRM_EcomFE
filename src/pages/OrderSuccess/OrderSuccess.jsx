@@ -18,7 +18,14 @@ const OrderSucess = () => {
   const location = useLocation();
   const { state } = location;
   return (
-    <div style={{ background: "#f5f5fa", with: "100%", height: "100vh" }}>
+    <div
+      style={{
+        background: "#f5f5fa",
+        with: "100%",
+        height: "100vh",
+        marginTop: "100px",
+      }}
+    >
       <Loading isLoading={false}>
         <div style={{ height: "100%", width: "1270px", margin: "0 auto" }}>
           <h3>Order placed successfully</h3>

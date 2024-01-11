@@ -24,12 +24,13 @@ const AllFoods = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [allProductsOrigin, setAllProductsOrigin] = useState([]);
   const searchPro = useSelector((state) => state?.product?.search);
-  const searchDebounce = useDebounce(searchPro, 500);
+  const searchDebounce = useDebounce(searchTerm, 500);
   // const [limit, setLimit] = useState();
   const user = useSelector((state) => state?.user);
 
   const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState(0);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValueType, setSelectedValueType] = useState("");
 
   const [panigate, setPanigate] = useState({
     page: 0,
@@ -42,8 +43,14 @@ const AllFoods = () => {
     console.log("select", selectedValue);
   };
 
-  const fetchProductAll = async (sort, searchTerm, page, limit) => {
+  const handleChangeType = (event) => {
+    setSelectedValueType(event.target.value);
+    console.log("selectType", selectedValueType);
+  };
+
+  const fetchProductAll = async (type, sort, searchTerm, page, limit) => {
     const res = await ProductService.getAllProduct(
+      type,
       sort,
       searchTerm,
       page,
@@ -61,6 +68,7 @@ const AllFoods = () => {
   useEffect(() => {
     // if (selectedValue !== "Type") {
     fetchProductAll(
+      selectedValueType,
       selectedValue,
       searchDebounce,
       panigate.page,
@@ -69,7 +77,13 @@ const AllFoods = () => {
     // } else {
     //   fetchProductType(selectedValue, panigate.page, panigate.limit);
     // }
-  }, [searchDebounce, panigate.page, panigate.limit, selectedValue]);
+  }, [
+    searchDebounce,
+    panigate.page,
+    panigate.limit,
+    selectedValue,
+    selectedValueType,
+  ]);
 
   const onSearch = () => {
     console.log("searchTerm", searchTerm);
@@ -89,68 +103,92 @@ const AllFoods = () => {
     });
   };
   return (
-    <Helmet title="All-Foods">
-      <CommonSection title="All Foods" />
+    <div style={{ marginTop: "100px" }}>
+      <Helmet title="All-Foods">
+        <CommonSection title="All Foods" />
 
-      <section>
-        <Container>
-          <Row>
-            <Col lg="6" md="6" sm="6" xs="12">
-              <div className="search__widget d-flex align-items-center justify-content-between ">
-                <input
-                  type="text"
-                  placeholder="I'm looking for...."
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    console.log("setsearchTerm", searchTerm);
-                  }}
-                  value={searchTerm}
-                  name="search"
-                  style={{ width: "100%" }}
-                />
-                <span onClick={onSearch}>
-                  <i className="ri-search-line"></i>
-                </span>
-              </div>
-            </Col>
-            <Col lg="6" md="6" sm="6" xs="12" className="mb-5">
-              <div className="sorting__widget text-end">
-                <select
-                  className="w-50"
-                  value={selectedValue}
-                  onChange={handleChange}
-                >
-                  <option value="0">Default</option>
-                  <option value="1">Ascending Price </option>
-                  <option value="-1">Descending Price</option>
-                </select>
-              </div>
-            </Col>
-
-            {allProductsOrigin.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" key={item._id} className="mb-4">
-                <ProductCard item={item} />
+        <section>
+          <Container>
+            <Row>
+              <Col lg="6" md="6" sm="6" xs="12">
+                <div className="search__widget d-flex align-items-center justify-content-between ">
+                  <input
+                    type="text"
+                    placeholder="I'm looking for...."
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      console.log("setsearchTerm", searchTerm);
+                    }}
+                    value={searchTerm}
+                    name="search"
+                    style={{ width: "100%" }}
+                  />
+                  <span onClick={onSearch}>
+                    <i className="ri-search-line"></i>
+                  </span>
+                </div>
               </Col>
-            ))}
-            <Pagination
-              defaultCurrent={panigate.page + 1}
-              total={panigate?.total}
-              onChange={onChange}
-              style={{ textAlign: "center", marginTop: "10px" }}
-            />
-            <div>
-              {/* <ReactPaginate
+              <Col lg="3" md="6" sm="6" xs="6" className="mb-5">
+                <div className="sorting__widget text-end">
+                  <select
+                    className="w-50"
+                    value={selectedValueType}
+                    onChange={handleChangeType}
+                  >
+                    <option value="">Default</option>
+                    <option value="Đồ ăn">Đồ ăn</option>
+                    <option value="Đồ uống">Đồ uống</option>
+                    <option value="Đồ chay">Đồ chay</option>
+                    <option value="Bánh kem">Bánh kem</option>
+                  </select>
+                </div>
+              </Col>
+              <Col lg="3" md="6" sm="6" xs="6" className="mb-5">
+                <div className="sorting__widget text-end">
+                  <select
+                    className="w-50"
+                    value={selectedValue}
+                    onChange={handleChange}
+                  >
+                    <option value="">Default</option>
+                    <option value="1">Ascending Price </option>
+                    <option value="-1">Descending Price</option>
+                  </select>
+                </div>
+              </Col>
+
+              {allProductsOrigin.map((item) => (
+                <Col
+                  lg="3"
+                  md="4"
+                  sm="6"
+                  xs="6"
+                  key={item._id}
+                  className="mb-4"
+                >
+                  <ProductCard item={item} />
+                </Col>
+              ))}
+              <Pagination
+                defaultCurrent={panigate.page + 1}
+                total={panigate?.total}
+                onChange={onChange}
+                style={{ textAlign: "center", marginTop: "10px" }}
+              />
+              <div>
+                {/* <ReactPaginate
                 pageCount={panigate?.total}
                 onPageChange={panigate.page + 1}
                 previousLabel={"Prev"}
                 nextLabel={"Next"}
                 containerClassName=" paginationBttns "
               /> */}
-            </div>
-          </Row>
-        </Container>
-      </section>
-    </Helmet>
+              </div>
+            </Row>
+          </Container>
+        </section>
+      </Helmet>
+    </div>
   );
 };
 

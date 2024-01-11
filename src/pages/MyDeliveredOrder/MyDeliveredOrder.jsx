@@ -17,13 +17,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import * as message from "../../components/Message/Message";
 
-const MyOrderPage = () => {
+const MyDeliveredOrderPage = () => {
   // const location = useLocation();
   // const { state } = location;
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const fetchMyOrder = async () => {
-    const res = await OrderService.getOrderByUserId(user?.id, user?.token);
+    const res = await OrderService.getOrderByUserIdDelivered(
+      user?.id,
+      user?.token
+    );
     return res.data;
   };
 
@@ -37,77 +40,6 @@ const MyOrderPage = () => {
       },
     });
   };
-
-  const mutation = useMutationHooks((data) => {
-    const { id, token, orderItems, userId } = data;
-    const res = OrderService.cancelOrder(id, token, orderItems, userId);
-    return res;
-  });
-
-  const handleCanceOrder = (order) => {
-    mutation.mutate(
-      {
-        id: order._id,
-        token: user?.token,
-        orderItems: order?.orderItems,
-        userId: user.id,
-      },
-      {
-        onSuccess: () => {
-          queryOrder.refetch();
-        },
-      }
-    );
-  };
-  const {
-    isPending: isLoadingCancel,
-    isSuccess: isSuccessCancel,
-    isError: isErrorCancle,
-    data: dataCancel,
-  } = mutation;
-
-  useEffect(() => {
-    if (isSuccessCancel && dataCancel?.status === "OK") {
-      message.success();
-    } else if (isSuccessCancel && dataCancel?.status === "ERR") {
-      message.error(dataCancel?.message);
-    } else if (isErrorCancle) {
-      message.error();
-    }
-  }, [isSuccessCancel]);
-
-  const mutationConfirm = useMutationHooks((id) => {
-    const res = OrderService.updateStateDeliveryOrder(id);
-    return res;
-  });
-
-  const handleConfirmOrder = (id) => {
-    mutationConfirm.mutate(
-      id,
-
-      {
-        onSuccess: () => {
-          queryOrder.refetch();
-        },
-      }
-    );
-  };
-  const {
-    isPending: isLoadingConfirm,
-    isSuccess: isSuccessConfirm,
-    isError: isErrorConfirm,
-    data: dataConfirm,
-  } = mutationConfirm;
-
-  useEffect(() => {
-    if (isSuccessConfirm && dataConfirm?.status === "OK") {
-      message.success();
-    } else if (isSuccessConfirm && dataConfirm?.status === "ERR") {
-      message.error(dataConfirm?.message);
-    } else if (isErrorConfirm) {
-      message.error();
-    }
-  }, [isSuccessConfirm]);
 
   const renderProduct = (data) => {
     return data?.map((order) => {
@@ -145,7 +77,7 @@ const MyOrderPage = () => {
   };
 
   return (
-    <Loading isLoading={isPending || isLoadingCancel}>
+    <Loading isLoading={isPending}>
       <WrapperContainer>
         <div
           style={{
@@ -167,10 +99,10 @@ const MyOrderPage = () => {
                   color: "red",
                 }}
               >
-                - My order{" "}
+                - My Paid Order
               </h5>
               <h5>
-                <Link to={"/my-delivered-order"}>- My Paid Order</Link>
+                <Link to={"/myorder"}>- My Order</Link>
               </h5>
             </div>
             {data?.map((order) => {
@@ -221,28 +153,6 @@ const MyOrderPage = () => {
                     </div>
                     <div style={{ display: "flex", gap: "10px" }}>
                       <ButtonComponent
-                        onClick={() => handleConfirmOrder(order._id)}
-                        size={40}
-                        styleButton={{
-                          height: "36px",
-                          border: "1px solid #9255FD",
-                          borderRadius: "4px",
-                        }}
-                        textbutton={"Confirm delivered"}
-                        styleTextButton={{ color: "#9255FD", fontSize: "14px" }}
-                      ></ButtonComponent>
-                      {/* <ButtonComponent
-                        onClick={() => handleCanceOrder(order)}
-                        size={40}
-                        styleButton={{
-                          height: "36px",
-                          border: "1px solid #9255FD",
-                          borderRadius: "4px",
-                        }}
-                        textbutton={"Cancel order"}
-                        styleTextButton={{ color: "#9255FD", fontSize: "14px" }}
-                      ></ButtonComponent> */}
-                      <ButtonComponent
                         onClick={() => handleDetailsOrder(order?._id)}
                         size={40}
                         styleButton={{
@@ -265,4 +175,4 @@ const MyOrderPage = () => {
   );
 };
 
-export default MyOrderPage;
+export default MyDeliveredOrderPage;

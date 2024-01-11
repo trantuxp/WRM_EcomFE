@@ -61,8 +61,11 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
 
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
 
-  const toggleCart = () => {
-    dispatch(cartUiActions.toggle());
+  // const toggleCart = () => {
+  //   dispatch(cartUiActions.toggle());
+  // };
+  const LinkToCart = () => {
+    navigate("/cart");
   };
 
   useEffect(() => {
@@ -72,20 +75,20 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setLoading(false);
   }, [user?.name, user?.avatar]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 80 ||
-        document.documentElement.scrollTop > 80
-      ) {
-        headerRef.current.classList.add("header__shrink");
-      } else {
-        headerRef.current.classList.remove("header__shrink");
-      }
-    });
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     if (
+  //       document.body.scrollTop > 80 ||
+  //       document.documentElement.scrollTop > 80
+  //     ) {
+  //       headerRef.current.classList.add("header__shrink");
+  //     } else {
+  //       headerRef.current.classList.remove("header__shrink");
+  //     }
+  //   });
 
-    return () => window.removeEventListener("scroll");
-  }, []);
+  //   return () => window.removeEventListener("scroll");
+  // }, []);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -194,7 +197,7 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           {/* ======== nav right icons ========= */}
           <div className="nav__right d-flex align-items-center gap-4">
             {!isHiddenCart && (
-              <span className="cart__icon" onClick={toggleCart}>
+              <span className="cart__icon" onClick={LinkToCart}>
                 <i className="ri-shopping-basket-line"></i>
                 <span className="cart__badge">{order?.orderItems?.length}</span>
               </span>

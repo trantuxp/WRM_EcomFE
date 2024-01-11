@@ -20,9 +20,27 @@ export const getOrderByUserId = async (id, access_token) => {
   );
   return res.data;
 };
-export const getOrderByStore = async (id) => {
+export const getOrderByUserIdDelivered = async (id, access_token) => {
   const res = await axiosJWT.get(
-    `${process.env.REACT_APP_API_URL}/order/get-order-by-store/${id}`
+    `${process.env.REACT_APP_API_URL}/order/get-order-by-user-delivered/${id}?token=${access_token}`
+  );
+  return res.data;
+};
+export const getOrderByStore1 = async (id) => {
+  const res = await axiosJWT.get(
+    `${process.env.REACT_APP_API_URL}/order/get-order-by-store1/${id}`
+  );
+  return res.data;
+};
+export const getOrderByStore2 = async (id) => {
+  const res = await axiosJWT.get(
+    `${process.env.REACT_APP_API_URL}/order/get-order-by-store2/${id}`
+  );
+  return res.data;
+};
+export const getOrderByStore3 = async (id) => {
+  const res = await axiosJWT.get(
+    `${process.env.REACT_APP_API_URL}/order/get-order-by-store3/${id}`
   );
   return res.data;
 };

@@ -71,54 +71,56 @@ const Login = () => {
   };
 
   return (
-    <Helmet title="Login">
-      <CommonSection title="Login" />
-      <section>
-        <Container>
-          <Row>
-            <Col lg="6" md="6" sm="12" className="m-auto text-center">
-              <div className="form mb-5">
-                <div className="form__group">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    ref={loginNameRef}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+    <div style={{ marginTop: "100px" }}>
+      <Helmet title="Login">
+        <CommonSection title="Login" />
+        <section>
+          <Container>
+            <Row>
+              <Col lg="6" md="6" sm="12" className="m-auto text-center">
+                <div className="form mb-5">
+                  <div className="form__group">
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      required
+                      ref={loginNameRef}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="form__group">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      required
+                      ref={loginPasswordRef}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    {data?.status === "ERR" && (
+                      <span style={{ color: "red" }}>{data?.message}</span>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    className="addTOCart__btn"
+                    onClick={submitHandler}
+                  >
+                    Login
+                  </button>
                 </div>
-                <div className="form__group">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    ref={loginPasswordRef}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div>
-                  {data?.status === "ERR" && (
-                    <span style={{ color: "red" }}>{data?.message}</span>
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  className="addTOCart__btn"
-                  onClick={submitHandler}
-                >
-                  Login
-                </button>
-              </div>
-              <Link to="/register">
-                Don't have an account? Create an account
-              </Link>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </Helmet>
+                <Link to="/register">
+                  Don't have an account? Create an account
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+      </Helmet>
+    </div>
   );
 };
 

@@ -10,24 +10,45 @@ export const getProByStore = async (id) => {
   }
   return res.data;
 };
-export const getAllProduct = async (sort, search, page, limit) => {
+export const getAllProduct = async (type, sort, search, page, limit) => {
   let res = {};
   console.log("sort", sort);
   if (search?.length > 0) {
+    if (type.length > 0) {
+      if (sort !== 0) {
+        res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/product/get-all?&filter=${search}&limit=${limit}&page=${page}&sort=${sort}&type=${type}`
+        );
+      } else {
+        res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/product/get-all?filter=${search}&limit=${limit}&page=${page}&type=${type}`
+        );
+      }
+    } else {
+      if (sort !== 0) {
+        res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/product/get-all?filter=${search}&limit=${limit}&page=${page}&sort=${sort}`
+        );
+      } else {
+        res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/product/get-all?filter=${search}&limit=${limit}&page=${page}`
+        );
+      }
+    }
+  } else if (type.length > 0) {
     if (sort !== 0) {
       res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}&limit=${limit}&page=${page}&sort=price&sort=${sort}`
+        `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}&page=${page}&sort=${sort}&type=${type}`
       );
     } else {
       res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}&limit=${limit}&page=${page}`
+        `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}&page=${page}&type=${type}`
       );
     }
   } else if (sort !== 0) {
     res = await axios.get(
       `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}&page=${page}&sort=${sort}`
     );
-    console.log("sort123", sort);
   } else {
     res = await axios.get(
       `${process.env.REACT_APP_API_URL}/product/get-all?limit=${limit}&page=${page}`

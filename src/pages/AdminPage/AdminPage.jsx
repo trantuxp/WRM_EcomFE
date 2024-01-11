@@ -46,26 +46,6 @@ const AdminPage = () => {
     return { data: res?.data, key: "users" };
   };
 
-  // const queries = useQueries({
-  //   queries: [
-  //     { queryKey: ["products"], queryFn: getAllProducts, staleTime: 1000 * 60 },
-  //     { queryKey: ["users"], queryFn: getAllUsers, staleTime: 1000 * 60 },
-  //     { queryKey: ["orders"], queryFn: getAllOrder, staleTime: 1000 * 60 },
-  //   ],
-  // });
-  // const memoCount = useMemo(() => {
-  //   const result = {};
-  //   try {
-  //     if (queries) {
-  //       queries.forEach((query) => {
-  //         result[query?.data?.key] = query?.data?.data?.length;
-  //       });
-  //     }
-  //     return result;
-  //   } catch (error) {
-  //     return result;
-  //   }
-  // }, [queries]);
   const COLORS = {
     users: ["#e66465", "#9198e5"],
     products: ["#a8c0ff", "#3f2b96"],
@@ -92,7 +72,7 @@ const AdminPage = () => {
   return (
     <>
       <HeaderComponent isHiddenSearch isHiddenCart />
-      <div style={{ display: "flex", overflowX: "hidden" }}>
+      <div style={{ display: "flex", overflowX: "hidden", marginTop: "100px" }}>
         <Menu
           mode="inline"
           style={{

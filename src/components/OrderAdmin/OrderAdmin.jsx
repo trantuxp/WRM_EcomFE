@@ -35,13 +35,36 @@ const OrderAdmin = () => {
   const handleCancelUpdate = () => {
     setIsModalOpenUpdate(false);
   };
-  const getAllOrder = async () => {
-    const res = await OrderService.getOrderByStore(user.id);
+  const getAllOrder1 = async () => {
+    const res = await OrderService.getOrderByStore1(user.id);
+    return res;
+  };
+  const queryOrder1 = useQuery({
+    queryKey: ["orders1"],
+    queryFn: getAllOrder1,
+  });
+  const { isPending: isLoadingOrders1, data: orders1 } = queryOrder1;
+
+  const getAllOrder2 = async () => {
+    const res = await OrderService.getOrderByStore2(user.id);
+    return res;
+  };
+  const queryOrder2 = useQuery({
+    queryKey: ["orders2"],
+    queryFn: getAllOrder2,
+  });
+  const { isPending: isLoadingOrders2, data: orders2 } = queryOrder2;
+
+  const getAllOrder3 = async () => {
+    const res = await OrderService.getOrderByStore3(user.id);
     return res;
   };
 
-  const queryOrder = useQuery({ queryKey: ["orders"], queryFn: getAllOrder });
-  const { isLoading: isLoadingOrders, data: orders } = queryOrder;
+  const queryOrder3 = useQuery({
+    queryKey: ["orders3"],
+    queryFn: getAllOrder3,
+  });
+  const { isPending: isLoadingOrders3, data: orders3 } = queryOrder3;
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -107,20 +130,6 @@ const OrderAdmin = () => {
         // setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    // render: (text) =>
-    //   searchedColumn === dataIndex ? (
-    //     // <Highlighter
-    //     //   highlightStyle={{
-    //     //     backgroundColor: '#ffc069',
-    //     //     padding: 0,
-    //     //   }}
-    //     //   searchWords={[searchText]}
-    //     //   autoEscape
-    //     //   textToHighlight={text ? text.toString() : ''}
-    //     // />
-    //   ) : (
-    //     text
-    //   ),
   });
   const mutationDeleted = useMutationHooks((data) => {
     const { id, token, orderItems, userId } = data;
@@ -144,13 +153,24 @@ const OrderAdmin = () => {
       },
       {
         onSettled: () => {
-          queryOrder.refetch();
+          queryOrder1.refetch();
+          queryOrder2.refetch();
         },
       }
     );
     setIsModalOpenDelete(false);
   };
-  const renderAction = () => {
+  const renderAction1 = () => {
+    return (
+      <div>
+        <DeleteOutlined
+          style={{ color: "red", fontSize: "30px", cursor: "pointer" }}
+          onClick={() => setIsModalOpenDelete(true)}
+        />
+      </div>
+    );
+  };
+  const renderAction2 = () => {
     return (
       <div>
         <CheckOutlined
@@ -162,14 +182,10 @@ const OrderAdmin = () => {
           }}
           onClick={() => setIsModalOpenUpdate(true)}
         />
-        <DeleteOutlined
-          style={{ color: "red", fontSize: "30px", cursor: "pointer" }}
-          onClick={() => setIsModalOpenDelete(true)}
-        />
       </div>
     );
   };
-  const columns = [
+  const columns1 = [
     {
       title: "User name",
       dataIndex: "userName",
@@ -215,17 +231,144 @@ const OrderAdmin = () => {
     {
       title: "Action",
       dataIndex: "action",
-      render: renderAction,
+      render: renderAction1,
     },
   ];
 
-  const dataTable =
-    orders?.data?.length &&
-    orders?.data?.map((order) => {
+  const dataTable1 =
+    orders1?.data?.length &&
+    orders1?.data?.map((order) => {
       console.log("usewr", order);
       return {
         ...order,
-        key: order._id,
+        key: order.id,
+        userName: order?.shippingAddress?.fullName,
+        phone: order?.shippingAddress?.phone,
+        address: order?.shippingAddress?.address,
+        paymentMethod: orderContant.payment[order?.paymentMethod],
+        isPaid: order?.isPaid ? "TRUE" : "FALSE",
+        isDelivered: order?.isDelivered ? "TRUE" : "FALSE",
+        totalPrice: convertPrice(order?.totalPrice),
+      };
+    });
+  const columns2 = [
+    {
+      title: "User name",
+      dataIndex: "userName",
+      sorter: (a, b) => a.userName.length - b.userName.length,
+      ...getColumnSearchProps("userName"),
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      sorter: (a, b) => a.phone.length - b.phone.length,
+      ...getColumnSearchProps("phone"),
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      sorter: (a, b) => a.address.length - b.address.length,
+      ...getColumnSearchProps("address"),
+    },
+    {
+      title: "Paided",
+      dataIndex: "isPaid",
+      sorter: (a, b) => a.isPaid.length - b.isPaid.length,
+      ...getColumnSearchProps("isPaid"),
+    },
+    {
+      title: "Shipped",
+      dataIndex: "isDelivered",
+      sorter: (a, b) => a.isDelivered.length - b.isDelivered.length,
+      ...getColumnSearchProps("isDelivered"),
+    },
+    {
+      title: "Payment method",
+      dataIndex: "paymentMethod",
+      sorter: (a, b) => a.paymentMethod.length - b.paymentMethod.length,
+      ...getColumnSearchProps("paymentMethod"),
+    },
+    {
+      title: "Total price",
+      dataIndex: "totalPrice",
+      sorter: (a, b) => a.totalPrice.length - b.totalPrice.length,
+      ...getColumnSearchProps("totalPrice"),
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: renderAction2,
+    },
+  ];
+
+  const dataTable2 =
+    orders2?.data?.length &&
+    orders2?.data?.map((order) => {
+      console.log("usewr", order);
+      return {
+        ...order,
+        key: order.id,
+        userName: order?.shippingAddress?.fullName,
+        phone: order?.shippingAddress?.phone,
+        address: order?.shippingAddress?.address,
+        paymentMethod: orderContant.payment[order?.paymentMethod],
+        isPaid: order?.isPaid ? "TRUE" : "FALSE",
+        isDelivered: order?.isDelivered ? "TRUE" : "FALSE",
+        totalPrice: convertPrice(order?.totalPrice),
+      };
+    });
+  const columns3 = [
+    {
+      title: "User name",
+      dataIndex: "userName",
+      sorter: (a, b) => a.userName.length - b.userName.length,
+      ...getColumnSearchProps("userName"),
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      sorter: (a, b) => a.phone.length - b.phone.length,
+      ...getColumnSearchProps("phone"),
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      sorter: (a, b) => a.address.length - b.address.length,
+      ...getColumnSearchProps("address"),
+    },
+    {
+      title: "Paided",
+      dataIndex: "isPaid",
+      sorter: (a, b) => a.isPaid.length - b.isPaid.length,
+      ...getColumnSearchProps("isPaid"),
+    },
+    {
+      title: "Shipped",
+      dataIndex: "isDelivered",
+      sorter: (a, b) => a.isDelivered.length - b.isDelivered.length,
+      ...getColumnSearchProps("isDelivered"),
+    },
+    {
+      title: "Payment method",
+      dataIndex: "paymentMethod",
+      sorter: (a, b) => a.paymentMethod.length - b.paymentMethod.length,
+      ...getColumnSearchProps("paymentMethod"),
+    },
+    {
+      title: "Total price",
+      dataIndex: "totalPrice",
+      sorter: (a, b) => a.totalPrice.length - b.totalPrice.length,
+      ...getColumnSearchProps("totalPrice"),
+    },
+  ];
+
+  const dataTable3 =
+    orders3?.data?.length &&
+    orders3?.data?.map((order) => {
+      console.log("usewr", order);
+      return {
+        ...order,
+        key: order.id,
         userName: order?.shippingAddress?.fullName,
         phone: order?.shippingAddress?.phone,
         address: order?.shippingAddress?.address,
@@ -250,7 +393,8 @@ const OrderAdmin = () => {
   const onUpdateOrder = () => {
     mutationUpdate.mutate(rowSelected, {
       onSettled: () => {
-        queryOrder.refetch();
+        queryOrder2.refetch();
+        queryOrder3.refetch();
       },
     });
     setIsModalOpenUpdate(false);
@@ -275,18 +419,55 @@ const OrderAdmin = () => {
           alignItems: "flex-start",
         }}
       >
-        <PieChartComponent data={orders?.data} />
+        <PieChartComponent data={orders3?.data} />
         100% Payment in cash
       </div>
+
       <div style={{ marginTop: "20px" }}>
+        <h5>New Order</h5>
         <TableComponent
-          columns={columns}
-          isLoading={isLoadingOrders}
-          data={dataTable}
+          columns={columns1}
+          isLoading={isLoadingOrders1}
+          data={dataTable1}
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {
-                setRowSelected(record._id);
+                setRowSelected(record.id);
+                setOrderItem(record.orderItems);
+              }, // click row
+            };
+          }}
+        />
+      </div>
+      <div style={{ marginTop: "20px" }}>
+        <h5>Delivered Order</h5>
+
+        <TableComponent
+          columns={columns2}
+          isLoading={isLoadingOrders2}
+          data={dataTable2}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                setRowSelected(record.id);
+                setOrderItem(record.orderItems);
+              }, // click row
+            };
+          }}
+        />
+      </div>
+
+      <div style={{ marginTop: "20px" }}>
+        <h5>Paid Order</h5>
+
+        <TableComponent
+          columns={columns3}
+          isLoading={isLoadingOrders3}
+          data={dataTable3}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                setRowSelected(record.id);
                 setOrderItem(record.orderItems);
               }, // click row
             };

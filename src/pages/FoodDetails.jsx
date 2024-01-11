@@ -5,7 +5,14 @@ import ProductDetailComponent from "../components/ProductDetailComponent/Product
 
 const FoodDetails = () => {
   const id = useParams();
-  return <ProductDetailComponent idProduct={id} />;
+  return (
+    <>
+      <div style={{ marginTop: "100px" }}>
+        <ProductDetailComponent idProduct={id} />;
+      </div>
+      ;
+    </>
+  );
 };
 
 export default FoodDetails;

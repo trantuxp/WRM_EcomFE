@@ -99,6 +99,7 @@ const ProfilePage = () => {
         margin: "0 auto",
         height: "500px",
         paddingTop: "10px",
+        marginTop: "100px",
       }}
     >
       <WrapperHeader>User information</WrapperHeader>

@@ -251,234 +251,238 @@ const Cart = () => {
     }
   }, [localStorage.getItem("myid")]);
   return (
-    <Helmet title="Cart">
-      <CommonSection title="Your Cart" />
-      <section>
-        <Container>
-          <Row>
-            <Col lg="12">
-              <WrapperInfo>
-                <div>
-                  <span>Địa chỉ: </span>
-                  <span style={{ fontWeight: "bold" }}>
-                    {`${user?.address} ${user?.city}`}{" "}
-                  </span>
-                  <span
-                    onClick={handleChangeAddress}
-                    style={{ color: "#9255FD", cursor: "pointer" }}
-                  >
-                    Change
-                  </span>
-                </div>
-              </WrapperInfo>
-              <WrapperStyleHeaderDilivery>
-                <StepComponent
-                  items={itemsDelivery}
-                  current={
-                    diliveryPriceMemo === 10000
-                      ? 2
-                      : diliveryPriceMemo === 20000
-                      ? 1
-                      : order.orderItemsSlected.length === 0
-                      ? 0
-                      : 3
-                  }
-                />
-              </WrapperStyleHeaderDilivery>
-              {cartProducts1?.orderItems?.length === 0 ? (
-                <h5 className="text-center">Your cart is empty</h5>
-              ) : (
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>
-                        <CustomCheckbox
-                          onChange={handleOnchangeCheckAll}
-                          checked={
-                            listChecked?.length === order?.orderItems?.length
-                          }
-                        ></CustomCheckbox>
-                      </th>
-                      <th>Image</th>
-                      <th>Product Title</th>
-                      <th>Price</th>
-                      <th>Quantity</th>
-                      <th>Action</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cartProducts1?.orderItems?.map((item) => (
-                      <tr key={item.product}>
-                        <td className="text-center ">
+    <div style={{ marginTop: "100px" }}>
+      {" "}
+      <Helmet title="Cart">
+        <CommonSection title="Your Cart" />
+        <section>
+          <Container>
+            <Row>
+              <Col lg="12">
+                <WrapperInfo>
+                  <div>
+                    <span>Địa chỉ: </span>
+                    <span style={{ fontWeight: "bold" }}>
+                      {`${user?.address} ${user?.city}`}{" "}
+                    </span>
+                    <span
+                      onClick={handleChangeAddress}
+                      style={{ color: "#9255FD", cursor: "pointer" }}
+                    >
+                      Change
+                    </span>
+                  </div>
+                </WrapperInfo>
+                <WrapperStyleHeaderDilivery>
+                  <StepComponent
+                    items={itemsDelivery}
+                    current={
+                      diliveryPriceMemo === 10000
+                        ? 2
+                        : diliveryPriceMemo === 20000
+                        ? 1
+                        : order.orderItemsSlected.length === 0
+                        ? 0
+                        : 3
+                    }
+                  />
+                </WrapperStyleHeaderDilivery>
+                {cartProducts1?.orderItems?.length === 0 ? (
+                  <h5 className="text-center">Your cart is empty</h5>
+                ) : (
+                  <table className="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>
                           <CustomCheckbox
-                            onChange={onChange}
-                            value={item?.product}
-                            checked={listChecked.includes(item?.product)}
+                            onChange={handleOnchangeCheckAll}
+                            checked={
+                              listChecked?.length === order?.orderItems?.length
+                            }
                           ></CustomCheckbox>
-                        </td>
-                        <td className="text-center cart__img-box">
-                          <img src={item.image} alt="" />
-                        </td>
-                        <td className="text-center">{item.name}</td>
-                        <td className="text-center">{item.price} VND</td>
-                        <td className="text-center">{item.amount}px</td>
-                        <td className="text-center cart__item-del">
-                          <div className=" d-flex align-items-center justify-content-between text-center  increase__decrease-btn">
-                            <span
-                              className="increase__btn"
-                              onClick={() =>
-                                incrementItem(
-                                  item.product,
-                                  item.amount,
-                                  item.countInstock
-                                )
-                              }
-                            >
-                              <i className="ri-add-line"></i>
-                            </span>
-                            <span className="quantity">{item.amount}</span>
-                            <span
-                              className="decrease__btn"
-                              onClick={() =>
-                                decreaseItem(item.product, item.amount)
-                              }
-                            >
-                              <i className="ri-subtract-line "></i>
-                            </span>
-                          </div>
-                        </td>
-                        <td className="text-center cart__item-del">
-                          <i
-                            className="ri-delete-bin-line"
-                            onClick={() => deleteItem(item.product)}
-                          ></i>
-                        </td>
+                        </th>
+                        <th>Image</th>
+                        <th>Product Title</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                        <th>Delete</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+                    </thead>
+                    <tbody>
+                      {cartProducts1?.orderItems?.map((item) => (
+                        <tr key={item.product}>
+                          <td className="text-center ">
+                            <CustomCheckbox
+                              onChange={onChange}
+                              value={item?.product}
+                              checked={listChecked.includes(item?.product)}
+                            ></CustomCheckbox>
+                          </td>
+                          <td className="text-center cart__img-box">
+                            <img src={item.image} alt="" />
+                          </td>
+                          <td className="text-center">{item.name}</td>
+                          <td className="text-center">{item.price} VND</td>
+                          <td className="text-center">{item.amount}px</td>
+                          <td className="text-center cart__item-del">
+                            <div className=" d-flex align-items-center justify-content-between text-center  increase__decrease-btn">
+                              <span
+                                className="increase__btn"
+                                onClick={() =>
+                                  incrementItem(
+                                    item.product,
+                                    item.amount,
+                                    item.countInstock
+                                  )
+                                }
+                              >
+                                <i className="ri-add-line"></i>
+                              </span>
+                              <span className="quantity">{item.amount}</span>
+                              <span
+                                className="decrease__btn"
+                                onClick={() =>
+                                  decreaseItem(item.product, item.amount)
+                                }
+                              >
+                                <i className="ri-subtract-line "></i>
+                              </span>
+                            </div>
+                          </td>
+                          <td className="text-center cart__item-del">
+                            <i
+                              className="ri-delete-bin-line"
+                              onClick={() => deleteItem(item.product)}
+                            ></i>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
 
-              <div className="mt-4">
-                <h6>
-                  Subtotal:
-                  <span className="cart__subtotal"> {priceMemo || 0} VND</span>
-                </h6>
-                <p>Taxes and shipping will calculate at checkout</p>
-                <div className="cart__page-btn">
-                  <button className="addTOCart__btn me-4">
-                    <Link to="/foods">Continue Shopping</Link>
-                  </button>
-                  <button
-                    className="addTOCart__btn"
-                    onClick={() => handleAddCard()}
-                  >
-                    Proceed to checkout
-                  </button>
+                <div className="mt-4">
+                  <h6>
+                    Subtotal:
+                    <span className="cart__subtotal">
+                      {" "}
+                      {priceMemo || 0} VND
+                    </span>
+                  </h6>
+                  <p>Taxes and shipping will calculate at checkout</p>
+                  <div className="cart__page-btn">
+                    <button className="addTOCart__btn me-4">
+                      <Link to="/foods">Continue Shopping</Link>
+                    </button>
+                    <button
+                      className="addTOCart__btn"
+                      onClick={() => handleAddCard()}
+                    >
+                      Proceed to checkout
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </Col>
-            <Col lg="12" className="mb-5 mt-4">
-              {recommendProducts.length > 0 && (
-                <h2 className="related__Product-title">You might also like</h2>
-              )}
-            </Col>
+              </Col>
+              <Col lg="12" className="mb-5 mt-4">
+                {recommendProducts.length > 0 && (
+                  <h2 className="related__Product-title">
+                    You might also like
+                  </h2>
+                )}
+              </Col>
 
-            {recommendProducts.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item._id}>
-                <ProductCard item={item.products[0]} />
-                {/* {localStorage.getItem("myid") !== "" ? (
+              {recommendProducts.map((item) => (
+                <Col
+                  lg="3"
+                  md="4"
+                  sm="6"
+                  xs="6"
+                  className="mb-4"
+                  key={item._id}
+                >
+                  <ProductCard item={item.products[0]} />
+                  {/* {localStorage.getItem("myid") !== "" ? (
                   
                 ) : (
                   <ProductCard item={item} />
                 )} */}
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-      <ModalComponent
-        title="Cập nhật thông tin giao hàng"
-        open={isOpenModalUpdateInfo}
-        onCancel={handleCancleUpdate}
-        onOk={handleUpdateInforUser}
-      >
-        <Loading isLoading={isPending}>
-          <Form
-            name="basic"
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-            onFinish={""}
-            onFinishFailed={""}
-            autoComplete="on"
-            form={form}
-          >
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[{ required: true, message: "Please input your name!" }]}
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        </section>
+        <ModalComponent
+          title="Cập nhật thông tin giao hàng"
+          open={isOpenModalUpdateInfo}
+          onCancel={handleCancleUpdate}
+          onOk={handleUpdateInforUser}
+        >
+          <Loading isLoading={isPending}>
+            <Form
+              name="basic"
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 20 }}
+              onFinish={""}
+              onFinishFailed={""}
+              autoComplete="on"
+              form={form}
             >
-              <InputComponent
-                value={stateUserDetails["name"]}
-                onChange={handleOnchangeDetails}
+              <Form.Item
+                label="Name"
                 name="name"
-              />
-            </Form.Item>
-            <Form.Item
-              label="City"
-              name="city"
-              rules={[{ required: true, message: "Please input your city!" }]}
-            >
-              <InputComponent
-                value={stateUserDetails["city"]}
-                onChange={handleOnchangeDetails}
+                rules={[{ required: true, message: "Please input your name!" }]}
+              >
+                <InputComponent
+                  value={stateUserDetails["name"]}
+                  onChange={handleOnchangeDetails}
+                  name="name"
+                />
+              </Form.Item>
+              <Form.Item
+                label="City"
                 name="city"
-              />
-            </Form.Item>
-            <Form.Item
-              label="Phone"
-              name="phone"
-              rules={[{ required: true, message: "Please input your  phone!" }]}
-            >
-              <InputComponent
-                value={stateUserDetails.phone}
-                onChange={handleOnchangeDetails}
+                rules={[{ required: true, message: "Please input your city!" }]}
+              >
+                <InputComponent
+                  value={stateUserDetails["city"]}
+                  onChange={handleOnchangeDetails}
+                  name="city"
+                />
+              </Form.Item>
+              <Form.Item
+                label="Phone"
                 name="phone"
-              />
-            </Form.Item>
+                rules={[
+                  { required: true, message: "Please input your  phone!" },
+                ]}
+              >
+                <InputComponent
+                  value={stateUserDetails.phone}
+                  onChange={handleOnchangeDetails}
+                  name="phone"
+                />
+              </Form.Item>
 
-            <Form.Item
-              label="Adress"
-              name="address"
-              rules={[
-                { required: true, message: "Please input your  address!" },
-              ]}
-            >
-              <InputComponent
-                value={stateUserDetails.address}
-                onChange={handleOnchangeDetails}
+              <Form.Item
+                label="Adress"
                 name="address"
-              />
-            </Form.Item>
-          </Form>
-        </Loading>
-      </ModalComponent>
-    </Helmet>
+                rules={[
+                  { required: true, message: "Please input your  address!" },
+                ]}
+              >
+                <InputComponent
+                  value={stateUserDetails.address}
+                  onChange={handleOnchangeDetails}
+                  name="address"
+                />
+              </Form.Item>
+            </Form>
+          </Loading>
+        </ModalComponent>
+      </Helmet>
+    </div>
   );
 };
-
-// const Tr = (props, { setListChecked, listChecked }) => {
-//   const { product: idProduct, image, name, price, amount } = props.item;
-//   console.log("listCheckedChild", listChecked);
-//   const idUser = localStorage.getItem("myid");
-//   const order = useSelector((state) => state.order);
-
-//   const dispatch = useDispatch();
-
-//   // return (
-
-//   // );
-// };
 
 export default Cart;

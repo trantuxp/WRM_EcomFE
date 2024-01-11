@@ -32,9 +32,16 @@ export const getReplyEvaluate = async (id, idUser) => {
 
   return res.data;
 };
-export const getEvaluateByItem = async (idOrder, idItem) => {
+export const getEvaluateByOrderItem = async (idOrder, idItem) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_API_URL}/evaluate/get-by-item?idOrder=${idOrder}&idItem=${idItem}`
+    `${process.env.REACT_APP_API_URL}/evaluate/get-by-item-order?idOrder=${idOrder}&idItem=${idItem}`
+  );
+
+  return res.data;
+};
+export const getEvaluateByItem = async (idItem) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/evaluate/get-by-item?idItem=${idItem}`
   );
 
   return res.data;

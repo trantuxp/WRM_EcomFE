@@ -42,7 +42,7 @@ const DetailsOrderPage = () => {
     return res.data;
   };
   const fetchGetEvaluateByItem = async (idUser, idItem) => {
-    const res = await EvaluateService.getEvaluateByItem(idUser, idItem);
+    const res = await EvaluateService.getEvaluateByOrderItem(idUser, idItem);
     return res.data;
   };
   const createEvaluate = async (idItem, idUser, idOrder, content, star) => {
@@ -87,7 +87,14 @@ const DetailsOrderPage = () => {
   };
   return (
     <Loading isLoading={isPending}>
-      <div style={{ width: "100%", minHeight: "100vh", background: "#f5f5fa" }}>
+      <div
+        style={{
+          width: "100%",
+          minHeight: "100vh",
+          background: "#f5f5fa",
+          marginTop: "100px",
+        }}
+      >
         <div style={{ width: "1270px", margin: "0 auto", height: "1270px" }}>
           <h3 style={{ padding: "10px 10px 10px 0" }}>Order details</h3>
           <WrapperHeaderUser>

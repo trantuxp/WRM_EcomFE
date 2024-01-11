@@ -122,9 +122,12 @@ const EvaluateStore = () => {
     Evaluates?.length &&
     Evaluates?.filter((Evaluate, index) => {
       return (
-        Evaluate !== "" &&
-        Evaluate !== null &&
-        Evaluate !== undefined && { ...Evaluate, key: Evaluate?._id }
+        Evaluate.productName !== "" &&
+        Evaluate.productName !== null &&
+        Evaluate.productName !== undefined && {
+          ...Evaluate,
+          key: Evaluate?._id,
+        }
       );
     });
 
@@ -389,6 +392,15 @@ const EvaluateStore = () => {
       message.error();
     }
   }, [isSuccessDelected]);
+
+  useEffect(() => {
+    if (isSuccessCreateE && dataCreateE?.status === "OK") {
+      message.success();
+      handleCancelDelete();
+    } else if (isErrorCreateE) {
+      message.error();
+    }
+  }, [isSuccessCreateE]);
   return (
     <div>
       <WrapperHeader>Review Management</WrapperHeader>

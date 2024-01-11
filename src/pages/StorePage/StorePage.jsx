@@ -44,12 +44,6 @@ const StorePage = () => {
     return { data: res?.data, key: "products" };
   };
 
-  const getAllUsers = async () => {
-    const res = await UserService.getAllUser(user?.access_token);
-    console.log("res", res);
-    return { data: res?.data, key: "users" };
-  };
-
   // const queries = useQueries({
   //   queries: [
   //     { queryKey: ["products"], queryFn: getAllProducts, staleTime: 1000 * 60 },
@@ -98,7 +92,7 @@ const StorePage = () => {
   return (
     <>
       <HeaderComponent isHiddenSearch isHiddenCart />
-      <div style={{ display: "flex", overflowX: "hidden" }}>
+      <div style={{ display: "flex", overflowX: "hidden", marginTop: "100px" }}>
         <Menu
           mode="inline"
           style={{

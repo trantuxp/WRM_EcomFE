@@ -19,6 +19,8 @@ import {
 } from "../../store/shopping-cart/orderSlide";
 import { useNavigate } from "react-router-dom";
 import * as CartService from "../../services/CartService";
+import * as EvaluateService from "../../services/EvaluateService";
+import { useDebounce } from "../../hooks/useDebounce";
 
 import { convertPrice } from "../../utils";
 import StarRatingUI from "../StarRatingUI/StarRatingUI";
@@ -38,10 +40,12 @@ const ProductDetailComponent = (idProduct) => {
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
   const [recommendProducts, setRecommendProducts] = useState([]);
+  const [evalaute, setEvalaute] = useState([]);
   const [productDetail, setproductDetail] = useState([]);
   const order = useSelector((state) => state.order);
   const [errorLimitOrder, setErrorLimitOrder] = useState(false);
   const [numProduct, setNumProduct] = useState(1);
+  const evalauteDebounce = useDebounce(evalaute, 500);
 
   const product = products.find((product) => product.id === id);
   const { title, price, category, desc, image01 } = product;
@@ -56,11 +60,6 @@ const ProductDetailComponent = (idProduct) => {
     }
   };
 
-  // const { isPending, data: productDetail } = useQuery({
-  //   queryKey: ["product-details"],
-  //   queryFn: fetchGetDetailsProduct,
-  // });
-
   useEffect(() => {
     fetchGetDetailsProduct();
   }, [idProduct.idProduct.id]);
@@ -71,23 +70,26 @@ const ProductDetailComponent = (idProduct) => {
       setRecommendProducts(res);
     }
   };
-  // const fetchGetRecommendNoId = async () => {
-  //   const res = await ProductService.getRecommendNoId();
-  //   if (res) {
-  //     setRecommendProducts(res);
-  //   }
-  // };
 
   useEffect(() => {
     if (idProduct.idProduct.id) {
       fetchGetRecommend(idProduct.idProduct.id);
     }
   }, [idProduct.idProduct.id]);
-  // useEffect(() => {
-  //   if (localStorage.getItem("myid") === "") {
-  //     fetchGetRecommendNoId();
-  //   }
-  // }, [localStorage.getItem("myid")]);
+
+  const fetchGetEvaluate = async (id) => {
+    const res = await EvaluateService.getEvaluateByItem(id);
+    console.log("resEva", res);
+    if (res) {
+      setEvalaute(res);
+    }
+  };
+
+  useEffect(() => {
+    if (idProduct.idProduct.id) {
+      fetchGetEvaluate(idProduct.idProduct.id);
+    }
+  }, [idProduct.idProduct.id]);
 
   const addItem = () => {
     if (!user?.id) {
@@ -136,16 +138,6 @@ const ProductDetailComponent = (idProduct) => {
     }
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    console.log(enteredName, enteredEmail, reviewMsg);
-    setCommented(true);
-    setEnteredEmail("");
-    setEnteredName("");
-    setReviewMsg("");
-  };
-
   const incrementItem = () => {
     if (numProduct < productDetail?.countInStock)
       setNumProduct((prevCount) => prevCount + 1);
@@ -173,7 +165,7 @@ const ProductDetailComponent = (idProduct) => {
             <Col lg="6" md="6">
               <div className="single__product-content">
                 <h2 className="product__title mb-3">{productDetail?.name}</h2>
-                <p className="product__price">
+                <div className="product__price">
                   <span
                     style={{
                       textDecoration: "underline",
@@ -187,7 +179,7 @@ const ProductDetailComponent = (idProduct) => {
                       color={"lightgray"}
                     ></StarRatingUI>
                   </span>
-                </p>
+                </div>
                 <p className="product__price">
                   Price: <span>{convertPrice(productDetail?.price)} </span>
                 </p>
@@ -248,70 +240,24 @@ const ProductDetailComponent = (idProduct) => {
                 </div>
               ) : (
                 <div className="tab__form mb-3">
-                  <div className="review pt-5">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-
-                  <div className="review">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-
-                  <div className="review">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-                  {Commented && (
-                    <div className="review">
-                      <p className="user__name mb-0">tu</p>
-                      <p className="user__email">tu@gmail.com</p>
-                      <p className="feedback__text">good</p>
+                  {evalaute.map((eva) => (
+                    <div className="review pt-5">
+                      <p className="user__name mb-0">{eva?.User[0]?.name}</p>
+                      <p className="user__email">
+                        <StarRatingUI
+                          rating={eva.star}
+                          fontSize="2em"
+                        ></StarRatingUI>
+                      </p>
+                      <p className="feedback__text">{eva.content} </p>
                     </div>
-                  )}
-                  <form className="form" onSubmit={submitHandler}>
-                    <div className="form__group">
-                      <input
-                        type="text"
-                        placeholder="Enter your name"
-                        value={enteredName}
-                        onChange={(e) => setEnteredName(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form__group">
-                      <input
-                        type="text"
-                        placeholder="Enter your email"
-                        value={enteredEmail}
-                        onChange={(e) => setEnteredEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form__group">
-                      <textarea
-                        rows={5}
-                        type="text"
-                        value={reviewMsg}
-                        placeholder="Write your review"
-                        onChange={(e) => setReviewMsg(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <button type="submit" className="addTOCart__btn">
-                      Submit
-                    </button>
-                  </form>
+                  ))}
                 </div>
               )}
             </Col>
-
+            <Col lg="12" className="mt-4">
+              <hr></hr>
+            </Col>
             <Col lg="12" className="mb-5 mt-4">
               {recommendProducts.length > 0 && (
                 <h2 className="related__Product-title">You might also like</h2>
@@ -322,10 +268,9 @@ const ProductDetailComponent = (idProduct) => {
               <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
                 <ProductCard item={item.products[0]} />
                 {/* {localStorage.getItem("myid") !== "" ? (
-                  
-                ) : (
-                  <ProductCard item={item} />
-                )} */}
+                  ) : (
+                    <ProductCard item={item} />
+                  )} */}
               </Col>
             ))}
           </Row>

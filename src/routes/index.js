@@ -2,7 +2,6 @@ import Home from "../pages/Home";
 import AllFoods from "../pages/AllFoods";
 import FoodDetails from "../pages/FoodDetails";
 import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
 import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -17,6 +16,7 @@ import MyOrderPage from "../pages/MyOrder/MyOrder";
 import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage";
 import EvaluateStore from "../components/EvaluateStore/EvaluateStore";
 import DetailOrderItemPage from "../pages/DetailOrderItemPage/DetailOrderItemPage";
+import MyDeliveredOrderPage from "../pages/MyDeliveredOrder/MyDeliveredOrder";
 
 export const routes = [
   {
@@ -64,11 +64,7 @@ export const routes = [
     page: OrderSucess,
     isShowHeader: true,
   },
-  {
-    path: "/checkout",
-    page: Checkout,
-    isShowHeader: true,
-  },
+
   {
     path: "/login",
     page: Login,
@@ -87,6 +83,11 @@ export const routes = [
   {
     path: "/myorder",
     page: MyOrderPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/my-delivered-order",
+    page: MyDeliveredOrderPage,
     isShowHeader: true,
   },
   {

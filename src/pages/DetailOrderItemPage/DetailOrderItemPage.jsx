@@ -46,7 +46,7 @@ const DetailOrderItemPage = () => {
     const idItem = state.product;
     console.log("idOrder", idOrder, idItem);
 
-    const res = await EvaluateService.getEvaluateByItem(idOrder, idItem);
+    const res = await EvaluateService.getEvaluateByOrderItem(idOrder, idItem);
     console.log("res.data", res.data);
     setData(res.data[0]);
   };
@@ -84,7 +84,7 @@ const DetailOrderItemPage = () => {
   };
 
   return (
-    <div style={{ width: "100%", background: "#f5f5fa" }}>
+    <div style={{ width: "100%", background: "#f5f5fa", marginTop: "100px" }}>
       <div style={{ width: "1270px", margin: "0 auto", height: "1270px" }}>
         <h4 style={{ padding: "10px 10px 10px 0" }}>Order item details</h4>
         <WrapperStyleContent>

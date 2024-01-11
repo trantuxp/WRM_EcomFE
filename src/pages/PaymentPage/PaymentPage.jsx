@@ -241,31 +241,21 @@ const PaymentPage = () => {
     setPayment(e.target.value);
   };
 
-  //   const addPaypalScript = async () => {
-  //     const { data } = await PaymentService.getConfig();
-  //     const script = document.createElement("script");
-  //     script.type = "text/javascript";
-  //     script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
-  //     script.async = true;
-  //     script.onload = () => {
-  //       setSdkReady(true);
-  //     };
-  //     document.body.appendChild(script);
-  //   };
-
-  //   useEffect(() => {
-  //     if (!window.paypal) {
-  //       addPaypalScript();
-  //     } else {
-  //       setSdkReady(true);
-  //     }
-  //   }, []);
-
   return (
-    <div style={{ background: "#f5f5fa", with: "100%", height: "100vh" }}>
+    <div
+      style={{
+        background: "#f5f5fa",
+        with: "100%",
+        height: "100vh",
+        marginTop: "100px",
+      }}
+    >
       <Loading isLoading={isLoadingAddOrder}>
         <div style={{ height: "100%", width: "1270px", margin: "0 auto" }}>
-          <h3>Pay</h3>
+          <div style={{ padding: "10px" }}>
+            <h4>Payment</h4>
+          </div>
+
           <div style={{ display: "flex", justifyContent: "center" }}>
             <WrapperLeft>
               <WrapperInfo>

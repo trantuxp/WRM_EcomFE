@@ -62,6 +62,7 @@ const ProductCard = (props) => {
             },
           })
         );
+        navigate("/cart");
       } else {
         setErrorLimitOrder(true);
       }
