@@ -30,7 +30,7 @@ const AdminProduct = () => {
     countInStock: "",
     newType: "",
     discount: "",
-    idstore: "",
+    idStore: "",
   });
 
   const inittialDetail = () => ({
@@ -67,7 +67,7 @@ const AdminProduct = () => {
       type,
       countInStock,
       discount,
-      idstore,
+      idStore,
     } = data;
     const res = ProductService.createProduct({
       name,
@@ -78,7 +78,7 @@ const AdminProduct = () => {
       type,
       countInStock,
       discount,
-      idstore,
+      idStore,
     });
 
     return res;
@@ -137,17 +137,18 @@ const AdminProduct = () => {
     });
   const fetchGetProductsDetail = async (rowSelected) => {
     const res = await ProductService.getDetailsProduct(rowSelected);
-    if (res?.data) {
+    console.log("resdtailProduct", res[0]);
+    if (res[0]) {
       setStateProductDetail({
-        name: res?.data.name,
-        price: res?.data.price,
-        description: res?.data.description,
-        rating: res?.data.rating,
-        image: res?.data.image,
-        type: res?.data.type,
-        countInStock: res?.data.countInStock,
-        newType: res?.data.newType,
-        discount: res?.data.discount,
+        name: res[0]?.name,
+        price: res[0]?.price,
+        description: res[0]?.description,
+        rating: res[0]?.rating,
+        image: res[0]?.image,
+        type: res[0]?.type,
+        countInStock: res[0]?.countInStock,
+        newType: res[0]?.newType,
+        discount: res[0]?.discount,
       });
     }
 
@@ -428,7 +429,7 @@ const AdminProduct = () => {
           : stateProduct.type,
       countInStock: stateProduct.countInStock,
       discount: stateProduct.discount,
-      idstore: user?.id,
+      idStore: user?.id,
     };
     mutation.mutate(params, {
       onSettled: () => {
@@ -510,7 +511,7 @@ const AdminProduct = () => {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: "1000px" }}>
       <WrapperHeader>Product Management</WrapperHeader>
       <Button type="primary" onClick={showModal}>
         Add

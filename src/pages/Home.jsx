@@ -72,7 +72,7 @@ const Home = () => {
 
   const searchProduct = useSelector((state) => state?.product?.search);
   const searchDebounce = useDebounce(searchProduct, 500);
-  const [limit, setLimit] = useState(12);
+  const [limit, setLimit] = useState(32);
   const [carts1, setCarts1] = useState([]);
   const [listRecom, setListRecom] = useState(null);
 
@@ -233,7 +233,23 @@ const Home = () => {
         <section className="pt-0">
           <Category />
         </section>
-
+        <section className="pt-0">
+          <Container>
+            <Row>
+              {listRecom && (
+                <Col lg="12" className="text-center mb-5 ">
+                  <h2>You might also like</h2>
+                </Col>
+              )}
+              {listRecom &&
+                listRecom.map((item) => (
+                  <Col lg="3" md="4" sm="6" xs="6" key={item._id}>
+                    <ProductCardV2 item={item} />
+                  </Col>
+                ))}
+            </Row>
+          </Container>
+        </section>
         <section>
           <Container>
             <Row>
@@ -378,23 +394,6 @@ const Home = () => {
                   </ListGroup>
                 </div>
               </Col>
-            </Row>
-          </Container>
-        </section>
-
-        <section className="pt-0">
-          <Container>
-            <Row>
-              <Col lg="12" className="text-center mb-5 ">
-                <h2>You might also like</h2>
-              </Col>
-
-              {listRecom &&
-                listRecom.map((item) => (
-                  <Col lg="3" md="4" sm="6" xs="6" key={item._id}>
-                    <ProductCardV2 item={item} />
-                  </Col>
-                ))}
             </Row>
           </Container>
         </section>

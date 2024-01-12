@@ -170,7 +170,7 @@ const MyOrderPage = () => {
                 - My order{" "}
               </h5>
               <h5>
-                <Link to={"/my-delivered-order"}>- My Paid Order</Link>
+                <Link to={"/my-delivered-order"}>- My Delivered Order</Link>
               </h5>
             </div>
             {data?.map((order) => {

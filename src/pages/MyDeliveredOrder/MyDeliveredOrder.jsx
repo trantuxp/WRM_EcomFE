@@ -99,7 +99,7 @@ const MyDeliveredOrderPage = () => {
                   color: "red",
                 }}
               >
-                - My Paid Order
+                - My Delivered Order
               </h5>
               <h5>
                 <Link to={"/myorder"}>- My Order</Link>

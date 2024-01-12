@@ -100,6 +100,7 @@ const Header = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     dispatch(resetAllOrder());
     setLoading(false);
     navigate("/");
+    window.location.reload();
   };
   const content = (
     <div>
