@@ -134,6 +134,7 @@ function App() {
               addOrderProduct({
                 orderItem: {
                   name: cart?.product[0]?.name,
+                  type: cart?.product[0]?.type,
                   amount: cart?.amount,
                   image: cart?.product[0]?.image,
                   price: cart?.product[0]?.price,

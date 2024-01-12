@@ -13,9 +13,17 @@ import * as CartService from "../../../services/CartService";
 import StarRatingUI from "../../StarRatingUI/StarRatingUI";
 
 const ProductCardV2 = (props) => {
-  const { _id, name, image, price, countInStock, discount, idStore, rating } =
-    props.item;
-
+  const {
+    _id,
+    name,
+    type,
+    image,
+    price,
+    countInStock,
+    discount,
+    idStore,
+    rating,
+  } = props.item[0];
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const order = useSelector((state) => state.order);
@@ -52,6 +60,7 @@ const ProductCardV2 = (props) => {
           addOrderProduct({
             orderItem: {
               name: name,
+              type: type,
               amount: numProduct,
               image: image,
               price: price,

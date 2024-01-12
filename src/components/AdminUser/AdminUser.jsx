@@ -16,6 +16,7 @@ import { useMutationHooks } from "../../hooks/useMutationHook";
 import * as UserService from "../../services/UserService";
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  StopOutlined,
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
@@ -47,6 +48,7 @@ const AdminUser = () => {
         ...user,
         key: user._id,
         isAdmin: user.isAdmin ? "TRUE" : "FALSE",
+        isBlock: user.isBlock ? "TRUE" : "FALSE",
       };
     });
 
@@ -149,13 +151,9 @@ const AdminUser = () => {
   const renderAction = () => {
     return (
       <div>
-        <DeleteOutlined
+        <StopOutlined
           style={{ color: "red", fontSize: "30px", cursor: "pointer" }}
           onClick={() => setIsModalOpenDelete(true)}
-        />
-        <EditOutlined
-          style={{ color: "orange", fontSize: "30px", cursor: "pointer" }}
-          onClick={handleDetailsProduct}
         />
       </div>
     );
@@ -289,6 +287,10 @@ const AdminUser = () => {
       dataIndex: "phone",
       sorter: (a, b) => a.phone - b.phone,
       ...getColumnSearchProps("phone"),
+    },
+    {
+      title: "IsBlock",
+      dataIndex: "isBlock",
     },
     {
       title: "Action",
@@ -499,7 +501,7 @@ const AdminUser = () => {
         onOk={handleDeleteUser}
       >
         <Loading isLoading={isLoadingDeleted}>
-          <div>Are you sure to delete this account?</div>
+          <div>Are you sure to change this status account?</div>
         </Loading>
       </ModalComponent>
     </div>

@@ -28,15 +28,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      if (location?.state) {
-        navigate(location?.state);
-      } else {
-        window.location.reload();
-        if (data?.status !== "ERR") {
-          navigate("/");
-          window.location.reload();
-        }
-      }
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
       localStorage.setItem(
         "refresh_token",
@@ -46,6 +37,16 @@ const Login = () => {
         const decoded = jwtDecode(data?.access_token);
         if (decoded?.id) {
           handleGetDetailsUser(decoded?.id, data?.access_token);
+        }
+      }
+      if (location?.state) {
+        navigate(location?.state);
+        window.location.reload();
+      } else {
+        // window.location.reload();
+        if (data?.status !== "ERR") {
+          navigate("/");
+          window.location.reload();
         }
       }
     }

@@ -121,6 +121,7 @@ const ProductDetailComponent = (idProduct) => {
           addOrderProduct({
             orderItem: {
               name: productDetail?.name,
+              type: productDetail?.type,
               amount: numProduct,
               image: productDetail?.image,
               price: productDetail?.price,
@@ -208,7 +209,7 @@ const ProductDetailComponent = (idProduct) => {
                 <p className="category ">
                   Store:{" "}
                   <Link to={`/store/${productDetail?.idStore}`}>
-                    {productDetail?.store?.nameStore || "Shop Food"}
+                    {productDetail?.store?.map((item) => item.nameStore)}
                   </Link>
                 </p>
                 <p className="category ">Open: 8:00 - 23:00</p>

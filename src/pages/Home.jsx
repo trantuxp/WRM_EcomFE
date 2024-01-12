@@ -127,7 +127,7 @@ const Home = () => {
             const result = await Promise.all(
               reconmmed.data.map(async (item) => {
                 const list = await axios.get(
-                  `http://localhost:3001/api/product/get-details/${item.Product_ID}`
+                  `http://localhost:3000/api/product/get-details/${item.Product_ID}`
                 );
 
                 return list.data;
@@ -195,7 +195,8 @@ const Home = () => {
 
                   <div className="hero__btns d-flex align-items-center gap-5 mt-4">
                     <button className="order__btn d-flex align-items-center justify-content-between">
-                      Order now <i className="ri-arrow-right-s-line"></i>
+                      <Link to="/cart">Order now</Link>
+                      <i className="ri-arrow-right-s-line"></i>
                     </button>
 
                     <button className="all__foods-btn">

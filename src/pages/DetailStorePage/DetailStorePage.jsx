@@ -10,6 +10,7 @@ import * as StoreService from "../../services/StoreService";
 import * as PostService from "../../services/PostService";
 
 import { useDispatch, useSelector } from "react-redux";
+import * as ProductService from "../../services/ProductService";
 
 import "../../styles/product-details.css";
 
@@ -18,8 +19,7 @@ import ProductCard from "../../components/UI/product-card/ProductCard";
 const DetailStorePage = () => {
   const { id } = useParams();
   const user = useSelector((state) => state.user);
-
-  // const relatedProduct = products.filter((item) => category === item.category);
+  const [recommendProducts, setRecommendProducts] = useState([]);
 
   const fetchGetDetailsStore = async () => {
     if (id) {
@@ -45,6 +45,19 @@ const DetailStorePage = () => {
     queryFn: fetchGetPostByStore,
   });
   console.log("PostByStore", PostByStore);
+  const fetchGetRecommend = async (id) => {
+    const res = await ProductService.getProByStore(id);
+    if (res?.data) {
+      setRecommendProducts(res?.data);
+      console.log("setRecommendProducts", res?.data);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchGetRecommend(id);
+    }
+  }, [id]);
   return (
     <div style={{ marginTop: "100px" }}>
       {" "}
@@ -70,7 +83,7 @@ const DetailStorePage = () => {
                     {storeDetails?.nameStore}
                   </h2>
                   <p className="product__price">
-                    Phone: <span>{user?.phone} </span>
+                    Phone: <span>{storeDetails?.phone} </span>
                   </p>
                   <p className="category mb-5">
                     Address: <span>{storeDetails?.addressStore}</span>
@@ -113,11 +126,27 @@ const DetailStorePage = () => {
                   </Row>
                 ))}
               </Col>
-              {/* {relatedProduct.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
-                <ProductCard item={item} />
+              <Col lg="12" className="mb-5 mt-4">
+                <Row>
+                  <Col lg="4" md="4">
+                    <div className="product__title ">
+                      <h4>Products of Store</h4>
+                    </div>
+                  </Col>
+                </Row>
               </Col>
-            ))} */}
+              {recommendProducts.map((item) => (
+                <Col
+                  lg="3"
+                  md="4"
+                  sm="6"
+                  xs="6"
+                  className="mb-4"
+                  key={item._id}
+                >
+                  <ProductCard item={item} />
+                </Col>
+              ))}
             </Row>
           </Container>
         </section>
